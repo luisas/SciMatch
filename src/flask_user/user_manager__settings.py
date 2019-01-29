@@ -174,6 +174,7 @@ class UserManager__Settings(object):
     #:     URL settings
     USER_PASSLIB_CRYPTCONTEXT_KEYWORDS = dict()
 
+    USER_SELECT_REGISTER_TYPE_URL= '/user/select_register_type'
     USER_CHANGE_PASSWORD_URL = '/user/change-password' #:
     USER_CHANGE_USERNAME_URL = '/user/change-username' #:
     USER_CONFIRM_EMAIL_URL = '/user/confirm-email/<token>' #:
@@ -193,6 +194,7 @@ class UserManager__Settings(object):
     #:     Template file settings
     USER_RESET_PASSWORD_URL = '/user/reset-password/<token>'
 
+    USER_SELECT_REGISTER_TYPE_TEMPLATE = 'flask_user/select_register_type.html' #:
     USER_CHANGE_PASSWORD_TEMPLATE = 'flask_user/change_password.html' #:
     USER_CHANGE_USERNAME_TEMPLATE = 'flask_user/change_username.html' #:
     USER_EDIT_USER_PROFILE_TEMPLATE = 'flask_user/edit_user_profile.html' #:

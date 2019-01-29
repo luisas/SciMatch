@@ -76,7 +76,7 @@ setup(
     setup_requires=['Flask-Login',] + pytest_runner,
     install_requires=[
         'bcrypt>=2.0',
-        'cryptography>=1.6',
+        'cryptography>=2.3',
         'Flask>=0.9',
         'Flask-Login>=0.2',
         'Flask-Mail>=0.9',

@@ -17,7 +17,7 @@
             </div>
             <div class="col-xs-6 text-right">
                 {% if user_manager.USER_ENABLE_REGISTER and not user_manager.USER_REQUIRE_INVITATION %}
-                    <a href="{{ url_for('user.register') }}" tabindex='190'>
+                    <a href="{{ url_for('user.select_register_type') }}" tabindex='190'>
                         {%trans%}New here? Register.{%endtrans%}</a>
                 {% endif %}
             </div>

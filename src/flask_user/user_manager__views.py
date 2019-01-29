@@ -354,6 +354,12 @@ class UserManager__Views(object):
         self.prepare_domain_translations()
         return render_template(self.USER_INVITE_USER_TEMPLATE, form=invite_user_form)
 
+    ## TEST LUISA!!
+    def select_register_type_view(self):
+        template_filename = self.USER_SELECT_REGISTER_TYPE_TEMPLATE
+        return render_template(template_filename)
+    ##
+
 
     def login_view(self):
         """Prepare and process the login form."""
@@ -710,4 +716,3 @@ class UserManager__Views(object):
 
     def _endpoint_url(self, endpoint):
         return url_for(endpoint) if endpoint else '/'
-

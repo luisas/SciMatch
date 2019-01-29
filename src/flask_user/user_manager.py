@@ -381,6 +381,14 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         #     if not self.USER_ENABLE_AUTH0: abort(404)
         #     return self.auth0_callback_view()
 
+
+        ##TEST LUISA!--------
+        def select_register_type_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.select_register_type_view()
+
+        ##-----------
+
         def change_password_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.change_password_view()
@@ -441,6 +449,12 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # ------------------
 
         # app.add_url_rule('/callbacks/auth0', 'user.auth0_callback', auth0_callback_stub)
+
+        ## TEST LUISA!!
+        app.add_url_rule(self.USER_SELECT_REGISTER_TYPE_URL, 'user.select_register_type', select_register_type_stub,
+                         methods=['GET', 'POST'])
+        ##
+
         app.add_url_rule(self.USER_CHANGE_PASSWORD_URL, 'user.change_password', change_password_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_CHANGE_USERNAME_URL, 'user.change_username', change_username_stub,
@@ -466,6 +480,3 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_RESET_PASSWORD_URL, 'user.reset_password', reset_password_stub,
                          methods=['GET', 'POST'])
-
-
-
