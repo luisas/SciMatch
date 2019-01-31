@@ -4,10 +4,10 @@
 {% from "flask_user/_macros.html" import render_field, render_checkbox_field, render_submit_field %}
 <h1>{%trans%}Select type of user{%endtrans%}</h1>
 
-  <a href="{{ url_for('user.register') }}" class="btn btn-primary" tabindex='190'>
+  <a href="{{ url_for('user.register_applicant') }}" class="btn btn-primary" tabindex='190'>
       {%trans%}I am an applicant!{%endtrans%}</a>
 
-  <a href="{{ url_for('user.register') }}" class="btn btn-primary" tabindex='190'>
+  <a href="{{ url_for('user.register_group') }}" class="btn btn-primary" tabindex='190'>
       {%trans%}I am a group!{%endtrans%}</a>
 
 

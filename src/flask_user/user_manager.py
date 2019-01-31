@@ -173,6 +173,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.InviteUserFormClass = forms.InviteUserForm
         self.LoginFormClass = forms.LoginForm
         self.RegisterFormClass = forms.RegisterForm
+        self.RegisterApplicantFormClass = forms.RegisterApplicantForm
         self.ResendEmailConfirmationFormClass = forms.ResendEmailConfirmationForm
         self.ResetPasswordFormClass = forms.ResetPasswordForm
 
@@ -387,6 +388,14 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.select_register_type_view()
 
+
+        def register_applicant_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.register_applicant_view()
+        def register_group_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.register_group_view()
+
         ##-----------
 
         def change_password_stub():
@@ -451,9 +460,14 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # app.add_url_rule('/callbacks/auth0', 'user.auth0_callback', auth0_callback_stub)
 
         ## TEST LUISA!!
+
         app.add_url_rule(self.USER_SELECT_REGISTER_TYPE_URL, 'user.select_register_type', select_register_type_stub,
                          methods=['GET', 'POST'])
         ##
+        app.add_url_rule(self.USER_REGISTER_APPLICANT_URL, 'user.register_applicant', register_applicant_stub,
+                         methods=['GET', 'POST'])
+        app.add_url_rule(self.USER_REGISTER_GROUP_URL, 'user.register_group', register_group_stub,
+                         methods=['GET', 'POST'])
 
         app.add_url_rule(self.USER_CHANGE_PASSWORD_URL, 'user.change_password', change_password_stub,
                          methods=['GET', 'POST'])
