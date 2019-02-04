@@ -55,7 +55,7 @@ def create_app():
 
     # Block added in order to work with MySQL
     # Generate the DB if needed
-    # This block makes me add 'create_engine' to the imports
+    # This block needs 'create_engine', which is added to the imports
     url = 'mysql://%s:%s@%s' % ('root', 'password01', 'localhost:3306')
     engine = create_engine(url)  # connect to server
     create_str = "CREATE DATABASE IF NOT EXISTS %s ;" % ('scihubdb.sql')
