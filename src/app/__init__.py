@@ -8,6 +8,7 @@ import datetime
 from flask import Flask, request, render_template_string, render_template
 from flask_babelex import Babel
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine  # in order to initialize the MySQL DB
 from flask_user import current_user, login_required, roles_required, UserManager, UserMixin
 
 
@@ -51,6 +52,17 @@ def create_app():
 
     # Initialize Flask-SQLAlchemy
     db = SQLAlchemy(app)
+
+    # Block added in order to work with MySQL
+    # Generate the DB if needed
+    # This block makes me add 'create_engine' to the imports
+    url = 'mysql://%s:%s@%s' % ('root', 'password01', 'localhost:3306')
+    engine = create_engine(url)  # connect to server
+    create_str = "CREATE DATABASE IF NOT EXISTS %s ;" % ('scihubdb.sql')
+    engine.execute(create_str)
+    engine.execute("USE location;")
+    db.create_all()
+    db.session.commit()
 
     # Define the User data-model.
     # NB: Make sure to add flask_user UserMixin !!!
