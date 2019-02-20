@@ -19,7 +19,7 @@ class ConfigClass(object):
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
 
     # Flask-SQLAlchemy settings
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/test2?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/scimatch?charset=utf8'    # File-based SQL database'    # File-based SQL database
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
@@ -62,13 +62,13 @@ def create_app():
 
         # User authentication information. The collation='NOCASE' is required
         # to search case insensitively when USER_IFIND_MODE is 'nocase_collation'.
-        email = db.Column(db.String(255, collation='NOCASE'), nullable=False, unique=True)
+        email = db.Column(db.String(255), nullable=False, unique=True)
         email_confirmed_at = db.Column(db.DateTime())
         password = db.Column(db.String(255), nullable=False, server_default='')
 
         # User information
-        first_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
-        last_name = db.Column(db.String(100, collation='NOCASE'), nullable=False, server_default='')
+        first_name = db.Column(db.String(100), nullable=False, server_default='')
+        last_name = db.Column(db.String(100), nullable=False, server_default='')
 
         # Define the relationship to Role via UserRoles
         roles = db.relationship('Role', secondary='user_roles')
