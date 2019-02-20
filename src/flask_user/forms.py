@@ -242,10 +242,10 @@ class RegisterApplicantForm(FlaskForm):
     next = HiddenField()        # for login_or_register.html
     reg_next = HiddenField()    # for register.html
 
-    name = StringField(_('Name'), validators=[
+    first_name = StringField(_('Name'), validators=[
         validators.DataRequired(_('Name is required'))])
 
-    surname = StringField(_('Surname'), validators=[
+    last_name = StringField(_('Surname'), validators=[
         validators.DataRequired(_('Surname is required'))])
 
     username = StringField(_('Username'), validators=[

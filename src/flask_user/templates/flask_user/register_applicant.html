@@ -32,8 +32,8 @@
 
 
 
-    {{ render_field(form.name, tabindex=210) }}
-    {{ render_field(form.surname, tabindex=210) }}
+    {{ render_field(form.first_name, tabindex=210) }}
+    {{ render_field(form.last_name, tabindex=210) }}
     {% if user_manager.USER_ENABLE_EMAIL and user_manager.USER_ENABLE_USERNAME %}
 
         {{ render_field(form.email, tabindex=220) }}

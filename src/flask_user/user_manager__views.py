@@ -404,6 +404,10 @@ class UserManager__Views(object):
             user_email = self.db_manager.add_user_email(user=user, is_primary=True)
             register_form.populate_obj(user_email)
 
+
+            user.last_name = request.values.get('first_name')
+            user.last_name = request.values.get('last_name')
+                        
             # Store password hash instead of password
             user.password = self.hash_password(user.password)
 

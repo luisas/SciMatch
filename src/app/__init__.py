@@ -19,7 +19,8 @@ class ConfigClass(object):
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
 
     # Flask-SQLAlchemy settings
-    SQLALCHEMY_DATABASE_URI = 'mysql:///basic_app.mysql'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/test2?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
     # Flask-Mail SMTP server settings
