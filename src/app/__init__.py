@@ -86,11 +86,33 @@ def create_app():
         user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
         role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
 
+
+    class City(db.Model):
+        __tablename__ = 'city'
+        name = db.Column(db.String(100), nullable=False, server_default='',primary_key=True)
+
+    class Preference(db.Model):
+        __tablename__= 'preference'
+        id = db.Column(db.Integer(), primary_key=True)
+
     # Setup Flask-User and specify the User data-model
-    user_manager = UserManager(app, db, User)
+    user_manager = UserManager(app, db, User, RoleClass=Role)
 
     # Create all database tables
     db.create_all()
+
+    # To delete
+    #city = City(name="Barcelona")
+    #city2= City(name="Honolulu")
+    #db.session.add(city)
+    #db.session.add(city2)
+    #db.session.commit()
+    if not Role.query.filter(Role.name == 'Applicant').first():
+        role = Role (name = "Applicant")
+        role2 = Role( name ="Group")
+        db.session.add(role)
+        db.session.add(role2)
+        db.session.commit()
 
     # Create 'member@example.com' user with no roles
     if not User.query.filter(User.email == 'member@example.com').first():
@@ -109,20 +131,44 @@ def create_app():
             email_confirmed_at=datetime.datetime.utcnow(),
             password=user_manager.hash_password('Password1'),
         )
-        user.roles.append(Role(name='Admin'))
-        user.roles.append(Role(name='Agent'))
         db.session.add(user)
         db.session.commit()
 
     # The Home page is accessible to anyone
+
+    # Selects which home page to use. If the user is logged in then it checks if
+    # it is an applicant or a group and shows the right view accordingly.
     @app.route('/')
     def home_page():
-        return render_template("/home_page.html")
+        role_name ="Guest"
+        if not current_user.is_authenticated:
+            return render_template("/home_page.html")
+        else:
+            role_id = UserRoles.query.filter_by( user_id = current_user.id).first().role_id
+            role_name = Role.query.filter_by( id = role_id).first().name
+            if role_name == "Applicant":
+                matches = City.query.order_by(City.name).all()
+                return render_template("/home_page_applicant.html",matches=matches, role=role_name)
+            elif role_name == "Group":
+                return render_template("/home_page_group.html",role=role_name)
+
+    def change_pref():
+        dropdown_list = City.query.order_by(City.name).all()
+        return render_template("/change_pref.html",dropdown_list = dropdown_list)
+    app.add_url_rule('/change', 'change_pref', change_pref)
+
+    def profile_applicant():
+        return render_template("/profile_applicant.html")
+    app.add_url_rule('/profile_applicant', 'profile_applicant', profile_applicant)
+
+    def chat_applicant():
+        return render_template("/chat_applicant.html")
+    app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
+
 
 
 
     return app
-
 
 # Start development web server
 if __name__ == '__main__':

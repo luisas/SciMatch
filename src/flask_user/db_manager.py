@@ -119,6 +119,7 @@ class DBManager(object):
 
         return user_email
 
+
     def add_user_invitation(self, **kwargs):
         """Add a UserInvitation object, with properties specified in ``**kwargs``."""
         user_invitation = self.UserInvitationClass(**kwargs)
@@ -277,4 +278,3 @@ class DBManager(object):
         .. warning:: ALL DATA WILL BE LOST. Use only for automated testing.
         """
         return self.db_adapter.drop_all_tables()
-

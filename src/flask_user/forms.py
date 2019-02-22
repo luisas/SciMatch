@@ -16,8 +16,11 @@ try:
 except ImportError:
     from flask_wtf import Form as FlaskForm     # Fallback to Flask-WTF v0.12 or older
 
-from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField
+from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField
 from wtforms import validators, ValidationError
+from wtforms.fields.html5 import DateTimeLocalField
+
+
 
 from .translation_utils import lazy_gettext as _    # map _() to lazy_gettext()
 
@@ -247,6 +250,10 @@ class RegisterApplicantForm(FlaskForm):
 
     last_name = StringField(_('Surname'), validators=[
         validators.DataRequired(_('Surname is required'))])
+
+
+    Gender = RadioField('Gender', choices = [('M','Male'),('F','Female')], validators=[
+        validators.DataRequired(_('Gender is required'))])
 
     username = StringField(_('Username'), validators=[
         validators.DataRequired(_('Username is required')),

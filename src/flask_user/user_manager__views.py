@@ -18,6 +18,7 @@ from . import signals
 from .translation_utils import gettext as _    # map _() to gettext()
 
 
+
 # This class mixes into the UserManager class.
 # Mixins allow for maintaining code and docs across several files.
 class UserManager__Views(object):
@@ -370,6 +371,7 @@ class UserManager__Views(object):
         login_form = self.LoginFormClass()  # for login_or_register.html
         register_form = self.RegisterApplicantFormClass(request.form)  # for register.html
 
+
         # invite token used to determine validity of registeree
         invite_token = request.values.get("token")
 
@@ -407,7 +409,9 @@ class UserManager__Views(object):
 
             user.last_name = request.values.get('first_name')
             user.last_name = request.values.get('last_name')
-                        
+            user_role = self.db_manager.add_user_role(user=user, role_name="Applicant")
+            #user.roles.append(Role(name='Applicant'))
+
             # Store password hash instead of password
             user.password = self.hash_password(user.password)
 
@@ -469,6 +473,8 @@ class UserManager__Views(object):
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
 
+
+
         # Initialize form
         login_form = self.LoginFormClass()  # for login_or_register.html
         register_form = self.RegisterFormClass(request.form)  # for register.html
@@ -509,6 +515,7 @@ class UserManager__Views(object):
 
             # Store password hash instead of password
             user.password = self.hash_password(user.password)
+            user_role = self.db_manager.add_user_role(user=user, role_name="Group")
 
             # Email confirmation depends on the USER_ENABLE_CONFIRM_EMAIL setting
             request_email_confirmation = self.USER_ENABLE_CONFIRM_EMAIL

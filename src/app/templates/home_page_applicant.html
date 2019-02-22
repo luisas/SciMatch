@@ -1,0 +1,30 @@
+{% extends "flask_user_layout.html" %}
+{% block content %}
+        <center>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-4">
+              <a href="{{ url_for('profile_applicant') }}" class="btn btn-primary" tabindex='190'>
+                  {%trans%}Profile{%endtrans%}</a>
+            </div>
+            <div class="col-sm-4">
+              <a href="{{ url_for('change_pref') }}" class="btn btn-primary" tabindex='190'>
+                  {%trans%}Preferences{%endtrans%}</a>
+            </div>
+            <div class="col-sm-4">
+              <a href="{{ url_for('chat_applicant') }}" class="btn btn-primary" tabindex='190'>
+                  {%trans%}Chat{%endtrans%}</a>
+            </div>
+          </div>
+        </div>
+
+        <h2>Your matches!</h2>
+        <h4>Remember to change your preferences if u haven't yet</h4>
+        {% for each in matches %}
+              <h4>{{each}}</h4>
+        {% endfor %}
+
+        <h3>HERE {{ role }} </h3>
+      </center>
+
+{% endblock %}
