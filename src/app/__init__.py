@@ -117,8 +117,12 @@ def create_app():
     @app.route('/')
     def home_page():
         return render_template("/home_page.html")
-
-
+    def who():
+        return render_template("/who.html")
+    app.add_url_rule('/who', 'who', who)
+    def why():
+        return render_template("/why.html")
+    app.add_url_rule('/why', 'why', why)
 
     return app
 
