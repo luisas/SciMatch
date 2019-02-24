@@ -1,7 +1,7 @@
 {% extends 'flask_user/_public_base.html' %}
 
 {% block content %}
-{% from "flask_user/_macros.html" import render_field, render_submit_field %}
+{% from "flask_user/_macros.html" import render_field, render_submit_field, render_radio_field %}
 <h1>{%trans%}Register Applicant{%endtrans%}</h1>
 
 <form action="" method="POST" novalidate formnovalidate class="form" role="form">
@@ -32,10 +32,12 @@
 
 
 
-    {{ render_field(form.name, tabindex=210) }}
-    {{ render_field(form.surname, tabindex=210) }}
-    {% if user_manager.USER_ENABLE_EMAIL and user_manager.USER_ENABLE_USERNAME %}
+    {{ render_field(form.first_name, tabindex=210) }}
+    {{ render_field(form.last_name, tabindex=210) }}
+    {{ render_radio_field(form.Gender) }}
+    {{ render_field(form.birthday) }}
 
+    {% if user_manager.USER_ENABLE_EMAIL and user_manager.USER_ENABLE_USERNAME %}
         {{ render_field(form.email, tabindex=220) }}
     {% endif %}
 

@@ -1,0 +1,14 @@
+{% extends "flask_user_layout.html" %}
+{% block content %}
+        <center>
+
+        <h2>Your matches!</h2>
+        <h4>Remember to change your preferences if u haven't yet</h4>
+        {% for each in matches %}
+          <a href="#" class="btn btn-primary" tabindex='190'>
+          {%trans%} {{ each }} {%endtrans%}</a>
+        {% endfor %}
+
+      </center>
+
+{% endblock %}

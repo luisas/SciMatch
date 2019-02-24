@@ -1,0 +1,9 @@
+{% extends "flask_user_layout.html" %}
+{% block content %}
+  <center>
+    <h2>CHAT</h2>
+    <a href="{{ url_for('home_page') }}" class="btn btn-primary" tabindex='190'>
+        {%trans%}Back{%endtrans%}</a>
+  </center>
+
+{% endblock %}

@@ -59,7 +59,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self, app, db, UserClass,
         UserInvitationClass=None,
         UserEmailClass=None,
-        RoleClass=None,    # Only used for testing
+        RoleClass=None,
+        PositionClass=None    # Only used for testing
         ):
 
         # See http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code
@@ -173,6 +174,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.InviteUserFormClass = forms.InviteUserForm
         self.LoginFormClass = forms.LoginForm
         self.RegisterFormClass = forms.RegisterForm
+        self.AddPositionFormClass = forms.AddPositionForm
         self.RegisterApplicantFormClass = forms.RegisterApplicantForm
         self.ResendEmailConfirmationFormClass = forms.ResendEmailConfirmationForm
         self.ResetPasswordFormClass = forms.ResetPasswordForm
@@ -180,7 +182,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # Set default managers
         # --------------------
         # Setup DBManager
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass)
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass)
 
         # Setup PasswordManager
         self.password_manager = PasswordManager(app)
@@ -388,6 +390,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.select_register_type_view()
 
+        def add_position_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.add_position_view()
 
         def register_applicant_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
@@ -462,6 +467,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         ## TEST LUISA!!
 
         app.add_url_rule(self.USER_SELECT_REGISTER_TYPE_URL, 'user.select_register_type', select_register_type_stub,
+                         methods=['GET', 'POST'])
+        app.add_url_rule(self.USER_ADD_POSITION_URL, 'user.add_position', add_position_stub,
                          methods=['GET', 'POST'])
         ##
         app.add_url_rule(self.USER_REGISTER_APPLICANT_URL, 'user.register_applicant', register_applicant_stub,

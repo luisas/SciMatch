@@ -18,6 +18,7 @@ from . import signals
 from .translation_utils import gettext as _    # map _() to gettext()
 
 
+
 # This class mixes into the UserManager class.
 # Mixins allow for maintaining code and docs across several files.
 class UserManager__Views(object):
@@ -370,6 +371,7 @@ class UserManager__Views(object):
         login_form = self.LoginFormClass()  # for login_or_register.html
         register_form = self.RegisterApplicantFormClass(request.form)  # for register.html
 
+
         # invite token used to determine validity of registeree
         invite_token = request.values.get("token")
 
@@ -403,6 +405,14 @@ class UserManager__Views(object):
             register_form.populate_obj(user)
             user_email = self.db_manager.add_user_email(user=user, is_primary=True)
             register_form.populate_obj(user_email)
+
+
+            user.last_name = request.values.get('first_name')
+            user.last_name = request.values.get('last_name')
+            user.gender = request.values.get('Gender')
+            user.birthday = request.values.get('birthday')
+            user_role = self.db_manager.add_user_role(user=user, role_name="Applicant")
+            #user.roles.append(Role(name='Applicant'))
 
             # Store password hash instead of password
             user.password = self.hash_password(user.password)
@@ -458,12 +468,40 @@ class UserManager__Views(object):
                       register_form=register_form)
 
 
+    #@login_required
+    def add_position_view(self):
+        """ Display addition of a position"""
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+
+        # Initialize form
+        add_position_form = self.AddPositionFormClass(request.form)  # for login_or_register.html
+
+
+        if request.method == 'POST':
+            position = self.db_manager.add_position()
+            add_position_form.populate_obj(position)
+            self.db_manager.commit()
+            # Flash a system message
+            flash(_("The Position has been added succesfully."), 'success')
+
+            # Auto-login after reset password or redirect to login page
+            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+
+            return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
+
+        #self.prepare_domain_translations()
+        return render_template(self.USER_ADD_POSITION_TEMPLATE, form=add_position_form)
+
+
     ##
     def register_group_view(self):
         """ Display registration form and create new User."""
 
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+
+
 
         # Initialize form
         login_form = self.LoginFormClass()  # for login_or_register.html
@@ -505,6 +543,7 @@ class UserManager__Views(object):
 
             # Store password hash instead of password
             user.password = self.hash_password(user.password)
+            user_role = self.db_manager.add_user_role(user=user, role_name="Group")
 
             # Email confirmation depends on the USER_ENABLE_CONFIRM_EMAIL setting
             request_email_confirmation = self.USER_ENABLE_CONFIRM_EMAIL
