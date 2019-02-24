@@ -409,6 +409,8 @@ class UserManager__Views(object):
 
             user.last_name = request.values.get('first_name')
             user.last_name = request.values.get('last_name')
+            user.gender = request.values.get('Gender')
+            user.birthday = request.values.get('birthday')
             user_role = self.db_manager.add_user_role(user=user, role_name="Applicant")
             #user.roles.append(Role(name='Applicant'))
 
@@ -464,6 +466,32 @@ class UserManager__Views(object):
                       form=register_form,
                       login_form=login_form,
                       register_form=register_form)
+
+
+    #@login_required
+    def add_position_view(self):
+        """ Display addition of a position"""
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+
+        # Initialize form
+        add_position_form = self.AddPositionFormClass(request.form)  # for login_or_register.html
+
+
+        if request.method == 'POST':
+            position = self.db_manager.add_position()
+            add_position_form.populate_obj(position)
+            self.db_manager.commit()
+            # Flash a system message
+            flash(_("The Position has been added succesfully."), 'success')
+
+            # Auto-login after reset password or redirect to login page
+            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+
+            return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
+
+        #self.prepare_domain_translations()
+        return render_template(self.USER_ADD_POSITION_TEMPLATE, form=add_position_form)
 
 
     ##

@@ -18,7 +18,7 @@ except ImportError:
 
 from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField
 from wtforms import validators, ValidationError
-from wtforms.fields.html5 import DateTimeLocalField
+from wtforms.fields.html5 import DateField
 
 
 
@@ -237,6 +237,15 @@ class LoginForm(FlaskForm):
         return False                                # Unsuccessful authentication
 
 #-------------------------------
+class AddPositionForm(FlaskForm):
+    """Add position form."""
+    password_validator_added = False
+
+
+    name = StringField(_('Name'), validators=[
+        validators.DataRequired(_('Name is required'))])
+    next = HiddenField()
+    submit = SubmitField(_('AddPosition'))
 
 class RegisterApplicantForm(FlaskForm):
     """Register new user form."""
@@ -251,9 +260,12 @@ class RegisterApplicantForm(FlaskForm):
     last_name = StringField(_('Surname'), validators=[
         validators.DataRequired(_('Surname is required'))])
 
+    birthday = DateField(_('Birthday'), validators=[
+        validators.DataRequired(_('Birthday is required'))])
 
-    Gender = RadioField('Gender', choices = [('M','Male'),('F','Female')], validators=[
+    Gender = RadioField('gender', choices = [('M','Male'),('F','Female')], validators=[
         validators.DataRequired(_('Gender is required'))])
+
 
     username = StringField(_('Username'), validators=[
         validators.DataRequired(_('Username is required')),

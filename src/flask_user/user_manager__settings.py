@@ -175,6 +175,7 @@ class UserManager__Settings(object):
     USER_PASSLIB_CRYPTCONTEXT_KEYWORDS = dict()
 
     USER_SELECT_REGISTER_TYPE_URL= '/user/select_register_type'
+    USER_ADD_POSITION_URL= '/user/add_position'
     USER_REGISTER_APPLICANT_URL= '/user/register_applicant'
     USER_REGISTER_GROUP_URL= '/user/register_group'
 
@@ -202,6 +203,7 @@ class UserManager__Settings(object):
     USER_REGISTER_GROUP_TEMPLATE='flask_user/register_group.html'
 
     USER_SELECT_REGISTER_TYPE_TEMPLATE = 'flask_user/select_register_type.html' #:
+    USER_ADD_POSITION_TEMPLATE = 'flask_user/add_position.html' #:
     USER_CHANGE_PASSWORD_TEMPLATE = 'flask_user/change_password.html' #:
     USER_CHANGE_USERNAME_TEMPLATE = 'flask_user/change_username.html' #:
     USER_EDIT_USER_PROFILE_TEMPLATE = 'flask_user/edit_user_profile.html' #:

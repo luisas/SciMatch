@@ -9,7 +9,7 @@ from flask import Flask, request, render_template_string, render_template
 from flask_babelex import Babel
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import current_user, login_required, roles_required, UserManager, UserMixin
-
+import uuid
 
 # Class-based application configuration
 class ConfigClass(object):
@@ -19,7 +19,7 @@ class ConfigClass(object):
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
 
     # Flask-SQLAlchemy settings
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/scimatch?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/scimatchdb4?charset=utf8'    # File-based SQL database'    # File-based SQL database
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
@@ -69,6 +69,9 @@ def create_app():
         # User information
         first_name = db.Column(db.String(100), nullable=False, server_default='')
         last_name = db.Column(db.String(100), nullable=False, server_default='')
+        gender = db.Column(db.String(100), nullable=False, server_default='')
+        birthday = db.Column(db.Date,server_default="12/12/1990")
+
 
         # Define the relationship to Role via UserRoles
         roles = db.relationship('Role', secondary='user_roles')
@@ -95,8 +98,14 @@ def create_app():
         __tablename__= 'preference'
         id = db.Column(db.Integer(), primary_key=True)
 
+    class Position(db.Model):
+        __tablename__='position'
+        name = db.Column(db.String(100), nullable=False, primary_key=True)
+
+
+
     # Setup Flask-User and specify the User data-model
-    user_manager = UserManager(app, db, User, RoleClass=Role)
+    user_manager = UserManager(app, db, User, RoleClass=Role, PositionClass=Position)
 
     # Create all database tables
     db.create_all()
@@ -107,31 +116,44 @@ def create_app():
     #db.session.add(city)
     #db.session.add(city2)
     #db.session.commit()
+    if not Position.query.filter(Position.name == 'Bioinformatician').first():
+       pos1 = Position(name = "Bioinformatician")
+       pos2 = Position(name ="Lab technician")
+       db.session.add(pos1)
+       db.session.add(pos2)
+       db.session.commit()
+
+
+    # Create 'member@example.com' user with no roles
+    # if not User.query.filter(User.email == 'member@example.com').first():
+    #     user = User(
+    #         email='member@example.com',
+    #         email_confirmed_at=datetime.datetime.utcnow(),
+    #         password=user_manager.hash_password('Password1'),
+    #         gender = "F",
+    #
+    #     )
+    #     user.roles.append(Role(name='Admin'))
+    #     user.roles.append(Role(name='Agent'))
+    #     db.session.add(user)
+    #     db.session.commit()
+
+    # # Create 'admin@example.com' user with 'Admin' and 'Agent' roles
+    # if not User.query.filter(User.email == 'admin@example.com').first():
+    #     user = User(
+    #         email='admin@example.com',
+    #         email_confirmed_at=datetime.datetime.utcnow(),
+    #         password=user_manager.hash_password('Password1'),
+    #     )
+    #     db.session.add(user)
+    #     db.session.commit()
+
+
     if not Role.query.filter(Role.name == 'Applicant').first():
         role = Role (name = "Applicant")
         role2 = Role( name ="Group")
         db.session.add(role)
         db.session.add(role2)
-        db.session.commit()
-
-    # Create 'member@example.com' user with no roles
-    if not User.query.filter(User.email == 'member@example.com').first():
-        user = User(
-            email='member@example.com',
-            email_confirmed_at=datetime.datetime.utcnow(),
-            password=user_manager.hash_password('Password1'),
-        )
-        db.session.add(user)
-        db.session.commit()
-
-    # Create 'admin@example.com' user with 'Admin' and 'Agent' roles
-    if not User.query.filter(User.email == 'admin@example.com').first():
-        user = User(
-            email='admin@example.com',
-            email_confirmed_at=datetime.datetime.utcnow(),
-            password=user_manager.hash_password('Password1'),
-        )
-        db.session.add(user)
         db.session.commit()
 
     # The Home page is accessible to anyone
@@ -141,16 +163,19 @@ def create_app():
     @app.route('/')
     def home_page():
         role_name ="Guest"
-        if not current_user.is_authenticated:
+        if current_user is None:
             return render_template("/home_page.html")
+
+        if not current_user.is_authenticated:
+                return render_template("/home_page.html")
         else:
-            role_id = UserRoles.query.filter_by( user_id = current_user.id).first().role_id
-            role_name = Role.query.filter_by( id = role_id).first().name
-            if role_name == "Applicant":
-                matches = City.query.order_by(City.name).all()
-                return render_template("/home_page_applicant.html",matches=matches, role=role_name)
-            elif role_name == "Group":
-                return render_template("/home_page_group.html",role=role_name)
+                role_id = UserRoles.query.filter_by( user_id = current_user.id).first().role_id
+                role_name = Role.query.filter_by( id = role_id).first().name
+                if role_name == "Applicant":
+                    matches = Position.query.order_by(Position.name).all()
+                    return render_template("/home_page_applicant.html",matches=matches, role=role_name)
+                elif role_name == "Group":
+                    return render_template("/home_page_group.html",role=role_name)
 
     def change_pref():
         dropdown_list = City.query.order_by(City.name).all()
@@ -165,9 +190,9 @@ def create_app():
         return render_template("/chat_applicant.html")
     app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
 
-
-
-
+    def add_position():
+        return render_template("/flask_user/add_position.html")
+    app.add_url_rule('/add_position', 'add_position', add_position)
     return app
 
 # Start development web server
