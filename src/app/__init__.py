@@ -177,6 +177,12 @@ def create_app():
                 elif role_name == "Group":
                     return render_template("/home_page_group.html",role=role_name)
 
+    def who():
+      return render_template("/who.html")
+    app.add_url_rule('/who', 'who', who)
+    def why():
+      return render_template("/why.html")
+    app.add_url_rule('/why', 'why', why)
     def change_pref():
         dropdown_list = City.query.order_by(City.name).all()
         return render_template("/change_pref.html",dropdown_list = dropdown_list)
@@ -193,6 +199,7 @@ def create_app():
     def add_position():
         return render_template("/flask_user/add_position.html")
     app.add_url_rule('/add_position', 'add_position', add_position)
+  
     return app
 
 # Start development web server
