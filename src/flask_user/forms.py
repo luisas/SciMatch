@@ -144,6 +144,7 @@ class EditUserProfileForm(FlaskForm):
 
     first_name = StringField(_('First name'), validators=[validators.DataRequired()])
     last_name = StringField(_('Last name'), validators=[validators.DataRequired()])
+    birthday = DateField(_('Birthday'), validators=[validators.DataRequired()]) 
 
     submit = SubmitField(_('Update'))
 
