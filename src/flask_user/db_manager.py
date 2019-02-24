@@ -10,7 +10,7 @@ from flask_user import current_user, ConfigError
 class DBManager(object):
     """Manage DB objects."""
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None):
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, PositionClass=None):
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
 
         Args:
@@ -27,6 +27,7 @@ class DBManager(object):
         self.UserEmailClass = UserEmailClass
         self.UserInvitationClass = UserInvitationClass
         self.RoleClass = RoleClass
+        self.PositionClass = PositionClass
 
         self.user_manager = app.user_manager
         self.db_adapter = None
@@ -104,6 +105,12 @@ class DBManager(object):
         self.db_adapter.add_object(user)
         return user
 
+    def add_position(self, **kwargs):
+        """Add a Position object, with properties specified in ``**kwargs``."""
+        position = self.PositionClass(**kwargs)
+        self.db_adapter.add_object(position)
+        return position
+
     def add_user_email(self, user, **kwargs):
         """Add a UserEmail object, with properties specified in ``**kwargs``."""
         # If User and UserEmail are separate classes
@@ -118,6 +125,7 @@ class DBManager(object):
             user_email = user
 
         return user_email
+
 
     def add_user_invitation(self, **kwargs):
         """Add a UserInvitation object, with properties specified in ``**kwargs``."""
@@ -277,4 +285,3 @@ class DBManager(object):
         .. warning:: ALL DATA WILL BE LOST. Use only for automated testing.
         """
         return self.db_adapter.drop_all_tables()
-

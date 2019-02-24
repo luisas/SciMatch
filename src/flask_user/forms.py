@@ -16,8 +16,11 @@ try:
 except ImportError:
     from flask_wtf import Form as FlaskForm     # Fallback to Flask-WTF v0.12 or older
 
-from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField
+from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField
 from wtforms import validators, ValidationError
+from wtforms.fields.html5 import DateField
+
+
 
 from .translation_utils import lazy_gettext as _    # map _() to lazy_gettext()
 
@@ -141,6 +144,7 @@ class EditUserProfileForm(FlaskForm):
 
     first_name = StringField(_('First name'), validators=[validators.DataRequired()])
     last_name = StringField(_('Last name'), validators=[validators.DataRequired()])
+    birthday = DateField(_('Birthday'), validators=[validators.DataRequired()]) 
 
     submit = SubmitField(_('Update'))
 
@@ -234,6 +238,15 @@ class LoginForm(FlaskForm):
         return False                                # Unsuccessful authentication
 
 #-------------------------------
+class AddPositionForm(FlaskForm):
+    """Add position form."""
+    password_validator_added = False
+
+
+    name = StringField(_('Name'), validators=[
+        validators.DataRequired(_('Name is required'))])
+    next = HiddenField()
+    submit = SubmitField(_('AddPosition'))
 
 class RegisterApplicantForm(FlaskForm):
     """Register new user form."""
@@ -242,11 +255,18 @@ class RegisterApplicantForm(FlaskForm):
     next = HiddenField()        # for login_or_register.html
     reg_next = HiddenField()    # for register.html
 
-    name = StringField(_('Name'), validators=[
+    first_name = StringField(_('Name'), validators=[
         validators.DataRequired(_('Name is required'))])
 
-    surname = StringField(_('Surname'), validators=[
+    last_name = StringField(_('Surname'), validators=[
         validators.DataRequired(_('Surname is required'))])
+
+    birthday = DateField(_('Birthday'), validators=[
+        validators.DataRequired(_('Birthday is required'))])
+
+    Gender = RadioField('gender', choices = [('M','Male'),('F','Female')], validators=[
+        validators.DataRequired(_('Gender is required'))])
+
 
     username = StringField(_('Username'), validators=[
         validators.DataRequired(_('Username is required')),

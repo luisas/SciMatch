@@ -1,0 +1,15 @@
+{% extends "flask_user_layout.html" %}
+{% block content %}
+  <center>
+    <h2>Change preferences</h2>
+
+    <h4>City</h4>
+    <select name="city">
+    {% for each in dropdown_list %}
+      <option value="{{each}}">{{each['name']}}</option>
+    {% endfor %}
+    </select>
+    <p><a class="btn btn-default" type="submit" value = 'Select' href="/" role="button">Save</a></p>
+
+  </center>
+{% endblock %}
