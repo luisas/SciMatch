@@ -19,7 +19,7 @@ class ConfigClass(object):
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
 
     # Flask-SQLAlchemy settings
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/scimatchdb4?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/scimatch?charset=utf8'    # File-based SQL database'    # File-based SQL database
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
@@ -70,7 +70,7 @@ def create_app():
         first_name = db.Column(db.String(100), nullable=False, server_default='')
         last_name = db.Column(db.String(100), nullable=False, server_default='')
         gender = db.Column(db.String(100), nullable=False, server_default='')
-        birthday = db.Column(db.Date,server_default="12/12/1990")
+        birthday = db.Column(db.Date,server_default="1990/12/19")
 
 
         # Define the relationship to Role via UserRoles
