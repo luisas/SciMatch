@@ -157,9 +157,9 @@ def create_app():
     db.create_all()
 
 
-    file_name = "static/database_initialization/GEODATASOURCE-COUNTRY.TXT"
-    df = pandas.read_csv(file_name)
-    df.to_sql(con=db, index_label='id', name=country, if_exists='replace')
+    #file_name = "static/database_initialization/GEODATASOURCE-COUNTRY.TXT"
+    #df = pandas.read_csv(file_name)
+    #df.to_sql(con=db, index_label='id', name=country, if_exists='replace')
 
 
     # To delete
