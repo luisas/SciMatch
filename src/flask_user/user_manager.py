@@ -60,7 +60,10 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         UserInvitationClass=None,
         UserEmailClass=None,
         RoleClass=None,
-        PositionClass=None    # Only used for testing
+        PositionClass=None,
+        UserHasEducationClass=None,
+        PIClass = None,
+        InstitutionClass= None    # Only used for testing
         ):
 
         # See http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code
@@ -176,13 +179,14 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.RegisterFormClass = forms.RegisterForm
         self.AddPositionFormClass = forms.AddPositionForm
         self.RegisterApplicantFormClass = forms.RegisterApplicantForm
+        self.RegisterGroupFormClass = forms.RegisterGroupForm
         self.ResendEmailConfirmationFormClass = forms.ResendEmailConfirmationForm
         self.ResetPasswordFormClass = forms.ResetPasswordForm
 
         # Set default managers
         # --------------------
         # Setup DBManager
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass)
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass)
 
         # Setup PasswordManager
         self.password_manager = PasswordManager(app)

@@ -10,7 +10,7 @@ from flask_user import current_user, ConfigError
 class DBManager(object):
     """Manage DB objects."""
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, PositionClass=None):
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None):
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
 
         Args:
@@ -27,7 +27,10 @@ class DBManager(object):
         self.UserEmailClass = UserEmailClass
         self.UserInvitationClass = UserInvitationClass
         self.RoleClass = RoleClass
+        self.InstitutionClass = InstitutionClass
+        self.PIClass = PIClass
         self.PositionClass = PositionClass
+        self.UserHasEducationClass = UserHasEducationClass
 
         self.user_manager = app.user_manager
         self.db_adapter = None
@@ -104,6 +107,17 @@ class DBManager(object):
             user.active = True
         self.db_adapter.add_object(user)
         return user
+    def add_pi(self, **kwargs):
+        """Add a User object, with properties specified in ``**kwargs``."""
+        pi = self.PIClass(**kwargs)
+        self.db_adapter.add_object(pi)
+        return pi
+
+    def add_institution(self, **kwargs):
+        """Add a User object, with properties specified in ``**kwargs``."""
+        institution = self.InstitutionClass(**kwargs)
+        self.db_adapter.add_object(institution)
+        return institution
 
     def add_position(self, **kwargs):
         """Add a Position object, with properties specified in ``**kwargs``."""

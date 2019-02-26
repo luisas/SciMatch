@@ -35,10 +35,18 @@
     {% endif %}
 
     {{ render_field(form.password, tabindex=230) }}
-
     {% if user_manager.USER_REQUIRE_RETYPE_PASSWORD %}
         {{ render_field(form.retype_password, tabindex=240) }}
     {% endif %}
+
+    <h3>Principal Investigator</h3>
+    {{ render_field(form.pi_name, tabindex=230) }}
+    {{ render_field(form.pi_surname, tabindex=230) }}
+
+    <h3>Institution</h3>
+    {{ render_field(form.institution_name, tabindex=230) }}
+    {{ render_field(form.institution_link, tabindex=230) }}
+    {{ render_field(form.institution_city, tabindex=230) }}
 
     {{ render_submit_field(form.submit, tabindex=280) }}
 </form>

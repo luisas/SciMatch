@@ -1,0 +1,7 @@
+REGION	REGION_NAME
+1	Africa
+2	Americas
+3	Antarctica
+4	Asia
+5	Europe
+6	Oceania

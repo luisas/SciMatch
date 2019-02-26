@@ -16,15 +16,10 @@ try:
 except ImportError:
     from flask_wtf import Form as FlaskForm     # Fallback to Flask-WTF v0.12 or older
 
-from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField
+from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField, FieldList, FormField
 from wtforms import validators, ValidationError
 from wtforms.fields.html5 import DateField
-
-
-
 from .translation_utils import lazy_gettext as _    # map _() to lazy_gettext()
-
-
 # ****************
 # ** Validators **
 # ****************
@@ -138,13 +133,15 @@ class ChangeUsernameForm(FlaskForm):
         # All is well
         return True
 
+class EducationEntryForm(FlaskForm):
+    name = StringField(_('Education'))
 
 class EditUserProfileForm(FlaskForm):
     """Edit user profile form."""
-
     first_name = StringField(_('First name'), validators=[validators.DataRequired()])
     last_name = StringField(_('Last name'), validators=[validators.DataRequired()])
-    birthday = DateField(_('Birthday'), validators=[validators.DataRequired()]) 
+    birthday = DateField(_('Birthday'), validators=[validators.DataRequired()])
+    educations_labels = FieldList(FormField(EducationEntryForm), min_entries=1)
 
     submit = SubmitField(_('Update'))
 
@@ -318,6 +315,70 @@ class RegisterApplicantForm(FlaskForm):
 
 
 
+#------------------------------
+class RegisterGroupForm(FlaskForm):
+    """Register new user form."""
+    password_validator_added = False
+
+    next = HiddenField()        # for login_or_register.html
+    reg_next = HiddenField()    # for register.html
+
+    username = StringField(_('Username'), validators=[
+        validators.DataRequired(_('Username is required')),
+        username_validator,
+        unique_username_validator])
+    pi_name = StringField(_('Name'), validators=[
+        validators.DataRequired(_('PI name is required'))])
+    pi_surname = StringField(_('Surname'), validators=[
+        validators.DataRequired(_('PI surname is required'))])
+    institution_name = StringField(_('Name'), validators=[
+        validators.DataRequired(_('Institution name is required'))])
+    institution_city = StringField(_('City'), validators=[
+        validators.DataRequired(_('Institution name is required'))])
+    institution_link = StringField(_('Link'), validators=[
+        validators.DataRequired(_('Institution name is required'))])
+    email = StringField(_('Email'), validators=[
+        validators.DataRequired(_('Email is required')),
+        validators.Email(_('Invalid Email')),
+        unique_email_validator])
+    password = PasswordField(_('Password'), validators=[
+        validators.DataRequired(_('Password is required')),
+        password_validator])
+    retype_password = PasswordField(_('Retype Password'), validators=[
+        validators.EqualTo('password', message=_('Password and Retype Password did not match'))])
+    invite_token = HiddenField(_('Token'))
+
+    submit = SubmitField(_('Register'))
+
+    def validate(self):
+        # remove certain form fields depending on user manager config
+        user_manager =  current_app.user_manager
+        if not user_manager.USER_ENABLE_USERNAME:
+            delattr(self, 'username')
+        if not user_manager.USER_ENABLE_EMAIL:
+            delattr(self, 'email')
+        if not user_manager.USER_REQUIRE_RETYPE_PASSWORD:
+            delattr(self, 'retype_password')
+        # # Add custom username validator if needed
+        # if user_manager.USER_ENABLE_USERNAME:
+        #     has_been_added = False
+        #     for v in self.username.validators:
+        #         if v==user_manager.username_validator:
+        #             has_been_added = True
+        #     if not has_been_added:
+        #         self.username.validators.append(user_manager.username_validator)
+        # # Add custom password validator if needed
+        # has_been_added = False
+        # for v in self.password.validators:
+        #     if v==user_manager.password_validator:
+        #         has_been_added = True
+        # if not has_been_added:
+        #     self.password.validators.append(user_manager.password_validator)
+        # Validate field-validators
+        if not super(RegisterGroupForm, self).validate():
+            return False
+        # All is well
+        return True
 
 
 #------------------------------
