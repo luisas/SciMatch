@@ -44,7 +44,7 @@
         </div>
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) and role == "Applicant" %}
-                <a href="{{ url_for('user.edit_user_profile') }}">{{ current_user.username or current_user.email }}</a>
+                <a href="{{ url_for('user.edit_user_profile') }}">Edit profile</a>
                 &nbsp; | &nbsp;
                 <a href="{{ url_for('change_pref') }}" class="btn btn-primary" tabindex='190'>
                 {%trans%}Preferences{%endtrans%}</a>

@@ -64,7 +64,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         RequestsClass=None,
         UserHasEducationClass=None,
         PIClass = None,
-        InstitutionClass= None,
+        InstitutionClass= None,    # Only used for testing
+        EducationClass = None,
+        ExperienceClass = None,
         CityClass = None,
         CountryClass = None    # Only used for testing
         ):
@@ -190,7 +192,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # Set default managers
         # --------------------
         # Setup DBManager
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, CityClass, CountryClass, RequestsClass)
+
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass)
+
 
         # Setup PasswordManager
         self.password_manager = PasswordManager(app)
@@ -393,7 +397,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         #     return self.auth0_callback_view()
 
 
-        ##TEST LUISA!--------
+        ##TEST!--------
         def select_register_type_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.select_register_type_view()

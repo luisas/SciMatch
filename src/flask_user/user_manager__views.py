@@ -198,17 +198,33 @@ class UserManager__Views(object):
         # Initialize form
         educations_labels = [{"name": "First Education"},
               {"name": "Second Education"}]
-        form = self.EditUserProfileFormClass(request.form, obj=current_user,educations_labels=educations_labels )
+        form = self.EditUserProfileFormClass(request.form, obj=current_user, educations_labels=educations_labels )
 
         educations = self.db_manager.UserHasEducationClass.query.filter_by( user_id = current_user.id).all()
+
+        education_description = request.values.get('education')
+
+        experience_description = request.values.get('experience')
+
+        education_found =  self.db_manager.EducationClass.query.filter_by(user_id= current_user.id).first()
+
+        experience_found = self.db_manager.ExperienceClass.query.filter_by(user_id= current_user.id).first()
 
         # Process valid POST
         if request.method == 'POST' and form.validate():
             # Update fields
+            self.db_manager.save_object(current_user)
+            if education_found is not None:
+                self.db_manager.delete_education(education_found.id)
+            if experience_found is not None:
+              self.db_manager.delete_experience(experience_found.id)
+            education = self.db_manager.add_education(description= education_description, user_id= current_user.id)
+            experience = self.db_manager.add_experience(description= experience_description, user_id= current_user.id) 
             form.populate_obj(current_user)
+            form.populate_obj(education_found)
+            form.populate_obj(experience)
 
             # Save object
-            self.db_manager.save_object(current_user)
             self.db_manager.commit()
 
             return redirect(self._endpoint_url(self.USER_AFTER_EDIT_USER_PROFILE_ENDPOINT))

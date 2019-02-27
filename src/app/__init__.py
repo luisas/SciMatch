@@ -23,7 +23,9 @@ class ConfigClass(object):
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
 
     # Flask-SQLAlchemy settings
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/smmmm8?charset=utf8'    # File-based SQL database'    # File-based SQL database
+
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/scimatch10?charset=utf8'    # File-based SQL database'    # File-based SQL database
+
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
@@ -54,6 +56,7 @@ def create_app():
     babel = Babel(app)
     # Initialize Flask-SQLAlchemy
     db = SQLAlchemy(app)
+
     # Define the User data-model.
     # NB: Make sure to add flask_user UserMixin !!!
     class User(db.Model, UserMixin):
@@ -72,7 +75,6 @@ def create_app():
         last_name = db.Column(db.String(100), nullable=False, server_default='')
         gender = db.Column(db.String(100), nullable=False, server_default='')
         birthday = db.Column(db.Date,server_default="1990/12/10")
-
 
         # Define the relationship to Role via UserRoles
         roles = db.relationship('Role', secondary='user_roles')
@@ -117,9 +119,19 @@ def create_app():
     class Education(db.Model):
         __tablename__ = 'education'
         id = db.Column(db.Integer, primary_key=True)
-        degree = db.Column(db.String(10))
-        name = db.Column(db.String(100))
-        ion_date = db.Column(db.Date)
+
+        user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+        description= db.Column(db.String(1000), nullable=True, server_default='Write a short description of your education.')
+        #degree = db.Column(db.String(10))
+        #name = db.Column(db.String(100))
+        #graduation_date = db.Column(db.Date)
+
+    class Experience(db.Model):
+        __tablename__ = 'experience'
+        id = db.Column(db.Integer, primary_key=True)
+        user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+        description= db.Column(db.String(1000), nullable=True, server_default='Write a short description of your experience.')
+
 
     class UserHasEducation(db.Model):
         __tablename__ = 'user_has_education'
@@ -156,7 +168,9 @@ def create_app():
         status = db.Column(db.String(50), nullable=False)
 
     # Setup Flask-User and specify the User data-model
-    user_manager = UserManager(app, db, User, RoleClass=Role, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, CityClass=City, CountryClass= Country, RequestsClass=Requests)
+
+    user_manager = UserManager(app, db, User, RoleClass=Role, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, EducationClass = Education, ExperienceClass= Experience,  CityClass=City, CountryClass= Country, RequestsClass=Requests)
+
 
     # Create all database tables
     db.create_all()
@@ -224,6 +238,7 @@ def create_app():
     def who():
       return render_template("/who.html")
     app.add_url_rule('/who', 'who', who)
+
     def why():
       return render_template("/why.html")
     app.add_url_rule('/why', 'why', why)
