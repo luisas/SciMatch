@@ -10,7 +10,9 @@ from flask_user import current_user, ConfigError
 class DBManager(object):
     """Manage DB objects."""
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, EducationClass = None, ExperienceClass = None):
+
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None):
+
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
 
         Args:
@@ -32,10 +34,13 @@ class DBManager(object):
         self.EducationClass = EducationClass
         self.ExperienceClass = ExperienceClass
         self.PositionClass = PositionClass
+        self.RequestsClass = RequestsClass
         self.UserHasEducationClass = UserHasEducationClass
-
+        self.CityClass = CityClass
+        self.CountryClass = CountryClass
         self.user_manager = app.user_manager
         self.db_adapter = None
+
 
         # Check if db is a SQLAlchemy instance
         if self.db_adapter is None:
@@ -109,6 +114,14 @@ class DBManager(object):
             user.active = True
         self.db_adapter.add_object(user)
         return user
+
+
+    def add_request(self, **kwargs):
+        """Add a Request object, with properties specified in ``**kwargs``."""
+        request = self.RequestsClass(**kwargs)
+        self.db_adapter.add_object(request)
+        return request
+
 
     def add_pi(self, **kwargs):
         """Add a User object, with properties specified in ``**kwargs``."""

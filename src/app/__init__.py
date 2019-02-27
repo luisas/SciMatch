@@ -5,7 +5,7 @@
 # - Using string-based templates (instead of file-based templates)
 
 import datetime
-from flask import Flask, request, render_template_string, render_template
+from flask import Flask, request, render_template_string, render_template, url_for, redirect
 from flask_babelex import Babel
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import current_user, login_required, roles_required, UserManager, UserMixin
@@ -23,7 +23,9 @@ class ConfigClass(object):
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
 
     # Flask-SQLAlchemy settings
+
     SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/scimatch10?charset=utf8'    # File-based SQL database'    # File-based SQL database
+
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
@@ -48,12 +50,10 @@ def create_app():
     """ Flask application factory """
 
     # Create Flask app load app.config
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path='/static')
     app.config.from_object(__name__+'.ConfigClass')
-
     # Initialize Flask-BabelEx
     babel = Babel(app)
-
     # Initialize Flask-SQLAlchemy
     db = SQLAlchemy(app)
 
@@ -109,11 +109,17 @@ def create_app():
 
     class Position(db.Model):
         __tablename__='position'
-        name = db.Column(db.String(100), nullable=False, primary_key=True)
+        id = db.Column(db.Integer(), primary_key=True)
+        name = db.Column(db.String(100), nullable=False)
+        start_date = db.Column(db.Date, server_default="2019/10/10", nullable = False)
+        salary = db.Column(db.Integer(), nullable=False)
+        description = db.Column(db.String(100), nullable = False)
+        group_id= db.Column(db.Integer, db.ForeignKey('position.id', ondelete='CASCADE'))
 
     class Education(db.Model):
         __tablename__ = 'education'
         id = db.Column(db.Integer, primary_key=True)
+
         user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
         description= db.Column(db.String(1000), nullable=True, server_default='Write a short description of your education.')
         #degree = db.Column(db.String(10))
@@ -125,6 +131,7 @@ def create_app():
         id = db.Column(db.Integer, primary_key=True)
         user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
         description= db.Column(db.String(1000), nullable=True, server_default='Write a short description of your experience.')
+
 
     class UserHasEducation(db.Model):
         __tablename__ = 'user_has_education'
@@ -153,33 +160,40 @@ def create_app():
         user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
         institution_id = db.Column(db.Integer, db.ForeignKey('institution.id', ondelete='CASCADE'))
 
-
+    class Requests(db.Model):
+        __tablename__ = 'requests'
+        id = db.Column(db.Integer(), primary_key=True)
+        applicant_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+        position_id = db.Column(db.Integer(), db.ForeignKey('position.id', ondelete='CASCADE'))
+        status = db.Column(db.String(50), nullable=False)
 
     # Setup Flask-User and specify the User data-model
-    user_manager = UserManager(app, db, User, RoleClass=Role, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, EducationClass = Education, ExperienceClass= Experience)
+
+    user_manager = UserManager(app, db, User, RoleClass=Role, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, EducationClass = Education, ExperienceClass= Experience,  CityClass=City, CountryClass= Country, RequestsClass=Requests)
+
 
     # Create all database tables
     db.create_all()
 
-
-    #file_name = "static/database_initialization/GEODATASOURCE-COUNTRY.TXT"
-    #df = pandas.read_csv(file_name)
-    #df.to_sql(con=db, index_label='id', name=country, if_exists='replace')
-
-
-    # To delete
-    #city = City(name="Barcelona")
-    #city2= City(name="Honolulu")
-    #db.session.add(city)
-    #db.session.add(city2)
-    #db.session.commit()
-    if not Position.query.filter(Position.name == 'Bioinformatician').first():
-       pos1 = Position(name = "Bioinformatician")
-       pos2 = Position(name ="Lab technician")
+    if not Position.query.filter(Position.name == 'Bioinformatics Technician').first():
+       pos1 = Position(name = "Bioinformatics Technician", salary =1000, start_date="2019/10/10" ,description ="A cool job!")
        db.session.add(pos1)
-       db.session.add(pos2)
        db.session.commit()
 
+    if not City.query.filter(City.name == 'Barcelona').first():
+       country = Country(abbreviation_fips = "SP", name ="Spain")
+       city = City(name = "Barcelona", country_abbreviation_fips = "SP")
+       city2 = City(name = "Madrid", country_abbreviation_fips = "SP")
+       city3 = City(name = "Valencia", country_abbreviation_fips = "SP")
+       city4 = City(name = "Bilbao", country_abbreviation_fips = "SP")
+       city5 = City(name = "Sevilla", country_abbreviation_fips = "SP")
+       db.session.add(city)
+       db.session.add(city2)
+       db.session.add(city3)
+       db.session.add(city4)
+       db.session.add(city5)
+       db.session.add(country)
+       db.session.commit()
 
     #Create 'member@example.com' user with no roles
     if not User.query.filter(User.email == 'member@example.com').first():
@@ -188,23 +202,11 @@ def create_app():
             email_confirmed_at=datetime.datetime.utcnow(),
             password=user_manager.hash_password('Password1'),
             gender = "F"
-
         )
         user.roles.append(Role(name='Admin'))
         user.roles.append(Role(name='Agent'))
         db.session.add(user)
         db.session.commit()
-
-    # # Create 'admin@example.com' user with 'Admin' and 'Agent' roles
-    # if not User.query.filter(User.email == 'admin@example.com').first():
-    #     user = User(
-    #         email='admin@example.com',
-    #         email_confirmed_at=datetime.datetime.utcnow(),
-    #         password=user_manager.hash_password('Password1'),
-    #     )
-    #     db.session.add(user)
-    #     db.session.commit()
-
 
     if not Role.query.filter(Role.name == 'Applicant').first():
         role = Role (name = "Applicant")
@@ -213,10 +215,6 @@ def create_app():
         db.session.add(role2)
         db.session.commit()
 
-    # The Home page is accessible to anyone
-
-    # Selects which home page to use. If the user is logged in then it checks if
-    # it is an applicant or a group and shows the right view accordingly.
     @app.route('/')
     def home_page():
         role_name ="Guest"
@@ -230,9 +228,12 @@ def create_app():
                 role_name = Role.query.filter_by( id = role_id).first().name
                 if role_name == "Applicant":
                     matches = Position.query.order_by(Position.name).all()
-                    return render_template("/home_page_applicant.html",matches=matches, role=role_name)
+                    return redirect(url_for('user.home_page_applicant'))
+                    #return render_template("/home_page_applicant.html",matches=matches, role=role_name)
                 elif role_name == "Group":
-                    return render_template("/home_page_group.html",role=role_name)
+                    positions = Position.query.filter_by(group_id = current_user.id).all()
+                    return redirect(url_for('user.home_page_group'))
+                    #return render_template("/home_page_group.html",role=role_name, positions = positions)
 
     def who():
       return render_template("/who.html")
@@ -255,11 +256,8 @@ def create_app():
         return render_template("/chat_applicant.html")
     app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
 
-    def add_position():
-        return render_template("/flask_user/add_position.html")
-    app.add_url_rule('/add_position', 'add_position', add_position)
-
     return app
+
 
 # Start development web server
 if __name__ == '__main__':

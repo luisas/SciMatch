@@ -489,7 +489,9 @@ class UserManager__Views(object):
                       register_form=register_form)
 
 
-    #@login_required
+
+
+    @login_required
     def add_position_view(self):
         """ Display addition of a position"""
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
@@ -498,9 +500,13 @@ class UserManager__Views(object):
         # Initialize form
         add_position_form = self.AddPositionFormClass(request.form)  # for login_or_register.html
 
+        name = request.values.get('name')
+        salary = request.values.get('salary')
+        start_date = request.values.get('start_date')
+        description = request.values.get('description')
 
         if request.method == 'POST':
-            position = self.db_manager.add_position()
+            position = self.db_manager.add_position(name = name, salary = salary, start_date = start_date, description = description, group_id = current_user.id )
             add_position_form.populate_obj(position)
             self.db_manager.commit()
             # Flash a system message
@@ -515,18 +521,97 @@ class UserManager__Views(object):
         return render_template(self.USER_ADD_POSITION_TEMPLATE, form=add_position_form)
 
 
-    ##
+
+    @login_required
+    def home_page_group_view(self):
+        """ Display addition of a position"""
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+
+
+        # Initialize form
+         # for login_or_register.html
+        positions = self.db_manager.PositionClass.query.filter_by(group_id=current_user.id).all()
+
+        request_applicant_ids = []
+        for position in positions:
+            requests = self.db_manager.RequestsClass.query.filter_by(position_id = position.id).all()
+            for request_element in requests:
+                request_applicant_ids.append(request_element.applicant_id)
+
+
+        #requests = self.db_manager.RequestsClass.query.filter_by(group_id=)
+
+        form = self.SendRequestFormClass(request.form)
+
+        if request.method == 'POST':
+
+            #position_id = request.values.get("position_id")
+            #position_id = 1
+            position_id = int(request.form['position_id'])
+            request_sent = self.db_manager.add_request(applicant_id = current_user.id, position_id=position_id, status ="pending" )
+
+            self.db_manager.commit()
+            # Flash a system message
+            flash(_("The Request has been sent succesfully succesfully."), 'success')
+
+            # Auto-login after reset password or redirect to login page
+            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+
+            return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
+
+        #self.prepare_domain_translations()
+        return render_template(self.HOME_PAGE_GROUP_TEMPLATE, form=form, positions = positions, requests = request_applicant_ids )
+    @login_required
+    def home_page_applicant_view(self):
+        """ Display addition of a position"""
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+
+
+        # Initialize form
+         # for login_or_register.html
+        matches = self.db_manager.PositionClass.query.all()
+        requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id).all()
+        requested =[]
+        for element in requested_objects:
+            requested.append(element.position_id)
+
+        form = self.SendRequestFormClass(request.form)
+
+        if request.method == 'POST':
+
+            #position_id = request.values.get("position_id")
+            #position_id = 1
+            position_id = int(request.form['position_id'])
+            request_sent = self.db_manager.add_request(applicant_id = current_user.id, position_id=position_id, status ="pending" )
+
+            self.db_manager.commit()
+            # Flash a system message
+            flash(_("The Request has been sent succesfully succesfully."), 'success')
+
+            # Auto-login after reset password or redirect to login page
+            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+
+            return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
+
+        #self.prepare_domain_translations()
+        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form, matches = matches, requested = requested )
+
     def register_group_view(self):
         """ Display registration form and create new User."""
 
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
 
-
+        #cities = self.db_manager.CityClass.query.all()
+        available_cities=self.db_manager.CityClass.query.all()
+        cities=[(i.id, i.name) for i in available_cities]
 
         # Initialize form
         login_form = self.LoginFormClass()  # for login_or_register.html
         register_form = self.RegisterGroupFormClass(request.form)  # for register.html
+        register_form.institution_city.choices = cities;
 
         # invite token used to determine validity of registeree
         invite_token = request.values.get("token")

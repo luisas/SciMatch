@@ -7,6 +7,9 @@
 <form action="" method="POST" class="form" role="form">
     {{ form.hidden_tag() }}
     {{ render_field(form.name, tabindex=10) }}
+    {{ render_field(form.start_date, tabindex=10) }}
+    {{ render_field(form.salary, tabindex=10) }}
+    {{ render_field(form.description, tabindex=10) }}
     {{ render_submit_field(form.submit, tabindex=90) }}
 </form>
 
