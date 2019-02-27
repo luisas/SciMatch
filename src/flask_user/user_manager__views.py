@@ -219,7 +219,7 @@ class UserManager__Views(object):
             if experience_found is not None:
               self.db_manager.delete_experience(experience_found.id)
             education = self.db_manager.add_education(description= education_description, user_id= current_user.id)
-            experience = self.db_manager.add_experience(description= experience_description, user_id= current_user.id) 
+            experience = self.db_manager.add_experience(description= experience_description, user_id= current_user.id)
             form.populate_obj(current_user)
             form.populate_obj(education_found)
             form.populate_obj(experience)
@@ -528,6 +528,8 @@ class UserManager__Views(object):
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
 
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
         # Initialize form
          # for login_or_register.html
@@ -561,13 +563,14 @@ class UserManager__Views(object):
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
 
         #self.prepare_domain_translations()
-        return render_template(self.HOME_PAGE_GROUP_TEMPLATE, form=form, positions = positions, requests = request_applicant_ids )
+        return render_template(self.HOME_PAGE_GROUP_TEMPLATE, form=form,role = role, positions = positions, requests = request_applicant_ids )
     @login_required
     def home_page_applicant_view(self):
         """ Display addition of a position"""
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
-
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
         # Initialize form
          # for login_or_register.html
@@ -596,7 +599,7 @@ class UserManager__Views(object):
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
 
         #self.prepare_domain_translations()
-        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form, matches = matches, requested = requested )
+        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches, requested = requested )
 
     def register_group_view(self):
         """ Display registration form and create new User."""

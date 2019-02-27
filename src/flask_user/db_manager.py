@@ -11,7 +11,7 @@ class DBManager(object):
     """Manage DB objects."""
 
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None):
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None):
 
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
 
@@ -29,6 +29,7 @@ class DBManager(object):
         self.UserEmailClass = UserEmailClass
         self.UserInvitationClass = UserInvitationClass
         self.RoleClass = RoleClass
+        self.UserRolesClass = UserRolesClass
         self.InstitutionClass = InstitutionClass
         self.PIClass = PIClass
         self.EducationClass = EducationClass

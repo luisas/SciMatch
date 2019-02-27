@@ -60,6 +60,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         UserInvitationClass=None,
         UserEmailClass=None,
         RoleClass=None,
+        UserRolesClass=None,
         PositionClass=None,
         RequestsClass=None,
         UserHasEducationClass=None,
@@ -193,7 +194,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # --------------------
         # Setup DBManager
 
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass)
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass)
 
 
         # Setup PasswordManager
