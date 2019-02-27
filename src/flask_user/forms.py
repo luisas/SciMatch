@@ -138,11 +138,13 @@ class EducationEntryForm(FlaskForm):
 
 class EditUserProfileForm(FlaskForm):
     """Edit user profile form."""
+    next = HiddenField()         # for login.html
+    reg_next = HiddenField()     # for login_or_register.html
     first_name = StringField(_('First name'), validators=[validators.DataRequired()])
     last_name = StringField(_('Last name'), validators=[validators.DataRequired()])
     birthday = DateField(_('Birthday'), validators=[validators.DataRequired()])
-    education= StringField(_('Education'))
-    experience= StringField(_('Experience'))
+    education= StringField(_('Education'), validators=[validators.DataRequired()])
+    experience= StringField(_('Experience'), validators=[validators.DataRequired()])
 
     submit = SubmitField(_('Update'))
 

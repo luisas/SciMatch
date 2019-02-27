@@ -63,7 +63,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         PositionClass=None,
         UserHasEducationClass=None,
         PIClass = None,
-        InstitutionClass= None    # Only used for testing
+        InstitutionClass= None,    # Only used for testing
+        EducationClass = None,
+        ExperienceClass = None
         ):
 
         # See http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code
@@ -186,7 +188,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # Set default managers
         # --------------------
         # Setup DBManager
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass)
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, EducationClass, ExperienceClass)
 
         # Setup PasswordManager
         self.password_manager = PasswordManager(app)
@@ -389,7 +391,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         #     return self.auth0_callback_view()
 
 
-        ##TEST LUISA!--------
+        ##TEST!--------
         def select_register_type_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.select_register_type_view()
