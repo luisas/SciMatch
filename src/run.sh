@@ -4,6 +4,7 @@ pip install --upgrade pip
 pip install --upgrade setuptools
 pip install flask_babelex
 pip install cryptography
+pip install pandas
 pip install "Flask-User<0.7"
 pip install mysqlclient
 flask run

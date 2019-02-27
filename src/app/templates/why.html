@@ -1,11 +1,14 @@
 {% extends "flask_user_layout.html" %}
 {% block content %}
-  <center>
-    <h2>Why SciMatch?</h2>
-    <body>
-	<h4 class="text-dark"> If you are bored of looking at thousands of websites to find interesting research groups or if you are tired of sending emails without receiving any answer... </h4>
-	<h4 class="text-success">SciMatch can help you!! </h4>
-	<h4 class="text-dark">The faster and more efficient way to put in contact people wanting to work and research groups looking for new incorporations.</h4>
-</body>
-  </center>
+<center>
+ <h2>Why SciMatch?</h2>
+  <body>
+   <div class="w-25 pl-3 bg-success" align="center">
+   <img src="{{url_for('static', filename='images/question.png')}}" height="200" align="right">
+   <h4 class="text-dark"> If you are bored of looking at thousands of websites to find interesting research groups or if you are tired of sending emails without receiving any answer... </h4>
+   <h4 class="text-success">SciMatch can help you!! </h4>	
+   <h4 class="text-dark">The faster and more efficient way to put in contact people wanting to work and research groups looking for new incorporations.</h4>
+   </div>
+  </body>
+</center>
 {% endblock %}

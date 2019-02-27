@@ -23,7 +23,7 @@ class ConfigClass(object):
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
 
     # Flask-SQLAlchemy settings
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/sm1?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/scimatch1?charset=utf8'    # File-based SQL database'    # File-based SQL database
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
