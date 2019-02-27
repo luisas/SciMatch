@@ -2,9 +2,35 @@
 {% block content %}
   <center>
     <h2>Who are we?</h2>
-    <h4 class="text-dark"> We are three excellent students that have many differences between us but a common bond: biology and informatics.</h4>
-    <img src="{{ url_for('static', filename='images/aina.png')}}" width="500" height="400" align="center">
-    <img src="{{ url_for('static', filename='images/luisa.png')}}" width="400" height="400" align="left">
-    <img src="{{url_for('static', filename='images/gab.png')}}" width="400" height="400" align="right">
-   </center>
+    <h4 class="text-dark"> We are three excellent students that have many differences between us but a common bond: biology and informatics.</h4>  
+  <div class="container">
+   <div class="row">
+    <div class="col-md-4">
+     <div class="card-group">
+      <div class="card bg-success">
+       <div class="card-body text-center">
+       	<img src="{{ url_for('static', filename='images/aina.png')}}" width="360" height="360" align="center">
+       <p class="card-text">Aina Rill</p>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="col-md-4">
+     <div class="card bg-success">
+      <div class="card-body text-center">
+      	<img src="{{ url_for('static', filename='images/luisa.png')}}" width="360" height="360" align="left">
+      <p class="card-text">Luisa Santus</p>
+      </div>
+     </div>
+    </div>
+    <div class="col-md-4">
+     <div class="card bg-success">
+      <div class="card-body text-center">
+      	<img src="{{url_for('static', filename='images/gab.png')}}" width="360" height="360" align="right">
+      <p class="card-text">Gabriel Carbonell</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
 {% endblock %}

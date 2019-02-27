@@ -2,13 +2,72 @@
 
 {% block content %}
 {% from "flask_user/_macros.html" import render_field, render_checkbox_field, render_submit_field %}
-<h1>{%trans%}Select type of user{%endtrans%}</h1>
-
-  <a href="{{ url_for('user.register_applicant') }}" class="btn btn-primary" tabindex='190'>
-      {%trans%}I am an applicant!{%endtrans%}</a>
-
-  <a href="{{ url_for('user.register_group') }}" class="btn btn-primary" tabindex='190'>
-      {%trans%}I am a group!{%endtrans%}</a>
+<center>
+<h1>{%trans%}Who are you?{%endtrans%}</h1>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.container {
+  position: relative;
+  width: 100%;
+}
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+.container:hover .image {
+  opacity: 0.3;
+}
+.container:hover .middle {
+  opacity: 1;
+}
+.text {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">	
+<div class="container">
+  <img src="{{ url_for('static', filename='images/applicant.png')}}" class="image">
+  <div class="middle">
+    <a href="{{ url_for('user.register_applicant') }}" class="btn btn-success" tabindex='190'>
+      	{%trans%}I am an applicant!{%endtrans%}</a>
+  </div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="container">
+  <img src="{{ url_for('static', filename='images/group.png')}}" class="image">
+  <div class="middle">
+    <a href="{{ url_for('user.register_group') }}" class="btn btn-success" tabindex='190'>
+      	{%trans%}I am a group!{%endtrans%}</a>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+</body>
+</center>
 
 
 {% endblock %}

@@ -6,17 +6,36 @@
  </head>
  <body class="bg-light">
   <center>
-    <h2>Welcome to the Home Page bitches!!</h2>
-  </center>
+    <h2>Welcome to SciMatch!!</h2>
+      <div class="row">
+       <div class="col-sm-12">
+        <div class="text-center">
+          <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+              <div class="card-body">
+            </div>
+          </div>
+</div>
+ <div class="container">
   <div class="row">
-   <div class="col-sm-12">
-    <div class="text-center">
-
-      <a class="btn btn-success btn-lg bg-lime" href="{{ url_for('why') }}" role="button" style="margin-right: 20px"> Why SciMatch?</a>
-      <a href="{{ url_for('who') }}" type="button" class="btn btn-success btn-lg " role="button" style="margin-right: 20px"> Who are we?</a>
+    <div class="col-md-6">
+      <a href="{{ url_for('who') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/iconopersonas.png')}}" alt="Card image cap" width="140" height="110"></a>
+      <div class="card-body">
+        <h5 class="card-title">Who are we?</h5>
+        <p class="card-text">Three enthusiastic students of Bioinformatics.</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <a href="{{ url_for('why') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/why.png')}}" alt="Card image cap" width="170" height="110"></a>
+      <div class="card-body">
+        <h5 class="card-title" href="{{ url_for('why') }}"> Why SciMatch?</h5>
+        <p class="card-text">To make your life easier.</p>
+      </div>
+    </div>
     </div>
   </div>
 </div>
+</center>
  </body>
+
 
 {% endblock %}
