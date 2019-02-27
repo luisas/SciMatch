@@ -1,14 +1,54 @@
 {% extends "flask_user_layout.html" %}
+{% from "flask_user/_macros.html" import render_field, render_submit_field %}
+
 {% block content %}
         <center>
 
-        <h2>Your matches!</h2>
-        <h4>Remember to change your preferences if u haven't yet</h4>
-        {% for each in matches %}
-          <a href="#" class="btn btn-primary" tabindex='190'>
-          {%trans%} {{ each }} {%endtrans%}</a>
-        {% endfor %}
+        <h2>Hi {{ current_user.first_name }} !</h2>
+        <h4>Remember to change your preferences if you haven't yet ;) </h4>
 
-      </center>
+        </center>
+
+        <div class="container">
+        <h3> Your Matches</h3>
+        <br>
+          <center>
+        <div class="row">
+          {% for each in matches %}
+          <div class="col-md-3" >
+            <div class="" style="border: 2px solid grey;" >
+              Name: {{ each['name'] }}
+              <br>
+              Salary: {{ each['salary'] }}
+              <br>
+              Start Date: {{ each['start_date'] }}
+              <br>
+              Description: {{ each['description'] }}
+              <br>
+              {% if each['id'] not in requested %}
+                each id {{ each['id']}}
+                {{ requested }}
+                <form action="" method="POST" class="form" role="form">
+                    {{ form.csrf_token() }}
+                    {{ form.position_id( value= each['id'] ) }}
+                    {{ render_submit_field(form.submit, tabindex=90) }}
+                </form>
+
+              {% else %}
+                <button type="button" style="color:grey;" disabled> Request has been sent!</button>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+        </center>
+
+
+
+
+
+
 
 {% endblock %}

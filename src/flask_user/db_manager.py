@@ -10,7 +10,9 @@ from flask_user import current_user, ConfigError
 class DBManager(object):
     """Manage DB objects."""
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None):
+
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None):
+
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
 
         Args:
@@ -27,13 +29,19 @@ class DBManager(object):
         self.UserEmailClass = UserEmailClass
         self.UserInvitationClass = UserInvitationClass
         self.RoleClass = RoleClass
+        self.UserRolesClass = UserRolesClass
         self.InstitutionClass = InstitutionClass
         self.PIClass = PIClass
+        self.EducationClass = EducationClass
+        self.ExperienceClass = ExperienceClass
         self.PositionClass = PositionClass
+        self.RequestsClass = RequestsClass
         self.UserHasEducationClass = UserHasEducationClass
-
+        self.CityClass = CityClass
+        self.CountryClass = CountryClass
         self.user_manager = app.user_manager
         self.db_adapter = None
+
 
         # Check if db is a SQLAlchemy instance
         if self.db_adapter is None:
@@ -107,11 +115,45 @@ class DBManager(object):
             user.active = True
         self.db_adapter.add_object(user)
         return user
+
+
+    def add_request(self, **kwargs):
+        """Add a Request object, with properties specified in ``**kwargs``."""
+        request = self.RequestsClass(**kwargs)
+        self.db_adapter.add_object(request)
+        return request
+
+
     def add_pi(self, **kwargs):
         """Add a User object, with properties specified in ``**kwargs``."""
         pi = self.PIClass(**kwargs)
         self.db_adapter.add_object(pi)
         return pi
+
+    def add_education(self, **kwargs):
+        """Add a User object, with properties specified in ``**kwargs``."""
+        education = self.EducationClass(**kwargs)
+        self.db_adapter.add_object(education)
+        return education
+
+
+    def delete_education(self, education_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             education = self.db_adapter.find_first_object(self.user_manager.db_manager.EducationClass, id=education_id)
+             if education:
+                 self.db_adapter.delete_object(education)
+
+    def delete_experience(self, experience_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             experience = self.db_adapter.find_first_object(self.user_manager.db_manager.ExperienceClass, id=experience_id)
+             if experience:
+                 self.db_adapter.delete_object(experience)
+
+    def add_experience(self, **kwargs):
+        """Add a User object, with properties specified in ``**kwargs``."""
+        experience = self.ExperienceClass(**kwargs)
+        self.db_adapter.add_object(experience)
+        return experience
 
     def add_institution(self, **kwargs):
         """Add a User object, with properties specified in ``**kwargs``."""

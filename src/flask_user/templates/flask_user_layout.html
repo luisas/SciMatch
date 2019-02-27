@@ -44,7 +44,7 @@
         </div>
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) and role == "Applicant" %}
-                <a href="{{ url_for('user.edit_user_profile') }}">{{ current_user.username or current_user.email }}</a>
+                <a href="{{ url_for('user.edit_user_profile') }}">Edit profile</a>
                 &nbsp; | &nbsp;
                 <a href="{{ url_for('change_pref') }}" class="btn btn-primary" tabindex='190'>
                 {%trans%}Preferences{%endtrans%}</a>
@@ -52,15 +52,15 @@
                     {%trans%}Chat{%endtrans%}</a>
                 <a href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
             {% elif call_or_get(current_user.is_authenticated) and role == "Group" %}
-                <a href="{{ url_for('user.edit_user_profile') }}">{{ current_user.username or current_user.email }}</a>
-                    &nbsp; | &nbsp;
-                <a href="{{ url_for('user.add_position') }}" class="btn btn-primary" tabindex='190'>
-                    {%trans%}Add Position{%endtrans%}</a>
+                <a href="{{ url_for('user.edit_user_profile') }}">Edit profile</a>
+                &nbsp; | &nbsp;
                 <a href="{{ url_for('chat_applicant') }}" class="btn btn-primary" tabindex='190'>
                         {%trans%}Chat{%endtrans%}</a>
                 <a href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
             {% else %}
                 <a href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a>
+                &nbsp; | &nbsp;
+                <a href="{{ url_for('user.select_register_type') }}">{%trans%}Register{%endtrans%}</a>
             {% endif %}
         </div>
     </div>
