@@ -13,6 +13,7 @@
     </div>
 {%- endmacro %}
 
+
 {% macro render_checkbox_field(field, label=None) -%}
     {% if not label %}{% set label=field.label.text %}{% endif %}
     <div class="checkbox">

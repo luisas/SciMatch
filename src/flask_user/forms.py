@@ -16,7 +16,7 @@ try:
 except ImportError:
     from flask_wtf import Form as FlaskForm     # Fallback to Flask-WTF v0.12 or older
 
-from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField, FieldList, FormField
+from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField, FieldList, FormField, SelectField, IntegerField
 from wtforms import validators, ValidationError
 from wtforms.fields.html5 import DateField
 from .translation_utils import lazy_gettext as _    # map _() to lazy_gettext()
@@ -136,13 +136,17 @@ class ChangeUsernameForm(FlaskForm):
 class EducationEntryForm(FlaskForm):
     name = StringField(_('Education'))
 
+class SendRequestForm(FlaskForm):
+    position_id = HiddenField()
+    sent = StringField(_('Sent'))
+    submit = SubmitField(_('Send'))
+
 class EditUserProfileForm(FlaskForm):
     """Edit user profile form."""
     first_name = StringField(_('First name'), validators=[validators.DataRequired()])
     last_name = StringField(_('Last name'), validators=[validators.DataRequired()])
     birthday = DateField(_('Birthday'), validators=[validators.DataRequired()])
     educations_labels = FieldList(FormField(EducationEntryForm), min_entries=1)
-
     submit = SubmitField(_('Update'))
 
 
@@ -242,6 +246,12 @@ class AddPositionForm(FlaskForm):
 
     name = StringField(_('Name'), validators=[
         validators.DataRequired(_('Name is required'))])
+    start_date = DateField(_('Starting Date'), validators=[
+        validators.DataRequired(_('Starting date is required'))])
+    salary = IntegerField(_('Salary'), validators=[
+        validators.DataRequired(_('Salary is required'))])
+    description = StringField(_('Description'), validators=[validators.DataRequired(_('Name is required'))])
+
     next = HiddenField()
     submit = SubmitField(_('AddPosition'))
 
@@ -319,7 +329,6 @@ class RegisterApplicantForm(FlaskForm):
 class RegisterGroupForm(FlaskForm):
     """Register new user form."""
     password_validator_added = False
-
     next = HiddenField()        # for login_or_register.html
     reg_next = HiddenField()    # for register.html
 
@@ -333,10 +342,9 @@ class RegisterGroupForm(FlaskForm):
         validators.DataRequired(_('PI surname is required'))])
     institution_name = StringField(_('Name'), validators=[
         validators.DataRequired(_('Institution name is required'))])
-    institution_city = StringField(_('City'), validators=[
-        validators.DataRequired(_('Institution name is required'))])
+    institution_city = SelectField(_('City'),coerce=int)
     institution_link = StringField(_('Link'), validators=[
-        validators.DataRequired(_('Institution name is required'))])
+        validators.DataRequired(_('Institution link is required'))])
     email = StringField(_('Email'), validators=[
         validators.DataRequired(_('Email is required')),
         validators.Email(_('Invalid Email')),

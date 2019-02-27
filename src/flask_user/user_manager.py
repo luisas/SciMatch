@@ -61,9 +61,12 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         UserEmailClass=None,
         RoleClass=None,
         PositionClass=None,
+        RequestsClass=None,
         UserHasEducationClass=None,
         PIClass = None,
-        InstitutionClass= None    # Only used for testing
+        InstitutionClass= None,
+        CityClass = None,
+        CountryClass = None    # Only used for testing
         ):
 
         # See http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code
@@ -176,6 +179,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.ForgotPasswordFormClass = forms.ForgotPasswordForm
         self.InviteUserFormClass = forms.InviteUserForm
         self.LoginFormClass = forms.LoginForm
+        self.SendRequestFormClass = forms.SendRequestForm
         self.RegisterFormClass = forms.RegisterForm
         self.AddPositionFormClass = forms.AddPositionForm
         self.RegisterApplicantFormClass = forms.RegisterApplicantForm
@@ -186,7 +190,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # Set default managers
         # --------------------
         # Setup DBManager
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass)
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, CityClass, CountryClass, RequestsClass)
 
         # Setup PasswordManager
         self.password_manager = PasswordManager(app)
@@ -397,6 +401,12 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         def add_position_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.add_position_view()
+        def home_page_applicant_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.home_page_applicant_view()
+        def home_page_group_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.home_page_group_view()
 
         def register_applicant_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
@@ -438,6 +448,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
             if not self.USER_ENABLE_INVITE_USER: abort(404)
             return self.invite_user_view()
 
+
         def login_stub():
             return self.login_view()
 
@@ -474,7 +485,12 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_ADD_POSITION_URL, 'user.add_position', add_position_stub,
                          methods=['GET', 'POST'])
-        ##
+
+        app.add_url_rule(self.HOME_PAGE_APPLICANT_URL, 'user.home_page_applicant', home_page_applicant_stub,
+                         methods=['GET', 'POST'])
+        app.add_url_rule(self.HOME_PAGE_GROUP_URL, 'user.home_page_group', home_page_group_stub,
+                         methods=['GET', 'POST'])
+
         app.add_url_rule(self.USER_REGISTER_APPLICANT_URL, 'user.register_applicant', register_applicant_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_REGISTER_GROUP_URL, 'user.register_group', register_group_stub,

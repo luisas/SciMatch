@@ -176,6 +176,9 @@ class UserManager__Settings(object):
 
     USER_SELECT_REGISTER_TYPE_URL= '/user/select_register_type'
     USER_ADD_POSITION_URL= '/user/add_position'
+    HOME_PAGE_APPLICANT_URL= '/user/home_page_applicant'
+    HOME_PAGE_GROUP_URL= '/user/home_page_group'
+
     USER_REGISTER_APPLICANT_URL= '/user/register_applicant'
     USER_REGISTER_GROUP_URL= '/user/register_group'
 
@@ -202,6 +205,8 @@ class UserManager__Settings(object):
     USER_REGISTER_APPLICANT_TEMPLATE='flask_user/register_applicant.html'
     USER_REGISTER_GROUP_TEMPLATE='flask_user/register_group.html'
 
+    HOME_PAGE_APPLICANT_TEMPLATE = '/home_page_applicant.html' #:
+    HOME_PAGE_GROUP_TEMPLATE = '/home_page_group.html' #:
     USER_SELECT_REGISTER_TYPE_TEMPLATE = 'flask_user/select_register_type.html' #:
     USER_ADD_POSITION_TEMPLATE = 'flask_user/add_position.html' #:
     USER_CHANGE_PASSWORD_TEMPLATE = 'flask_user/change_password.html' #:

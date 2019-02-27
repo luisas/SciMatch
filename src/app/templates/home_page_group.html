@@ -1,7 +1,32 @@
 {% extends "flask_user_layout.html" %}
 {% block content %}
       <center>
-        <h2>You are in the group home page!!</h2>
+        <h2>Welcome to the Group Home Page!</h2>
       </center>
+        <h4>Your positions</h4>
+        {% for each in positions %}
+          <a href="#" class="btn btn-success" tabindex='190'>
+          Name: {{ each['name'] }}
+          <br>
+          Salary: {{ each['salary'] }}
+          <br>
+          Start Date: {{ each['start_date'] }}
+          <br>
+          Description: {{ each['description'] }}
+          </a>
+        {% endfor %}
+
+        <a href="{{ url_for('user.add_position') }}" class="btn btn-success" tabindex='190'>
+          <h6>Add Position</h6>
+          <h2>+</h2>
+        </a>
+
+        <h4>Applicants who sent you a request</h4>
+        {% for each in requests %}
+          <a href="#" class="btn btn-success" tabindex='190'>
+          {%trans%} {{ each }} {%endtrans%}</a>
+        {% endfor %}
+
+
 
 {% endblock %}
