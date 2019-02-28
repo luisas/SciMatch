@@ -1,5 +1,6 @@
 {% extends "flask_user_layout.html" %}
 {% from "flask_user/_macros.html" import render_field, render_submit_field %}
+{% from "_rendering_utils.html" import render_box_position %}
 
 {% block content %}
         <center>
@@ -8,34 +9,41 @@
         <h4>Remember to change your preferences if you haven't yet ;) </h4>
 
         </center>
-
+        {% set counter = 0 %}
         <div class="container">
         <h3> Your Matches</h3>
         <br>
-          <center>
-        <div class="row">
+        <center>
+
           {% for each in matches %}
+          {% if count == 4 %}
+          {% set counter = 0 %}
+          <div class="row">
+          {% endif %}
           <div class="col-md-3" >
-            <div class="" style="border: 2px solid grey;" >
-              Name: {{ each['name'] }}
+            <div class="box_position" style="background-color:white; margin-bottom: 30px;border-radius: 15px; border: 2px solid #76E6B6; " >
+              <h4 style="background-color: #76E6B6;">{{ each['name'] }}</h4>
               <br>
-              Salary: {{ each['salary'] }}
-              <br>
-              Start Date: {{ each['start_date'] }}
-              <br>
-              Description: {{ each['description'] }}
+              <h5>Salary: {{ each['salary'] }} &euro;</h5>
+              <h5>Start Date: {{ each['start_date'] }}</h5>
               <br>
               {% if each['id'] not in requested %}
-                each id {{ each['id']}}
-                {{ requested }}
+              <div class="row">
+                <div class="col-md-4" >
+                <button type="button btn-success" style="background-color:white; border-radius: 25px; height:35px;"> i</button>
+                </div>
+                <div class="col-md-4" >
                 <form action="" method="POST" class="form" role="form">
                     {{ form.csrf_token() }}
                     {{ form.position_id( value= each['id'] ) }}
                     {{ render_submit_field(form.submit, tabindex=90) }}
                 </form>
+                </div>
+              </div>
 
               {% else %}
-                <button type="button" style="color:grey;" disabled> Request has been sent!</button>
+              <button type="button btn-success" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> <strong>i</strong></button>
+              <button type="button btn-success" style="background-color:#white; border-radius: 5px; height:35px;" disabled> Request has been sent!</button>
               {% endif %}
             </div>
           </div>
