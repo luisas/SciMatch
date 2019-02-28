@@ -1,31 +1,99 @@
 {% extends "flask_user_layout.html" %}
+{% from "flask_user/_macros.html" import render_field, render_submit_field %}
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+</style>
+</head>
 {% block content %}
       <center>
-        <h2>Welcome to the Group Home Page!</h2>
+        <h2 style="color: dark-grey; ">Welcome to the Group Home Page!</h2>
       </center>
-        <h4>Your positions</h4>
+
+      <br>
+    <h3 style="margin-left:30px; margin-bottom:40px;">Pending requests</h3>
+
+    {% if  requests|length  < 1 %}
+     <h4 style="color: grey;margin-left:30px; margin-top: 30px; margin-bottom:40px;">You have no pending requests :( </h4>
+    {% endif %}
+    {% for each in requests %}
+      <div class="container" >
+
+        {% if each['status'] == "pending" %}
+        <div class="row">
+          <div class="col-md-8" style=" height: 60px;  margin-bottom: 10px; background-color: white; border: 2px solid #76E6B6; border-radius:10px; " >
+            <img class="card-img-top" src="{{ url_for('static', filename='images/user_image.png')}}" alt="Card image cap" width="40" height="40" style="boder: solid 1px grey; margin: 5px 5px 5px 5px; ">
+            <a href="#" class="btn " tabindex='190' >
+              {{ each['applicant_first_name']}} {{each['applicant_last_name'] }}</a>
+              is applying for the position
+              <a href="#" class="btn " tabindex='190' >
+                {{ each['position_name'] }}</a>
+                {{ each['request_id'] }}
+          </div>
+          <div class="col-md-4" style="padding-top: 12px; " >
+
+              <div class="col-md-3"  >
+                <form id="package_form" action="" method="post" value="accepted">
+                        {{ form.csrf_token() }}
+                        {{ form.position_id( value= each['position_id'] ) }}
+                        {{ form.applicant_id( value= each['applicant_id'] ) }}
+                        {{ form.request_id( value= each['request_id'] ) }}
+                        {{ form.status( value= "accepted") }}
+                        <input type ="image" src="{{ url_for('static', filename='images/accept.png')}}" name="action" value="accepted" style="height: 40px;">
+                      </form>
+                </div>
+
+                <div class="col-md-3"  >
+                <form id="package_form" action="" method="post" value="accepted">
+                       {{ form.csrf_token() }}
+                       {{ form.position_id( value= each['position_id'] ) }}
+                       {{ form.applicant_id( value= each['applicant_id'] ) }}
+                       {{ form.request_id( value= each['request_id'] ) }}
+                       {{ form.status( value= "rejected") }}
+                       <input type ="image" src="{{ url_for('static', filename='images/reject.png')}}" value="rejected" style="height: 40px;">
+              </form>
+              </div>
+            </div>
+          </div>
+
+          {% endif %}
+        </div>
+
+
+
+    {% endfor %}
+
+        <h3 style="margin-left:30px;">Your positions</h3>
+        <br>
         {% for each in positions %}
-          <a href="#" class="btn btn-success" tabindex='190'>
-          Name: {{ each['name'] }}
-          <br>
-          Salary: {{ each['salary'] }}
-          <br>
-          Start Date: {{ each['start_date'] }}
-          <br>
-          Description: {{ each['description'] }}
-          </a>
-        {% endfor %}
 
-        <a href="{{ url_for('user.add_position') }}" class="btn btn-success" tabindex='190'>
-          <h6>Add Position</h6>
-          <h2>+</h2>
-        </a>
-
-        <h4>Applicants who sent you a request</h4>
-        {% for each in requests %}
-          <a href="#" class="btn btn-success" tabindex='190'>
-          {%trans%} {{ each }} {%endtrans%}</a>
+        <center>
+        <div class="col-md-3" >
+          <div class="box_position" style="height: 150px;background-color:white; margin-bottom: 30px;border-radius: 15px; border: 5px solid #76E6B6; " >
+            <h4 style="background-color: #76E6B6; margin-top: 0px; padding-top: 10px; padding-bottom:5px; border-radius-top: 15px;   ">{{ each['name'] }}</h4>
+            <br>
+            <h5>Salary: {{ each['salary'] }} &euro;</h5>
+            <h5>Start Date: {{ each['start_date'] }}</h5>
+            <br>
+            </div>
+          </div>
+          </center>
         {% endfor %}
+        <center>
+        <div class="col-md-3" >
+          <div class=" box_position"   style="height: 150px; background-color:white; margin-bottom: 30px;border-radius: 15px; border: 2px  grey dotted; " >
+            <br>
+            <a href="{{ url_for('user.add_position') }}" class="btn" style="color: grey; border: 0px; "><h1>+</h1></a>
+            <br>
+            </div>
+        </div>
+        </center>
+
+        <div class="container">
+
+        </div>
+
 
 
 

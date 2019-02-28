@@ -141,6 +141,13 @@ class SendRequestForm(FlaskForm):
     sent = StringField(_('Sent'))
     submit = SubmitField(_('Send'))
 
+class RespondRequestForm(FlaskForm):
+    position_id = HiddenField()
+    request_id = HiddenField()
+    applicant_id= HiddenField()
+    status = HiddenField()
+    submit = SubmitField(_('Accept'))
+
 class EditUserProfileForm(FlaskForm):
     """Edit user profile form."""
     next = HiddenField()         # for login.html

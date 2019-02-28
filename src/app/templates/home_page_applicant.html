@@ -16,13 +16,10 @@
         <center>
 
           {% for each in matches %}
-          {% if count == 4 %}
-          {% set counter = 0 %}
-          <div class="row">
-          {% endif %}
+
           <div class="col-md-3" >
-            <div class="box_position" style="background-color:white; margin-bottom: 30px;border-radius: 15px; border: 2px solid #76E6B6; " >
-              <h4 style="background-color: #76E6B6;">{{ each['name'] }}</h4>
+            <div class="box_position" style="background-color:white; margin-bottom: 30px;border-radius: 15px; border: 5px solid #76E6B6; " >
+              <h4 style="background-color: #76E6B6; margin-top: 0px; padding-top: 10px; padding-bottom:5px; border-radius-top: 15px;   ">{{ each['name'] }}</h4>
               <br>
               <h5>Salary: {{ each['salary'] }} &euro;</h5>
               <h5>Start Date: {{ each['start_date'] }}</h5>
@@ -40,7 +37,6 @@
                 </form>
                 </div>
               </div>
-
               {% else %}
               <button type="button btn-success" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> <strong>i</strong></button>
               <button type="button btn-success" style="background-color:#white; border-radius: 5px; height:35px;" disabled> Request has been sent!</button>
@@ -49,7 +45,7 @@
           </div>
           {% endfor %}
 
-        </div>
+    
       </div>
         </center>
 
