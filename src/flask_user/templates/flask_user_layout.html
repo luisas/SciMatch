@@ -10,6 +10,7 @@
     <title>{{ user_manager.USER_APP_NAME }}</title>
 
     <!-- Bootstrap -->
+
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="jquery-3.3.1.min.js"></script>
     <!-- In-lining styles to avoid needing a separate .css file -->
@@ -18,7 +19,14 @@
         .no-margins { margin: 0px; }
         .with-margins { margin: 10px; }
         .col-centered { float: none; margin: 0 auto; }
+        .box_position{background-color:  display:block;
+          width:100%;
+          height:150px;
+
+          }
     </style>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css?u={{ last_updated }}')}}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
