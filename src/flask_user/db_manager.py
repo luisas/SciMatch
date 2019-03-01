@@ -11,7 +11,9 @@ class DBManager(object):
     """Manage DB objects."""
 
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None):
+
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None, PreferenceClass = None, FieldClass= None):
+
 
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
 
@@ -31,10 +33,13 @@ class DBManager(object):
         self.RoleClass = RoleClass
         self.UserRolesClass = UserRolesClass
         self.InstitutionClass = InstitutionClass
+        self.InstitutionHasGroupClass = InstitutionHasGroupClass
         self.PIClass = PIClass
         self.EducationClass = EducationClass
         self.ExperienceClass = ExperienceClass
         self.PositionClass = PositionClass
+        self.PreferenceClass = PreferenceClass
+        self.FieldClass = FieldClass
         self.RequestsClass = RequestsClass
         self.UserHasEducationClass = UserHasEducationClass
         self.CityClass = CityClass
@@ -129,6 +134,12 @@ class DBManager(object):
         self.db_adapter.add_object(pi)
         return pi
 
+    def add_institution_has_group(self, **kwargs):
+        """Add a User object, with properties specified in ``**kwargs``."""
+        has = self.InstitutionHasGroupClass(**kwargs)
+        self.db_adapter.add_object(has)
+        return has
+
     def add_education(self, **kwargs):
         """Add a User object, with properties specified in ``**kwargs``."""
         education = self.EducationClass(**kwargs)
@@ -141,6 +152,11 @@ class DBManager(object):
              if req:
                  self.db_adapter.delete_object(req)
 
+    def delete_position(self, position_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             position = self.db_adapter.find_first_object(self.user_manager.db_manager.PositionClass, id=position_id)
+             if position:
+                 self.db_adapter.delete_object(position)
 
     def delete_education(self, education_id):
          if isinstance(self.db_adapter, SQLDbAdapter):
@@ -154,6 +170,18 @@ class DBManager(object):
              if experience:
                  self.db_adapter.delete_object(experience)
 
+    def delete_pi(self, pi_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             pi = self.db_adapter.find_first_object(self.user_manager.db_manager.PIClass, id=pi_id)
+             if pi:
+                 self.db_adapter.delete_object(pi)
+
+    def delete_institution(self, institution_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             institution = self.db_adapter.find_first_object(self.user_manager.db_manager.InstitutionClass, id=institution_id)
+             if institution:
+                 self.db_adapter.delete_object(institution)
+
     def add_experience(self, **kwargs):
         """Add a User object, with properties specified in ``**kwargs``."""
         experience = self.ExperienceClass(**kwargs)
@@ -165,6 +193,18 @@ class DBManager(object):
         institution = self.InstitutionClass(**kwargs)
         self.db_adapter.add_object(institution)
         return institution
+
+    def add_preference(self, **kwargs):
+        """Add a Position object, with properties specified in ``**kwargs``."""
+        preference = self.PreferenceClass(**kwargs)
+        self.db_adapter.add_object(preference)
+        return preference
+
+    def add_field(self, **kwargs):
+        """Add a Position object, with properties specified in ``**kwargs``."""
+        field = self.FieldClass(**kwargs)
+        self.db_adapter.add_object(field)
+        return field
 
     def add_position(self, **kwargs):
         """Add a Position object, with properties specified in ``**kwargs``."""

@@ -66,10 +66,13 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         UserHasEducationClass=None,
         PIClass = None,
         InstitutionClass= None,    # Only used for testing
+        InstitutionHasGroupClass = None,
         EducationClass = None,
         ExperienceClass = None,
         CityClass = None,
-        CountryClass = None    # Only used for testing
+        CountryClass = None,
+        PreferenceClass =None,
+        FieldClass = None  # Only used for testing
         ):
 
         # See http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code
@@ -179,6 +182,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.ChangePasswordFormClass = forms.ChangePasswordForm
         self.ChangeUsernameFormClass = forms.ChangeUsernameForm
         self.EditUserProfileFormClass = forms.EditUserProfileForm
+        self.EditGroupProfileFormClass = forms.EditGroupProfileForm
         self.ForgotPasswordFormClass = forms.ForgotPasswordForm
         self.InviteUserFormClass = forms.InviteUserForm
         self.LoginFormClass = forms.LoginForm
@@ -195,7 +199,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # --------------------
         # Setup DBManager
 
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass)
+
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass, PreferenceClass, FieldClass)
 
 
         # Setup PasswordManager
@@ -438,6 +443,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         def edit_user_profile_stub():
             return self.edit_user_profile_view()
 
+        def edit_group_profile_stub():
+            return self.edit_group_profile_view()
+
         def email_action_stub(id, action):
             if not self.USER_ENABLE_MULTIPLE_EMAILS or not self.db_manager.UserEmailClass: abort(404)
             return self.email_action_view(id, action)
@@ -508,6 +516,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_CONFIRM_EMAIL_URL, 'user.confirm_email', confirm_email_stub)
         app.add_url_rule(self.USER_EDIT_USER_PROFILE_URL, 'user.edit_user_profile', edit_user_profile_stub,
+                         methods=['GET', 'POST'])
+        app.add_url_rule(self.USER_EDIT_GROUP_PROFILE_URL, 'user.edit_group_profile', edit_group_profile_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_EMAIL_ACTION_URL, 'user.email_action', email_action_stub)
         app.add_url_rule(self.USER_FORGOT_PASSWORD_URL, 'user.forgot_password', forgot_password_stub,
