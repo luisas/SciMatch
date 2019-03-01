@@ -196,6 +196,8 @@ class UserManager__Views(object):
     @login_required
     def edit_user_profile_view(self):
         # Initialize form
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
         educations_labels = [{"name": "First Education"},
               {"name": "Second Education"}]
         form = self.EditUserProfileFormClass(request.form, obj=current_user, educations_labels=educations_labels )
@@ -231,7 +233,47 @@ class UserManager__Views(object):
 
         # Render form
         self.prepare_domain_translations()
-        return render_template(self.USER_EDIT_USER_PROFILE_TEMPLATE, form=form, educations_labels=educations_labels)
+        return render_template(self.USER_EDIT_USER_PROFILE_TEMPLATE, form=form, educations_labels=educations_labels, role=role)
+
+    @login_required
+    def edit_group_profile_view(self):
+        # Initialize form
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+        educations_labels = [{"name": "First Education"},
+              {"name": "Second Education"}]
+
+        form = self.EditGroupProfileFormClass(request.form, obj=current_user, educations_labels=educations_labels )
+
+        pi_name = request.values.get('pi_name')
+        pi_surname = request.values.get('pi_surname')
+        institution_name = request.values.get('institution_name')
+        institution_link = request.values.get('institution_link')
+        institution_city = request.values.get('institution_city')
+        pi_found = self.db_manager.PIClass.query.filter_by(group_id= current_user.id).first()
+        institution_found = self.db_manager.InstitutionClass.query.filter_by(id =current_user.id).first()
+
+        # Process valid POST
+        if request.method == 'POST' and form.validate():
+            # Update fields
+            self.db_manager.save_object(current_user)
+            if pi_found is not None:
+                self.db_manager.delete_pi(pi_found.id)
+            if institution_found is not None:
+                self.db_manager.delete_institution(institution_found.id)
+            form.populate_obj(current_user)
+            pi = self.db_manager.add_pi(name=pi_name, surname = pi_surname, group_id = current_user.id)
+            institution = self.db_manager.add_institution(name=institution_name, link= institution_link, city = institution_city)
+        
+            # Save object
+            self.db_manager.commit()
+
+            return redirect(self._endpoint_url(self.USER_AFTER_EDIT_GROUP_PROFILE_ENDPOINT))
+
+        # Render form
+        self.prepare_domain_translations()
+        return render_template(self.USER_EDIT_GROUP_PROFILE_TEMPLATE, form=form, educations_labels=educations_labels, role=role)
+
 
     @login_required
     def email_action_view(self, id, action):
@@ -686,6 +728,7 @@ class UserManager__Views(object):
 
             pi = self.db_manager.add_pi(name=pi_name, surname = pi_surname, group_id = user.id)
             institution = self.db_manager.add_institution(name=institution_name, link= institution_link, city = institution_city)
+            institution_has_group = self.db_manager.add_institution_has_group(user_id= user.id, institution_id= institution.id)
 
             # Email confirmation depends on the USER_ENABLE_CONFIRM_EMAIL setting
             request_email_confirmation = self.USER_ENABLE_CONFIRM_EMAIL
