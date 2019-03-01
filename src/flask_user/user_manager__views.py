@@ -88,6 +88,8 @@ class UserManager__Views(object):
     @login_required
     def change_password_view(self):
         """ Prompt for old password and new password and change the user's password."""
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
         # Initialize form
         form = self.ChangePasswordFormClass(request.form)
@@ -119,7 +121,7 @@ class UserManager__Views(object):
 
         # Render form
         self.prepare_domain_translations()
-        return render_template(self.USER_CHANGE_PASSWORD_TEMPLATE, form=form)
+        return render_template(self.USER_CHANGE_PASSWORD_TEMPLATE, form=form, role = role)
 
 
     @login_required
@@ -196,6 +198,9 @@ class UserManager__Views(object):
     @login_required
     def edit_user_profile_view(self):
         # Initialize form
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+
         educations_labels = [{"name": "First Education"},
               {"name": "Second Education"}]
         form = self.EditUserProfileFormClass(request.form, obj=current_user, educations_labels=educations_labels )
@@ -231,7 +236,7 @@ class UserManager__Views(object):
 
         # Render form
         self.prepare_domain_translations()
-        return render_template(self.USER_EDIT_USER_PROFILE_TEMPLATE, form=form, educations_labels=educations_labels)
+        return render_template(self.USER_EDIT_USER_PROFILE_TEMPLATE, role = role, form=form, educations_labels=educations_labels)
 
     @login_required
     def email_action_view(self, id, action):
@@ -493,6 +498,9 @@ class UserManager__Views(object):
 
     @login_required
     def add_position_view(self):
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+
         """ Display addition of a position"""
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
@@ -518,7 +526,7 @@ class UserManager__Views(object):
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
 
         #self.prepare_domain_translations()
-        return render_template(self.USER_ADD_POSITION_TEMPLATE, form=add_position_form)
+        return render_template(self.USER_ADD_POSITION_TEMPLATE, form=add_position_form, role = role)
 
 
 
@@ -561,27 +569,34 @@ class UserManager__Views(object):
 
             #position_id = request.values.get("position_id")
             #position_id = 1
-            position_id = int(request.values.get('position_id'))
-            request_id = int(request.values.get('request_id'))
-            applicant_id = int(request.values.get('applicant_id'))
-            status  =  ""
+            if request.values.get('status') == 'delete_position':
+                position_id = int(request.values.get('position_id'))
+                #deleted_position = self.db_manager.delete_positon( position_id=position_id )
+                self.db_manager.commit()
+                flash(_("The position has been succesfully deleted"), 'success')
 
-
-            if request.values.get('status') == 'accepted':
-                    status = "accepted"
             else:
-                    status = "rejected"
+                position_id = int(request.values.get('position_id'))
+                request_id = int(request.values.get('request_id'))
+                applicant_id = int(request.values.get('applicant_id'))
+                status  =  ""
 
-            request_deleted = self.db_manager.delete_request(request_id= request_id )
-            request_updated = self.db_manager.add_request(id = request_id, applicant_id = current_user.id, position_id=position_id, status = status )
 
-            self.db_manager.commit()
-            # Flash a system message
+                if request.values.get('status') == 'accepted':
+                        status = "accepted"
+                else:
+                        status = "rejected"
 
-            flash(_("The Request has been sent succesfully "+status+"."), 'success')
+                request_deleted = self.db_manager.delete_request(request_id= request_id )
+                request_updated = self.db_manager.add_request(id = request_id, applicant_id = current_user.id, position_id=position_id, status = status )
 
-            # Auto-login after reset password or redirect to login page
-            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+                self.db_manager.commit()
+                # Flash a system message
+
+                flash(_("The Request has been sent succesfully "+status+"."), 'success')
+
+                # Auto-login after reset password or redirect to login page
+                safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
 
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
 
@@ -601,7 +616,6 @@ class UserManager__Views(object):
         requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id).all()
         requested =[]
         for element in requested_objects:
-            if element.status == "pending":
                 requested.append(element.position_id)
 
         form = self.SendRequestFormClass(request.form)

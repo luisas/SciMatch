@@ -24,7 +24,7 @@ class ConfigClass(object):
 
     # Flask-SQLAlchemy settings
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/scimatchnew?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/scimatchnew3?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
@@ -106,6 +106,16 @@ def create_app():
     class Preference(db.Model):
         __tablename__= 'preference'
         id = db.Column(db.Integer(), primary_key=True)
+        user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+        city_id= db.Column(db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'))
+        field_id= db.Column(db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'))
+
+
+    class Field(db.Model):
+        __tablename__= 'field'
+        id = db.Column(db.Integer(), primary_key=True)
+        name = db.Column(db.String(100), nullable=False)
+
 
     class Position(db.Model):
         __tablename__='position'
@@ -169,7 +179,7 @@ def create_app():
 
     # Setup Flask-User and specify the User data-model
 
-    user_manager = UserManager(app, db, User, RoleClass=Role,UserRolesClass=UserRoles, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, EducationClass = Education, ExperienceClass= Experience,  CityClass=City, CountryClass= Country, RequestsClass=Requests)
+    user_manager = UserManager(app, db, User, RoleClass=Role,UserRolesClass=UserRoles, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, EducationClass = Education, ExperienceClass= Experience,  CityClass=City, CountryClass= Country, RequestsClass=Requests, FieldClass = Field, PreferenceClass = Preference)
 
 
     # Create all database tables
@@ -178,6 +188,19 @@ def create_app():
     if not Position.query.filter(Position.name == 'Bioinformatics Technician').first():
        pos1 = Position(name = "Bioinformatics Technician", salary =1000, start_date="2019/10/10" ,description ="A cool job!")
        db.session.add(pos1)
+       db.session.commit()
+
+    if not City.query.filter(Field.name == 'Structural Bioinformatics').first():
+       field = Field(name = "Structural Bioinformatics")
+       field2= Field(name= "Comparative Bioinformatics")
+       field3= Field(name= "System Biology")
+       field4= Field(name= "Cancer Genomics")
+       field5= Field(name= "Evolutionary Genomics")
+       db.session.add(field)
+       db.session.add(field2)
+       db.session.add(field3)
+       db.session.add(field4)
+       db.session.add(field5)
        db.session.commit()
 
     if not City.query.filter(City.name == 'Barcelona').first():

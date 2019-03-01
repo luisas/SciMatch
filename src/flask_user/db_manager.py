@@ -11,7 +11,7 @@ class DBManager(object):
     """Manage DB objects."""
 
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None):
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None, PreferenceClass = None, FieldClass= None):
 
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
 
@@ -35,6 +35,8 @@ class DBManager(object):
         self.EducationClass = EducationClass
         self.ExperienceClass = ExperienceClass
         self.PositionClass = PositionClass
+        self.PreferenceClass = PreferenceClass
+        self.FieldClass = FieldClass
         self.RequestsClass = RequestsClass
         self.UserHasEducationClass = UserHasEducationClass
         self.CityClass = CityClass
@@ -141,6 +143,11 @@ class DBManager(object):
              if req:
                  self.db_adapter.delete_object(req)
 
+    def delete_position(self, position_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             position = self.db_adapter.find_first_object(self.user_manager.db_manager.PositionClass, id=position_id)
+             if position:
+                 self.db_adapter.delete_object(position)
 
     def delete_education(self, education_id):
          if isinstance(self.db_adapter, SQLDbAdapter):
@@ -165,6 +172,18 @@ class DBManager(object):
         institution = self.InstitutionClass(**kwargs)
         self.db_adapter.add_object(institution)
         return institution
+
+    def add_preference(self, **kwargs):
+        """Add a Position object, with properties specified in ``**kwargs``."""
+        preference = self.PreferenceClass(**kwargs)
+        self.db_adapter.add_object(preference)
+        return preference
+
+    def add_field(self, **kwargs):
+        """Add a Position object, with properties specified in ``**kwargs``."""
+        field = self.FieldClass(**kwargs)
+        self.db_adapter.add_object(field)
+        return field
 
     def add_position(self, **kwargs):
         """Add a Position object, with properties specified in ``**kwargs``."""
