@@ -136,6 +136,7 @@ class ChangeUsernameForm(FlaskForm):
 class EducationEntryForm(FlaskForm):
     name = StringField(_('Education'))
 
+
 class SendRequestForm(FlaskForm):
     position_id = HiddenField()
     sent = StringField(_('Sent'))

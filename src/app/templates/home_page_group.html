@@ -71,11 +71,20 @@
         <center>
         <div class="col-md-3" >
           <div class="box_position" style="height: 150px;background-color:white; margin-bottom: 30px;border-radius: 15px; border: 5px solid #76E6B6; " >
-            <h4 style="background-color: #76E6B6; margin-top: 0px; padding-top: 10px; padding-bottom:5px; border-radius-top: 15px;   ">{{ each['name'] }}</h4>
-            <br>
-            <h5>Salary: {{ each['salary'] }} &euro;</h5>
+            <h4 style="background-color: #76E6B6; margin-top: 0px; padding-top: 10px; padding-bottom:5px; border-radius-top: 15px; ">{{ each['name'] }}</h4>
+
+            <h5 style="margin-top: 20px; ">Salary: {{ each['salary'] }} &euro;</h5>
             <h5>Start Date: {{ each['start_date'] }}</h5>
+
+            <form id="package_form" action="" method="post" value="delete_position" style="padding-bottom: 10px; padding-top: 5px;  ">
+                    {{ form.position_id( value= each['id'] ) }}
+                    {{ form.status( value= "delete_position") }}
+                    <input type ="image" src="{{ url_for('static', filename='images/remove-button.png')}}" name="delete_positon" value="delete_positon" style="height: 20px; ">
+            </form>
             <br>
+            <br>
+
+
             </div>
           </div>
           </center>

@@ -9,6 +9,11 @@
       <option value="{{each}}">{{each['name']}}</option>
     {% endfor %}
     </select>
+    <select name="field">
+    {% for each in dropdown_list_field %}
+      <option value="{{each}}">{{each['name']}}</option>
+    {% endfor %}
+    </select>
     <p><a class="btn btn-default" type="submit" value = 'Select' href="/" role="button">Save</a></p>
 
   </center>

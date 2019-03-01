@@ -70,7 +70,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         EducationClass = None,
         ExperienceClass = None,
         CityClass = None,
-        CountryClass = None    # Only used for testing
+        CountryClass = None,
+        PreferenceClass =None,
+        FieldClass = None  # Only used for testing
         ):
 
         # See http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code
@@ -197,7 +199,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         # --------------------
         # Setup DBManager
 
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass)
+
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass, PreferenceClass, FieldClass)
 
 
         # Setup PasswordManager
