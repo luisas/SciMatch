@@ -183,6 +183,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.InviteUserFormClass = forms.InviteUserForm
         self.LoginFormClass = forms.LoginForm
         self.SendRequestFormClass = forms.SendRequestForm
+        self.RespondRequestFormClass = forms.RespondRequestForm
         self.RegisterFormClass = forms.RegisterForm
         self.AddPositionFormClass = forms.AddPositionForm
         self.RegisterApplicantFormClass = forms.RegisterApplicantForm

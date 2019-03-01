@@ -535,27 +535,50 @@ class UserManager__Views(object):
          # for login_or_register.html
         positions = self.db_manager.PositionClass.query.filter_by(group_id=current_user.id).all()
 
-        request_applicant_ids = []
+        requests = []
         for position in positions:
-            requests = self.db_manager.RequestsClass.query.filter_by(position_id = position.id).all()
-            for request_element in requests:
-                request_applicant_ids.append(request_element.applicant_id)
+            request_set = self.db_manager.RequestsClass.query.filter_by(position_id = position.id).all()
+            for request_element in request_set:
+                if request_element.status == "pending":
+                    applicant_id = request_element.applicant_id
+                    applicant_first_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().first_name
+                    applicant_last_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().last_name
+                    position_id = position.id
+                    position_name = position.name
+                    request_id = request_element.id
+                    request_status = request_element.status
+                    requests.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
+                                    'applicant_last_name':applicant_last_name, 'position_id':position_id,
+                                    'position_name': position_name,
+                                    'status': request_status,
+                                    'request_id': request_id})
 
 
         #requests = self.db_manager.RequestsClass.query.filter_by(group_id=)
+        form = self.RespondRequestFormClass(request.form)
 
-        form = self.SendRequestFormClass(request.form)
-
-        if request.method == 'POST':
+        if request.method == 'POST' :
 
             #position_id = request.values.get("position_id")
             #position_id = 1
-            position_id = int(request.form['position_id'])
-            request_sent = self.db_manager.add_request(applicant_id = current_user.id, position_id=position_id, status ="pending" )
+            position_id = int(request.values.get('position_id'))
+            request_id = int(request.values.get('request_id'))
+            applicant_id = int(request.values.get('applicant_id'))
+            status  =  ""
+
+
+            if request.values.get('status') == 'accepted':
+                    status = "accepted"
+            else:
+                    status = "rejected"
+
+            request_deleted = self.db_manager.delete_request(request_id= request_id )
+            request_updated = self.db_manager.add_request(id = request_id, applicant_id = current_user.id, position_id=position_id, status = status )
 
             self.db_manager.commit()
             # Flash a system message
-            flash(_("The Request has been sent succesfully succesfully."), 'success')
+
+            flash(_("The Request has been sent succesfully "+status+"."), 'success')
 
             # Auto-login after reset password or redirect to login page
             safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
@@ -563,8 +586,8 @@ class UserManager__Views(object):
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
 
         #self.prepare_domain_translations()
-        return render_template(self.HOME_PAGE_GROUP_TEMPLATE, form=form,role = role, positions = positions, requests = request_applicant_ids )
-    @login_required
+        return render_template(self.HOME_PAGE_GROUP_TEMPLATE, form=form,role = role, positions = positions, requests = requests )
+
     def home_page_applicant_view(self):
         """ Display addition of a position"""
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
@@ -578,7 +601,8 @@ class UserManager__Views(object):
         requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id).all()
         requested =[]
         for element in requested_objects:
-            requested.append(element.position_id)
+            if element.status == "pending":
+                requested.append(element.position_id)
 
         form = self.SendRequestFormClass(request.form)
 

@@ -116,7 +116,6 @@ class DBManager(object):
         self.db_adapter.add_object(user)
         return user
 
-
     def add_request(self, **kwargs):
         """Add a Request object, with properties specified in ``**kwargs``."""
         request = self.RequestsClass(**kwargs)
@@ -135,6 +134,12 @@ class DBManager(object):
         education = self.EducationClass(**kwargs)
         self.db_adapter.add_object(education)
         return education
+
+    def delete_request(self, request_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             req = self.db_adapter.find_first_object(self.user_manager.db_manager.RequestsClass, id=request_id)
+             if req:
+                 self.db_adapter.delete_object(req)
 
 
     def delete_education(self, education_id):
