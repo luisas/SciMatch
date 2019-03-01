@@ -187,6 +187,7 @@ class UserManager__Settings(object):
     USER_CHANGE_USERNAME_URL = '/user/change-username' #:
     USER_CONFIRM_EMAIL_URL = '/user/confirm-email/<token>' #:
     USER_EDIT_USER_PROFILE_URL = '/user/edit_user_profile' #:
+    USER_EDIT_GROUP_PROFILE_URL = '/user/edit_group_profile' #:
     USER_EMAIL_ACTION_URL = '/user/email/<id>/<action>' #:
     USER_FORGOT_PASSWORD_URL = '/user/forgot-password' #:
     USER_INVITE_USER_URL = '/user/invite' #:
@@ -212,6 +213,7 @@ class UserManager__Settings(object):
     USER_CHANGE_PASSWORD_TEMPLATE = 'flask_user/change_password.html' #:
     USER_CHANGE_USERNAME_TEMPLATE = 'flask_user/change_username.html' #:
     USER_EDIT_USER_PROFILE_TEMPLATE = 'flask_user/edit_user_profile.html' #:
+    USER_EDIT_GROUP_PROFILE_TEMPLATE = 'flask_user/edit_group_profile.html' #:
     USER_FORGOT_PASSWORD_TEMPLATE = 'flask_user/forgot_password.html' #:
     USER_INVITE_USER_TEMPLATE = 'flask_user/invite_user.html' #:
     USER_LOGIN_TEMPLATE = 'flask_user/login.html' #:
@@ -242,6 +244,7 @@ class UserManager__Settings(object):
     USER_AFTER_CHANGE_USERNAME_ENDPOINT = '' #:
     USER_AFTER_CONFIRM_ENDPOINT = '' #:
     USER_AFTER_EDIT_USER_PROFILE_ENDPOINT = '' #:
+    USER_AFTER_EDIT_GROUP_PROFILE_ENDPOINT = '' #:
     USER_AFTER_FORGOT_PASSWORD_ENDPOINT = '' #:
     USER_AFTER_LOGIN_ENDPOINT = '' #:
     USER_AFTER_LOGOUT_ENDPOINT = '' #:

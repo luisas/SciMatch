@@ -162,6 +162,18 @@ class EditUserProfileForm(FlaskForm):
 
     submit = SubmitField(_('Update'))
 
+class EditGroupProfileForm(FlaskForm):
+    """Edit user profile form."""
+    next = HiddenField()         # for login.html
+    reg_next = HiddenField()     # for login_or_register.html
+    pi_name = StringField(_('PI name'), validators=[validators.DataRequired()])
+    pi_surname = StringField(_('Surname'), validators=[validators.DataRequired()])
+    institution_name = StringField(_('Institution name'))
+    institution_link = StringField(_('Link'))
+    institution_city = StringField(_('City'))
+
+
+    submit = SubmitField(_('Update'))
 
 class LoginForm(FlaskForm):
     """Login form."""
@@ -284,7 +296,7 @@ class RegisterApplicantForm(FlaskForm):
     birthday = DateField(_('Birthday'), validators=[
         validators.DataRequired(_('Birthday is required'))])
 
-    Gender = RadioField('gender', choices = [('M','Male'),('F','Female')], validators=[
+    Gender = RadioField('gender', choices = [('M','Male'),('F','Female'), ('O', 'Other')], validators=[
         validators.DataRequired(_('Gender is required'))])
 
 

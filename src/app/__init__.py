@@ -24,7 +24,8 @@ class ConfigClass(object):
 
     # Flask-SQLAlchemy settings
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/scimatchnew3?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/aina4?charset=utf8'    # File-based SQL database'    # File-based SQL database
+
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
@@ -166,7 +167,6 @@ def create_app():
     class InstitutionHasGroup(db.Model):
         __tablename__ = 'institution_has_group'
         id = db.Column(db.Integer(), primary_key=True)
-        #Group_id
         user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
         institution_id = db.Column(db.Integer, db.ForeignKey('institution.id', ondelete='CASCADE'))
 
@@ -179,7 +179,8 @@ def create_app():
 
     # Setup Flask-User and specify the User data-model
 
-    user_manager = UserManager(app, db, User, RoleClass=Role,UserRolesClass=UserRoles, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, EducationClass = Education, ExperienceClass= Experience,  CityClass=City, CountryClass= Country, RequestsClass=Requests, FieldClass = Field, PreferenceClass = Preference)
+    user_manager = UserManager(app, db, User, RoleClass=Role,UserRolesClass=UserRoles, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, InstitutionHasGroupClass = InstitutionHasGroup ,EducationClass = Education, ExperienceClass= Experience,  CityClass=City, CountryClass= Country, RequestsClass=Requests, FieldClass = Field, PreferenceClass = Preference)
+
 
 
     # Create all database tables
