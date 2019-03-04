@@ -17,8 +17,8 @@
 
           {% for each in matches %}
 
-          <div class="col-md-3" >
-            <div class="box_position" style="background-color:white; margin-bottom: 30px;border-radius: 15px; border: 5px solid #76E6B6; " >
+          <div class="col-sm-4" >
+            <div class="box_position" style="background-color:white; margin-bottom: 70px;border-radius: 15px; border: 5px solid #76E6B6; " >
               <h4 style="background-color: #76E6B6; margin-top: 0px; padding-top: 10px; padding-bottom:5px; border-radius-top: 15px;   ">{{ each['name'] }}</h4>
               <br>
               <h5>Salary: {{ each['salary'] }} &euro;</h5>
@@ -27,7 +27,7 @@
               {% if each['id'] not in requested %}
               <div class="row">
                 <div class="col-md-4" >
-                <button type="button btn-success" style="background-color:white; border-radius: 25px; height:35px;"> i</button>
+                <button type="button btn-success" data-toggle="collapse" href="#{{ each['id'] }}" role="button" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> i</button>
                 </div>
                 <div class="col-md-4" >
                 <form action="" method="POST" class="form" role="form">
@@ -36,16 +36,16 @@
                     {{ render_submit_field(form.submit, tabindex=90) }}
                 </form>
                 </div>
+                </div>
+                <div class="collapse" id="{{ each['id'] }}">
+              <div class="card card-body">
+              {{ each['description'] }} </div>               
               </div>
               {% else %}
-              <button type="button btn-success" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> <strong>i</strong></button>
+
+              <button type="button btn-success" data-toggle="collapse" href= "#{{ each['id'] }}" role="button" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> <strong>i</strong></button>
               <button type="button btn-success" style="background-color:#white; border-radius: 5px; height:35px;" disabled> Request has been sent!</button>
-              
-              <p>
-                <a class="btn btn-success" data-toggle="collapse" href="#collapseEx" role="button"> Information
-                </a>
-              </p>
-              <div class="collapse" id="collapseEx">
+              <div class="collapse" id="{{ each['id'] }}">
               <div class="card card-body">
               {{ each['description'] }} </div>               
               </div>
@@ -53,10 +53,8 @@
 
               {% endif %}
             </div>
-          </div>
+            </div>
           {% endfor %}
-
-    
       </div>
         </center>
 
