@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
 
-    <title>{{ user_manager.USER_APP_NAME }}</title>
+    <title>{{ user_manager.USER_APP_NAME }} </title>
 
     <!-- Bootstrap -->
 
@@ -52,23 +52,39 @@
         </div>
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) and role == "Applicant" %}
-                <a href="{{ url_for('user.edit_user_profile') }}">Edit profile</a>
-                &nbsp; | &nbsp;
-                <a href="{{ url_for('change_pref') }}" class="btn btn-primary" tabindex='190'>
-                {%trans%}Preferences{%endtrans%}</a>
-                <a href="{{ url_for('chat_applicant') }}" class="btn btn-primary" tabindex='190'>
+                <div class="dropdown">
+                <button class="btn dropdown-toggle" style="border-color: #76E6B6;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>{{current_user.first_name}} {{current_user.last_name}}</h5> </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{ url_for('user.edit_user_profile') }}">Edit profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for('change_pref') }}" class="btn btn-primary" tabindex='190'>
+                    {%trans%}Preferences{%endtrans%}</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for('chat_applicant') }}" class="btn btn-primary" tabindex='190'>
                     {%trans%}Chat{%endtrans%}</a>
-                <a href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
+                    </div>
+                </div>
+            </div>
+                <div class="pull-right">
             {% elif call_or_get(current_user.is_authenticated) and role == "Group" %}
-                <a href="{{ url_for('user.edit_group_profile') }}">Edit profile</a>
-                &nbsp; | &nbsp;
-                <a href="{{ url_for('chat_applicant') }}" class="btn btn-primary" tabindex='190'>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" style="border-color: #76E6B6;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>Menu</h5> </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ url_for('user.edit_group_profile') }}">Edit profile</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ url_for('chat_applicant') }}" class="btn btn-primary" tabindex='190'>
                         {%trans%}Chat{%endtrans%}</a>
-                <a href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
+                        <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
+            </div> 
+        </div>
             {% else %}
-                <a href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a>
-                &nbsp; | &nbsp;
-                <a href="{{ url_for('user.select_register_type') }}">{%trans%}Register{%endtrans%}</a>
+                <a class="btn" style="border-color: #76E6B6;"  href="{{ url_for('user.login') }}">
+                <h5 style="color:black"> {%trans%}Sign in{%endtrans%} </h5></a>
+                <a class="btn" style="border-color: #76E6B6;" href="{{ url_for('user.select_register_type') }}">
+                <h5 style="color:black">{%trans%}Register{%endtrans%} </h5></a>
             {% endif %}
         </div>
     </div>
