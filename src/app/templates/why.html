@@ -3,12 +3,20 @@
 <center>
  <h2>Why SciMatch?</h2>
   <body>
-   <div class="w-25 pl-3 bg-success" align="center">
-   <img src="{{url_for('static', filename='images/question.png')}}" height="200" align="right">
-   <h4 class="text-dark"> If you are bored of looking at thousands of websites to find interesting research groups or if you are tired of sending emails without receiving any answer... </h4>
-   <h4 class="text-success">SciMatch can help you!! </h4>	
-   <h4 class="text-dark">The faster and more efficient way to put in contact people wanting to work and research groups looking for new incorporations.</h4>
+  	<div class="container"> 
+  		<div class="row">
+  			 <div class="col-md-4"> </div>
+  			  <div class="col-md-4" style=" height: 220px;  margin-bottom: 10px; background-color: white; border: 2px solid #76E6B6; border-radius:10px;" align="center" >
+			   <h4> If you are bored of looking at thousands of websites to find interesting research groups or if you are tired of sending emails without receiving any answer... </h4>
+			   <h4 >SciMatch can help you!! </h4>	
+			   <h4>The faster and more efficient way to put in contact people wanting to work and research groups looking for new incorporations.</h4>
+			   </div>
+			   <div class="col-md-4"> <img src="{{url_for('static', filename='images/question.png')}}" height="200"></div>
+  		</div>
+
+  
    </div>
+
   </body>
 </center>
 {% endblock %}
