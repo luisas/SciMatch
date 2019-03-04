@@ -40,6 +40,17 @@
               {% else %}
               <button type="button btn-success" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> <strong>i</strong></button>
               <button type="button btn-success" style="background-color:#white; border-radius: 5px; height:35px;" disabled> Request has been sent!</button>
+              
+              <p>
+                <a class="btn btn-success" data-toggle="collapse" href="#collapseEx" role="button"> Information
+                </a>
+              </p>
+              <div class="collapse" id="collapseEx">
+              <div class="card card-body">
+              {{ each['description'] }} </div>               
+              </div>
+
+
               {% endif %}
             </div>
           </div>
