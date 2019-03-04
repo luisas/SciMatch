@@ -1,36 +1,21 @@
 {% extends "flask_user_layout.html" %}
 {% block content %}
-  <center>
-    <h2>Who are we?</h2>
-    <h4 class="text-dark"> We are three excellent students that have many differences between us but a common bond: biology and informatics.</h4>  
-  <div class="container">
-   <div class="row">
-    <div class="col-md-4">
-     <div class="card-group">
-      <div class="card bg-success">
-       <div class="card-body text-center">
-       	<img src="{{ url_for('static', filename='images/aina.png')}}" width="360" height="360" align="center">
-       <p class="card-text">Aina Rill</p>
-       </div>
-      </div>
-     </div>
-    </div>
-    <div class="col-md-4">
-     <div class="card bg-success">
-      <div class="card-body text-center">
-      	<img src="{{ url_for('static', filename='images/luisa.png')}}" width="360" height="360" align="left">
-      <p class="card-text">Luisa Santus</p>
-      </div>
-     </div>
-    </div>
-    <div class="col-md-4">
-     <div class="card bg-success">
-      <div class="card-body text-center">
-      	<img src="{{url_for('static', filename='images/gab.png')}}" width="360" height="360" align="right">
-      <p class="card-text">Gabriel Carbonell</p>
-      </div>
-     </div>
-    </div>
-   </div>
+<center>
+<h2>Who are we?</h2>
+<h4 class="text-dark"> We are three excellent students that have many differences between us but a common bond: biology and informatics.</h4>  
+ <div class="container">
+  <div class="row">
+   <div class="col-md-4" style=" height: 505px;  margin-bottom: 10px; background-color: white; border: 2px solid #76E6B6; border-radius:10px; " >
+   <img class="card-img-top" src="{{ url_for('static', filename='images/aina.png')}}" alt="Card image cap" width="360" height="460" style="boder: solid 1px grey; margin: 5px 5px 5px 5px; ">
+   <h4>Aina Rill</h4>
   </div>
+   <div class="col-md-4" style=" height: 505px;  margin-bottom: 10px; background-color: white; border: 2px solid #76E6B6; border-radius:10px; " >
+   <img class="card-img-top" src="{{ url_for('static', filename='images/luisa.png')}}" alt="Card image cap" width="360" height="460" style="boder: solid 1px grey; margin: 5px 5px 5px 5px; ">
+   <h4>Luisa Santus</h4>
+   </div>
+    <div class="col-md-4" style=" height: 505px;  margin-bottom: 10px; background-color: white; border: 2px solid #76E6B6; border-radius:10px; " >
+    <img class="card-img-top" src="{{ url_for('static', filename='images/gab.png')}}" alt="Card image cap" width="360" height="460" style="boder: solid 1px grey; margin: 5px 5px 5px 5px; ">
+    <h4>Gabriel Carbonell</h4>
+    </div>
+    </div>
 {% endblock %}
