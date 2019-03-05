@@ -280,6 +280,16 @@ class AddPositionForm(FlaskForm):
     next = HiddenField()
     submit = SubmitField(_('AddPosition'))
 
+
+class AddMessageForm(FlaskForm):
+    """Add a message to db form"""
+    password_validator_added = False
+
+    message = StringField(_('Message'), validators=[
+        validators.DataRequired(_('Some text is required'))])
+    send = SubmitField(_('Send'))
+
+
 class RegisterApplicantForm(FlaskForm):
     """Register new user form."""
     password_validator_added = False

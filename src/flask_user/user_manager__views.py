@@ -268,7 +268,7 @@ class UserManager__Views(object):
             form.populate_obj(current_user)
             pi = self.db_manager.add_pi(name=pi_name, surname = pi_surname, group_id = current_user.id)
             institution = self.db_manager.add_institution(name=institution_name, link= institution_link, city = institution_city)
-        
+
             # Save object
             self.db_manager.commit()
 
@@ -679,6 +679,22 @@ class UserManager__Views(object):
 
         #self.prepare_domain_translations()
         return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches, requested = requested )
+
+    def chat_view(self):
+        messages = self.db_manager.MessageClass.query.filter_by(sent_by=current_user.id, sent_to=).all()
+
+        send_message_form = self.AddMessageFormClass(request.form)
+        message = request.values.get('message_text')
+
+        if request.method == 'POST':
+            new_message = self.db_manager.add_message(message=message,
+                                                      sent_by=current_user.id, sent_to=)
+            send_message_form.populate_obj(new_message)
+            self.db_manager.commit()
+
+        return render_template(self.USER_CHAT_TEMPLATE, form=send_message_form,
+                               messages=messages)
+
 
     def register_group_view(self):
         """ Display registration form and create new User."""

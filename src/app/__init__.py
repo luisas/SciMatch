@@ -177,6 +177,14 @@ def create_app():
         position_id = db.Column(db.Integer(), db.ForeignKey('position.id', ondelete='CASCADE'))
         status = db.Column(db.String(50), nullable=False)
 
+
+    class Message(db.Model):
+        __tablename__ = 'messages'
+        id = db.Column(db.Integer, primary_key=True)
+        sent_by = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+        sent_to = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+        message = db.Column(db.String(500))
+
     # Setup Flask-User and specify the User data-model
 
     user_manager = UserManager(app, db, User, RoleClass=Role,UserRolesClass=UserRoles, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, InstitutionHasGroupClass = InstitutionHasGroup ,EducationClass = Education, ExperienceClass= Experience,  CityClass=City, CountryClass= Country, RequestsClass=Requests, FieldClass = Field, PreferenceClass = Preference)
@@ -276,9 +284,9 @@ def create_app():
         return render_template("/profile_applicant.html")
     app.add_url_rule('/profile_applicant', 'profile_applicant', profile_applicant)
 
-    def chat_applicant():
-        return render_template("/chat_applicant.html")
-    app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
+    # def chat_applicant():
+    #     return render_template("/chat_applicant.html", messages=messages)
+    # app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
 
     return app
 

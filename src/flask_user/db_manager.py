@@ -12,7 +12,7 @@ class DBManager(object):
 
 
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None, PreferenceClass = None, FieldClass= None):
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None, PreferenceClass = None, FieldClass= None, MessageClass=None):
 
 
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
@@ -38,6 +38,7 @@ class DBManager(object):
         self.EducationClass = EducationClass
         self.ExperienceClass = ExperienceClass
         self.PositionClass = PositionClass
+        self.MessageClass = MessageClass
         self.PreferenceClass = PreferenceClass
         self.FieldClass = FieldClass
         self.RequestsClass = RequestsClass
@@ -211,6 +212,12 @@ class DBManager(object):
         position = self.PositionClass(**kwargs)
         self.db_adapter.add_object(position)
         return position
+
+    def add_message(self, **kwargs):
+        """Add a Message object, with properties specified in ``**kwargs``."""
+        message = self.MessageClass(**kwargs)
+        self.db_adapter.add_object(message)
+        return message
 
     def add_user_email(self, user, **kwargs):
         """Add a UserEmail object, with properties specified in ``**kwargs``."""

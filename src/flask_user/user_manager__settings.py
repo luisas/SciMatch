@@ -221,6 +221,7 @@ class UserManager__Settings(object):
     USER_MANAGE_EMAILS_TEMPLATE = 'flask_user/manage_emails.html' #:
     USER_REGISTER_TEMPLATE = 'flask_user/register.html' #:
     USER_RESEND_CONFIRM_EMAIL_TEMPLATE = 'flask_user/resend_confirm_email.html' #:
+    USER_CHAT_TEMPLATE = 'flask_user/chat_view.html' #:
 
     #: .. This hack shows a header above the _next_ section
     #: .. code-block:: none

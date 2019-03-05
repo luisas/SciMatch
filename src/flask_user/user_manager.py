@@ -194,6 +194,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.RegisterGroupFormClass = forms.RegisterGroupForm
         self.ResendEmailConfirmationFormClass = forms.ResendEmailConfirmationForm
         self.ResetPasswordFormClass = forms.ResetPasswordForm
+        self.AddMessageFormClass = forms.AddMessageForm
 
         # Set default managers
         # --------------------
