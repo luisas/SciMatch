@@ -268,7 +268,7 @@ class UserManager__Views(object):
             form.populate_obj(current_user)
             pi = self.db_manager.add_pi(name=pi_name, surname = pi_surname, group_id = current_user.id)
             institution = self.db_manager.add_institution(name=institution_name, link= institution_link, city = institution_city)
-        
+
             # Save object
             self.db_manager.commit()
 
@@ -546,16 +546,20 @@ class UserManager__Views(object):
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
 
+        available_fields=self.db_manager.FieldClass.query.all()
+        fields=[(i.id, i.name) for i in available_fields]
         # Initialize form
         add_position_form = self.AddPositionFormClass(request.form)  # for login_or_register.html
+        add_position_form.field.choices = fields;
 
         name = request.values.get('name')
         salary = request.values.get('salary')
         start_date = request.values.get('start_date')
         description = request.values.get('description')
+        field = request.values.get('field')
 
         if request.method == 'POST':
-            position = self.db_manager.add_position(name = name, salary = salary, start_date = start_date, description = description, group_id = current_user.id )
+            position = self.db_manager.add_position(name = name, salary = salary, start_date = start_date, description = description, group_id = current_user.id, field_id = int(field) )
             add_position_form.populate_obj(position)
             self.db_manager.commit()
             # Flash a system message
@@ -612,7 +616,7 @@ class UserManager__Views(object):
             #position_id = 1
             if request.values.get('status') == 'delete_position':
                 position_id = int(request.values.get('position_id'))
-                #deleted_position = self.db_manager.delete_positon( position_id=position_id )
+                self.db_manager.delete_position(position_id)
                 self.db_manager.commit()
                 flash(_("The position has been succesfully deleted"), 'success')
 
@@ -679,6 +683,64 @@ class UserManager__Views(object):
 
         #self.prepare_domain_translations()
         return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches, requested = requested )
+
+    @login_required
+    def change_pref_view(self):
+        """ Display addition of a position"""
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+
+        # Initialize form
+        # for login_or_register.html
+        #matches = self.db_manager.PositionClass.query.all()
+        #requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id).all()
+        #requested =[]
+        #for element in requested_objects:
+        #        requested.append(element.position_id)
+        preference_found =  self.db_manager.PreferenceClass.query.filter_by(user_id= current_user.id).first()
+
+        available_cities=self.db_manager.CityClass.query.all()
+        cities=[(i.id, i.name) for i in available_cities]
+
+        available_fields=self.db_manager.FieldClass.query.all()
+        fields=[(i.id, i.name) for i in available_fields]
+
+        current_pref = self.db_manager.PreferenceClass.query.filter_by(user_id= current_user.id).first()
+        if current_pref is not None:
+            current_city_id = current_pref.city_id
+            current_field_id = current_pref.field_id
+        else:
+            current_city_id = 1
+            current_field_id = 1
+
+
+        form = self.ChangePrefFormClass(request.form, city = current_city_id, field = current_field_id)
+        form.city.choices = cities;
+        form.field.choices = fields;
+
+
+
+
+        if request.method == 'POST':
+
+            if preference_found is not None:
+                self.db_manager.delete_preference(preference_found.id)
+            city_id = request.values.get('city')
+            field_id = request.values.get('field')
+            preference= self.db_manager.add_preference(user_id = current_user.id, city_id=city_id, field_id = field_id)
+            self.db_manager.commit()
+            # Flash a system message
+            flash(_("Your Preferences have been changed succesfully :) "), 'success')
+
+            # Auto-login after reset password or redirect to login page
+            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+
+            return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
+
+        #self.prepare_domain_translations()
+        return render_template(self.CHANGE_PREF_TEMPLATE, form=form,role=role)
 
     def register_group_view(self):
         """ Display registration form and create new User."""

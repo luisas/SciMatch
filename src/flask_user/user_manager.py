@@ -194,6 +194,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.RegisterGroupFormClass = forms.RegisterGroupForm
         self.ResendEmailConfirmationFormClass = forms.ResendEmailConfirmationForm
         self.ResetPasswordFormClass = forms.ResetPasswordForm
+        self.ChangePrefFormClass = forms.ChangePrefForm
 
         # Set default managers
         # --------------------
@@ -425,8 +426,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         def register_group_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.register_group_view()
-
-        ##-----------
+        def change_pref_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.change_pref_view()
 
         def change_password_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
@@ -504,7 +506,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
                          methods=['GET', 'POST'])
         app.add_url_rule(self.HOME_PAGE_GROUP_URL, 'user.home_page_group', home_page_group_stub,
                          methods=['GET', 'POST'])
-
+        app.add_url_rule(self.CHANGE_PREF_URL, 'change_pref', change_pref_stub,
+                     methods=['GET', 'POST'])
         app.add_url_rule(self.USER_REGISTER_APPLICANT_URL, 'user.register_applicant', register_applicant_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_REGISTER_GROUP_URL, 'user.register_group', register_group_stub,

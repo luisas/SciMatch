@@ -1,20 +1,21 @@
-{% extends "flask_user_layout.html" %}
+{% extends 'flask_user/_public_base.html' %}
+
 {% block content %}
+{% from "flask_user/_macros.html" import render_field, render_submit_field %}
+
+
   <center>
     <h2>Change preferences</h2>
+    <br>
+    <br>
+      {{ form.hidden_tag() }}
+    <form action="" method="POST" novalidate formnovalidate class="form" role="form">
 
-    <h4>City</h4>
-    <select name="city">
-    {% for each in dropdown_list %}
-      <option value="{{each}}">{{each['name']}}</option>
-    {% endfor %}
-    </select>
-    <select name="field">
-    {% for each in dropdown_list_field %}
-      <option value="{{each}}">{{each['name']}}</option>
-    {% endfor %}
-    </select>
-    <p><a class="btn btn-default" type="submit" value = 'Select' href="/" role="button">Save</a></p>
+      {{ current_city  }}
+    {{ render_field(form.city, tabindex=30) }}
+    {{ render_field(form.field, tabindex=30) }}
+    {{ render_submit_field(form.submit, tabindex=280) }}
+    </form>
 
   </center>
 {% endblock %}
