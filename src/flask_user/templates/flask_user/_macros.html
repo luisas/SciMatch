@@ -16,8 +16,7 @@
 {% macro render_field_no_label(field, label=None, label_visible=true, right_url=None, right_label=None, placeholder=None) -%}
     <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
         {% if field.type != 'HiddenField' and label_visible %}
-            {% if not label %}{% set label=field.label.text %}{% endif %}
-            
+            {% if not label %}{% set label=field.label.text %}{% endif %}      
         {% endif %}
         {{ field(class_='form-control', **kwargs) }}
         {% if field.errors %}

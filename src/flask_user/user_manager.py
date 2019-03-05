@@ -74,7 +74,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         PreferenceClass =None,
         FieldClass = None,
         DegreeClass = None,
-        DegreeFieldClass = None# Only used for testing
+        DegreeFieldClass = None,
+        RequirementClass = None# Only used for testing
         ):
 
         # See http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code
@@ -198,7 +199,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.ResetPasswordFormClass = forms.ResetPasswordForm
         self.ChangePrefFormClass = forms.ChangePrefForm
 
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass, PreferenceClass, FieldClass, DegreeClass, DegreeFieldClass)
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass, PreferenceClass, FieldClass, DegreeClass, DegreeFieldClass, RequirementClass)
 
         # Setup PasswordManager
         self.password_manager = PasswordManager(app)

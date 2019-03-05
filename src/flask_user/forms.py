@@ -279,8 +279,12 @@ class AddPositionForm(FlaskForm):
         validators.DataRequired(_('Salary is required'))])
     description = StringField(_('Description'), validators=[validators.DataRequired(_('Name is required'))])
     field = SelectField(_('Field'), coerce=int)
-    degree = SelectField(_('Degree'), coerce=int)
-    experience = SelectField(_('Experience'), coerce=int)
+
+    bachelor = SelectField(_('Bachelor'), coerce=int, validators=[validators.DataRequired()]  )
+    master = SelectField(_('Master'),  coerce=int, validators=[validators.DataRequired()])
+    phd =SelectField(_('PhD'), coerce=int, validators=[validators.DataRequired()])
+    postdoc = SelectField(_('Postdoc'), coerce=int, validators=[validators.DataRequired()])
+
     next = HiddenField()
     submit = SubmitField(_('AddPosition'))
 

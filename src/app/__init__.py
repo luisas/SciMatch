@@ -13,8 +13,6 @@ import uuid
 import pandas
 
 
-
-
 # Class-based application configuration
 class ConfigClass(object):
     """ Flask application config """
@@ -24,7 +22,7 @@ class ConfigClass(object):
 
     # Flask-SQLAlchemy settings
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/qq?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/qqq?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
@@ -128,13 +126,11 @@ def create_app():
         #requirement_id= db.Column(db.Integer, db.ForeignKey('requirement.id', ondelete='CASCADE'))
         group_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
 
-
     class Experience(db.Model):
         __tablename__ = 'experience'
         id = db.Column(db.Integer, primary_key=True)
         user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
         description= db.Column(db.String(1000), nullable=True, server_default='Write a short description of your experience.')
-
 
     class Education(db.Model):
         __tablename__ = 'education'
@@ -179,8 +175,9 @@ def create_app():
     class Requirement(db.Model):
         __tablename__="requirement"
         id = db.Column(db.Integer(), primary_key=True)
-        education_type = db.Column(db.String(40))
-        experience_type = db.Column(db.String(40))
+        degree = db.Column(db.Integer(), db.ForeignKey('degree.id', ondelete='CASCADE'))
+        degree_field = db.Column(db.Integer(), db.ForeignKey('degreefield.id', ondelete='CASCADE'))
+        position_id = db.Column(db.Integer(), db.ForeignKey('position.id', ondelete='CASCADE'))
 
     class Degree(db.Model):
         __tablename__="degree"
@@ -202,7 +199,8 @@ def create_app():
                                 CityClass=City, CountryClass= Country, RequestsClass=Requests,
                                 FieldClass = Field, PreferenceClass = Preference,
                                 DegreeClass = Degree,
-                                DegreeFieldClass = DegreeField)
+                                DegreeFieldClass = DegreeField,
+                                RequirementClass = Requirement)
 
     db.create_all()
 
@@ -244,11 +242,13 @@ def create_app():
        field3= Field(name= "System Biology")
        field4= Field(name= "Cancer Genomics")
        field5= Field(name= "Evolutionary Genomics")
+       field6= Field(name= "Other")
        db.session.add(field)
        db.session.add(field2)
        db.session.add(field3)
        db.session.add(field4)
        db.session.add(field5)
+       db.session.add(field6)
        db.session.commit()
 
     if not City.query.filter(City.name == 'Barcelona').first():
