@@ -186,6 +186,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.ForgotPasswordFormClass = forms.ForgotPasswordForm
         self.InviteUserFormClass = forms.InviteUserForm
         self.LoginFormClass = forms.LoginForm
+        self.AddMessageFormClass = forms.AddMessageForm
         self.SendRequestFormClass = forms.SendRequestForm
         self.RespondRequestFormClass = forms.RespondRequestForm
         self.RegisterFormClass = forms.RegisterForm
@@ -413,6 +414,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         def add_position_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.add_position_view()
+        def chat_applicant_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.chat_applicant_view()
         def home_page_applicant_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.home_page_applicant_view()
@@ -521,6 +525,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         app.add_url_rule(self.USER_EDIT_USER_PROFILE_URL, 'user.edit_user_profile', edit_user_profile_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_EDIT_GROUP_PROFILE_URL, 'user.edit_group_profile', edit_group_profile_stub,
+                         methods=['GET', 'POST'])
+        app.add_url_rule(self.CHAT_APPLICANT_URL, 'chat_applicant', chat_applicant_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_EMAIL_ACTION_URL, 'user.email_action', email_action_stub)
         app.add_url_rule(self.USER_FORGOT_PASSWORD_URL, 'user.forgot_password', forgot_password_stub,

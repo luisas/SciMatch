@@ -175,6 +175,14 @@ class EditGroupProfileForm(FlaskForm):
 
     submit = SubmitField(_('Update'))
 
+class AddMessageForm(FlaskForm):
+    """Add position form."""
+    password_validator_added = False
+
+    message = StringField(_('Message'))
+    next = HiddenField()
+    submit = SubmitField(_('AddMessage'))
+
 class LoginForm(FlaskForm):
     """Login form."""
     next = HiddenField()         # for login.html

@@ -240,6 +240,32 @@ class UserManager__Views(object):
         return render_template(self.USER_EDIT_USER_PROFILE_TEMPLATE, form=form, educations_labels=educations_labels, role=role)
 
     @login_required
+    def chat_applicant_view(self):
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+
+        """ Display addition of a position"""
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+
+        # Initialize form
+        add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
+
+        message = request.values.get('message')
+        
+        self.db_manager.commit()
+            # Flash a system message
+        flash(_("The message has been send succesfully."), 'success')
+
+            # Auto-login after reset password or redirect to login page
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+
+        #self.prepare_domain_translations()
+        return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form, role = role)
+
+
+
+    @login_required
     def edit_group_profile_view(self):
         # Initialize form
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id

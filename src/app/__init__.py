@@ -196,6 +196,12 @@ def create_app():
         education_type = db.Column(db.String(40))
         experience_type = db.Column(db.String(40))
 
+    class Message(db.Model):
+        __tablename__='message'
+        id = db.Column(db.Integer(), primary_key=True)
+        message = db.Column(db.String(500), nullable=False)
+        user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+        group_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
 
     # Setup Flask-User and specify the User data-model
 
@@ -295,9 +301,9 @@ def create_app():
         return render_template("/profile_applicant.html")
     app.add_url_rule('/profile_applicant', 'profile_applicant', profile_applicant)
 
-    def chat_applicant():
-        return render_template("/chat_applicant.html")
-    app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
+    # def chat_applicant():
+    #     return render_template("/chat_applicant.html")
+    # app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
 
     return app
 
