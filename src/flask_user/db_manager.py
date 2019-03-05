@@ -12,7 +12,7 @@ class DBManager(object):
 
 
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None, PreferenceClass = None, FieldClass= None):
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None, PreferenceClass = None, FieldClass= None, DegreeClass = None ,DegreeFieldClass= None):
 
 
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
@@ -44,6 +44,8 @@ class DBManager(object):
         self.UserHasEducationClass = UserHasEducationClass
         self.CityClass = CityClass
         self.CountryClass = CountryClass
+        self.DegreeFieldClass = DegreeFieldClass
+        self.DegreeClass = DegreeClass
         self.user_manager = app.user_manager
         self.db_adapter = None
 
@@ -178,7 +180,7 @@ class DBManager(object):
              experience = self.db_adapter.find_first_object(self.user_manager.db_manager.ExperienceClass, id=experience_id)
              if experience:
                  self.db_adapter.delete_object(experience)
-                 
+
     def delete_position(self, position_id):
          if isinstance(self.db_adapter, SQLDbAdapter):
              position = self.db_adapter.find_first_object(self.user_manager.db_manager.PositionClass, id=position_id)
