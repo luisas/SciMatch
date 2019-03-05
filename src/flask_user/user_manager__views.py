@@ -745,22 +745,24 @@ class UserManager__Views(object):
             preference_applicant_field = preference_applicant.field_id
             preference_applicant_city = preference_applicant.city_id
             matches = self.db_manager.PositionClass.query.filter_by(field_id = preference_applicant_field).all()
+        else:
+            matches = self.db_manager.PositionClass.query.all()
 
-
-
-        #### MATCHING!
-        matches = self.db_manager.PositionClass.query.all()
-
-
-
-
-
+        if len(matches) != 0:
+            ids_matches = set()
+            for match in matches:
+                ids_matches.add(match.id)
 
 
         requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id).all()
         requested =[]
         for element in requested_objects:
                 requested.append(element.position_id)
+                #delete from matches
+                ids_matches.remove(element.position_id)
+
+
+
 
         form = self.SendRequestFormClass(request.form)
 

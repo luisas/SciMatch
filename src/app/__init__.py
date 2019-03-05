@@ -123,7 +123,6 @@ def create_app():
         salary = db.Column(db.Integer(), nullable=False)
         description = db.Column(db.String(100), nullable = False)
         field_id= db.Column(db.Integer, db.ForeignKey('field.id', ondelete='CASCADE'))
-        #requirement_id= db.Column(db.Integer, db.ForeignKey('requirement.id', ondelete='CASCADE'))
         group_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
 
     class Experience(db.Model):
