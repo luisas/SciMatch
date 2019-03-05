@@ -17,9 +17,9 @@
 
           {% for each in matches %}
 
-          <div class="col-sm-4" >
-            <div class="box_position" style="background-color:white; margin-bottom: 70px;border-radius: 15px; border: 5px solid #76E6B6; " >
-              <h4 style="background-color: #76E6B6; margin-top: 0px; padding-top: 10px; padding-bottom:5px; border-radius-top: 15px;   ">{{ each['name'] }}</h4>
+          <div class="col-md-4" >
+            <div class="box_position" style="background-color:white; margin-bottom: 70px;border-radius: 10px; border: 5px solid #76E6B6; " >
+              <h4 style="background-color: #76E6B6; margin-top: 0px; padding-top: 10px; padding-bottom:10px; border-radius-top: 15px;   ">{{ each['name'] }}</h4>
               <br>
               <h5>Salary: {{ each['salary'] }} &euro;</h5>
               <h5>Start Date: {{ each['start_date'] }}</h5>
@@ -27,8 +27,27 @@
               {% if each['id'] not in requested %}
               <div class="row">
                 <div class="col-md-4" >
-                <button type="button btn-success" data-toggle="collapse" href="#{{ each['id'] }}" role="button" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> i</button>
+                <button type="button btn-success" data-toggle="modal" href="#{{ each['id'] }}" role="button" data-target="#{{ each['id'] }}" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> i</button>
                 </div>
+                <div class="modal fade" id="{{ each['id'] }}" tabindex="-1" role="dialog" aria-labelledby="{{ each['id'] }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="{{ each['id'] }}"> {{ each['name'] }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+                 </button>
+                 </div>
+                <div class="modal-body">
+                 {{ each['description'] }}
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" style="background-color: #76E6B6;" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+                </div>
+                </div>
+
                 <div class="col-md-4" >
                 <form action="" method="POST" class="form" role="form">
                     {{ form.csrf_token() }}
@@ -43,7 +62,27 @@
               </div>
               {% else %}
 
-              <button type="button btn-success" data-toggle="collapse" href= "#{{ each['id'] }}" role="button" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> <strong>i</strong></button>
+              <button type="button btn-success" data-toggle="modal" href="#{{ each['id'] }}" role="button" data-target="#{{ each['id'] }}" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> i</button>
+                <div class="modal fade" id="{{ each['id'] }}" tabindex="-1" role="dialog" aria-labelledby="{{ each['id'] }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="{{ each['id'] }}"> {{ each['name'] }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+                 </button>
+                 </div>
+                <div class="modal-body">
+                 {{ each['description'] }}
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" style="background-color: #76E6B6;" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+                </div>
+                </div>
+
+
               <button type="button btn-success" style="background-color:#white; border-radius: 5px; height:35px;" disabled> Request has been sent!</button>
               <div class="collapse" id="{{ each['id'] }}">
               <div class="card card-body">

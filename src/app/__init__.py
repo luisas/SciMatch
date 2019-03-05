@@ -24,7 +24,7 @@ class ConfigClass(object):
 
     # Flask-SQLAlchemy settings
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/llll?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/mydb2?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
