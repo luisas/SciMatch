@@ -179,6 +179,8 @@ class UserManager__Settings(object):
     HOME_PAGE_APPLICANT_URL= '/user/home_page_applicant'
     HOME_PAGE_GROUP_URL= '/user/home_page_group'
 
+    CHANGE_PREF_URL='/change_pref'
+
     USER_REGISTER_APPLICANT_URL= '/user/register_applicant'
     USER_REGISTER_GROUP_URL= '/user/register_group'
 
@@ -205,7 +207,7 @@ class UserManager__Settings(object):
 
     USER_REGISTER_APPLICANT_TEMPLATE='flask_user/register_applicant.html'
     USER_REGISTER_GROUP_TEMPLATE='flask_user/register_group.html'
-
+    CHANGE_PREF_TEMPLATE='/change_pref.html'
     HOME_PAGE_APPLICANT_TEMPLATE = '/home_page_applicant.html' #:
     HOME_PAGE_GROUP_TEMPLATE = '/home_page_group.html' #:
     USER_SELECT_REGISTER_TYPE_TEMPLATE = 'flask_user/select_register_type.html' #:

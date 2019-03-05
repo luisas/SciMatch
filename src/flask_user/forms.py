@@ -276,7 +276,7 @@ class AddPositionForm(FlaskForm):
     salary = IntegerField(_('Salary'), validators=[
         validators.DataRequired(_('Salary is required'))])
     description = StringField(_('Description'), validators=[validators.DataRequired(_('Name is required'))])
-
+    field = SelectField(_('Field'), coerce=int)
     next = HiddenField()
     submit = SubmitField(_('AddPosition'))
 
@@ -348,8 +348,13 @@ class RegisterApplicantForm(FlaskForm):
         return True
 
 
+class ChangePrefForm(FlaskForm):
+    next = HiddenField()        # for login_or_register.html
+    reg_next = HiddenField()
 
-
+    city = SelectField(_('City'), coerce=int)
+    field= SelectField(_('Field'), coerce=int)
+    submit = SubmitField(_('Save'))
 #------------------------------
 class RegisterGroupForm(FlaskForm):
     """Register new user form."""

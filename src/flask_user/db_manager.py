@@ -95,6 +95,7 @@ class DBManager(object):
                 ' You must install one of these Flask extensions.')
 
 
+
     def add_user_role(self, user, role_name):
         """Associate a role name with a user."""
 
@@ -120,6 +121,12 @@ class DBManager(object):
             user.active = True
         self.db_adapter.add_object(user)
         return user
+
+    def add_preference(self, **kwargs):
+        """Add a Preference object, with properties specified in ``**kwargs``."""
+        preference = self.PreferenceClass(**kwargs)
+        self.db_adapter.add_object(preference)
+        return preference
 
     def add_request(self, **kwargs):
         """Add a Request object, with properties specified in ``**kwargs``."""
@@ -152,11 +159,8 @@ class DBManager(object):
              if req:
                  self.db_adapter.delete_object(req)
 
-    def delete_position(self, position_id):
-         if isinstance(self.db_adapter, SQLDbAdapter):
-             position = self.db_adapter.find_first_object(self.user_manager.db_manager.PositionClass, id=position_id)
-             if position:
-                 self.db_adapter.delete_object(position)
+
+
 
     def delete_education(self, education_id):
          if isinstance(self.db_adapter, SQLDbAdapter):
@@ -164,12 +168,22 @@ class DBManager(object):
              if education:
                  self.db_adapter.delete_object(education)
 
+    def delete_preference(self, preference_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             preference = self.db_adapter.find_first_object(self.user_manager.db_manager.PreferenceClass, id=preference_id)
+             if preference:
+                 self.db_adapter.delete_object(preference)
     def delete_experience(self, experience_id):
          if isinstance(self.db_adapter, SQLDbAdapter):
              experience = self.db_adapter.find_first_object(self.user_manager.db_manager.ExperienceClass, id=experience_id)
              if experience:
                  self.db_adapter.delete_object(experience)
-
+                 
+    def delete_position(self, position_id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             position = self.db_adapter.find_first_object(self.user_manager.db_manager.PositionClass, id=position_id)
+             if position:
+                 self.db_adapter.delete_object(position)
     def delete_pi(self, pi_id):
          if isinstance(self.db_adapter, SQLDbAdapter):
              pi = self.db_adapter.find_first_object(self.user_manager.db_manager.PIClass, id=pi_id)
