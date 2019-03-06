@@ -1,0 +1,64 @@
+{% extends "flask_user_layout.html" %}
+{% from "flask_user/_macros.html" import render_field, render_submit_field %}
+{% block content %}
+
+<style >/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 10;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+  background-color: #76E6B6;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  background-color: white;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}</style>
+  <center>
+  <div class="split left">
+   <div class="centered">
+    {%for request in requests%}
+    <div class="card">
+     <div class="card" style="background: white; border-style: double; border-color: #3abc83; width: 630px; height: 80px; margin-bottom: 5px; ">
+      <img src="{{ url_for('static', filename='images/user_image.png')}}" style=" border-radius:0px; height:70px; width:70px;" align="left">
+      <h5>{{request['applicant_first_name']}} {{request['applicant_last_name']}} lala</h5>
+      <p>{{request['position_name']}}</p>
+     </div>
+    </div>
+    {%endfor%}
+   </div>
+  </div>
+<div class="split right">
+  <div class="centered">
+
+  </div>
+</div>
+</center>
+
+
+{% endblock %}

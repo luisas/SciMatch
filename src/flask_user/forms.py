@@ -150,6 +150,7 @@ class RespondRequestForm(FlaskForm):
     request_id = HiddenField()
     applicant_id= HiddenField()
     status = HiddenField()
+    bachelor = HiddenField()
     submit = SubmitField(_('Accept'))
 
 class EditUserProfileForm(FlaskForm):

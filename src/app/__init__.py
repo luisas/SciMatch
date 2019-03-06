@@ -109,7 +109,7 @@ def create_app():
         id = db.Column(db.Integer(), primary_key=True)
         user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
         city_id= db.Column(db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'))
-        field_id= db.Column(db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'))
+        field_id= db.Column(db.Integer, db.ForeignKey('field.id', ondelete='CASCADE'))
 
     class Field(db.Model):
         __tablename__= 'field'
