@@ -7,7 +7,7 @@
 
 
 import string
-import wtf
+#import wtf
 from flask import current_app
 from flask_login import current_user
 
@@ -175,11 +175,12 @@ class EditGroupProfileForm(FlaskForm):
     institution_name = StringField(_('Institution name'))
     institution_link = StringField(_('Link'))
     institution_city = SelectField(_('City'), coerce=int, validators=[validators.DataRequired()]  )
+
     submit = SubmitField(_('Update'))
 
 class AddMessageForm(FlaskForm):
-    """Add position form."""
-    password_validator_added = False
+    """Add message form."""
+    #password_validator_added = False
 
     message = StringField(_('Message'))
     next = HiddenField()

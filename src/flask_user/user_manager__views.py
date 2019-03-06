@@ -306,13 +306,14 @@ class UserManager__Views(object):
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
 
         # Initialize form
-        add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
-
-        message = request.values.get('message')
         
-        self.db_manager.commit()
+        add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
+        message = request.values.get('message')
+        if request.method == 'POST':
+            added_message = self.db_manager.add_message(message=message, user_id=current_user.id)
+            self.db_manager.commit()
             # Flash a system message
-        flash(_("The message has been send succesfully."), 'success')
+        #flash(_("The message has been send succesfully."), 'success')
 
             # Auto-login after reset password or redirect to login page
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
@@ -787,7 +788,7 @@ class UserManager__Views(object):
         for element in requested_objects:
                 requested.append(element.position_id)
                 #delete from matches
-                ids_matches.remove(element.position_id)
+               # ids_matches.remove(element.position_id)
 
 
 

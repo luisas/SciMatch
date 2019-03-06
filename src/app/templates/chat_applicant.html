@@ -1,17 +1,61 @@
 {% extends "flask_user_layout.html" %}
 {% from "flask_user/_macros.html" import render_field, render_submit_field %}
 {% block content %}
+
+<style >/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 10;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+  background-color: #76E6B6;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  background-color: white;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}</style>
   <center>
-    <h2>CHAT</h2>
-    <a href="{{ url_for('home_page') }}" class="btn btn-primary" tabindex='190'>
-        {%trans%}Back{%endtrans%}</a>
-          <center>
-    <br>
+    <div class="split left">
+  <div class="centered">
+    <p>Chat.</p>
+  </div>
+</div>
+<div class="split right">
+  <div class="centered">
+       <br>
       {{ form.hidden_tag() }}
     <form action="" method="POST" novalidate formnovalidate class="form" role="form">
     {{ render_field(form.message, tabindex=30) }}
+    {{ render_submit_field(form.submit, tabindex=90) }}
     </form>
+  </div>
+</div>
+</center>
 
-  </center>
 
 {% endblock %}
