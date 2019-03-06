@@ -1,4 +1,4 @@
-{% macro render_field(field, label=None, label_visible=true, right_url=None, right_label=None) -%}
+{% macro render_field(field, label=None, label_visible=true, right_url=None, right_label=None, placeholder=None) -%}
     <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
         {% if field.type != 'HiddenField' and label_visible %}
             {% if not label %}{% set label=field.label.text %}{% endif %}
@@ -13,6 +13,19 @@
     </div>
 {%- endmacro %}
 
+{% macro render_field_no_label(field, label=None, label_visible=true, right_url=None, right_label=None, placeholder=None) -%}
+    <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
+        {% if field.type != 'HiddenField' and label_visible %}
+            {% if not label %}{% set label=field.label.text %}{% endif %}      
+        {% endif %}
+        {{ field(class_='form-control', **kwargs) }}
+        {% if field.errors %}
+            {% for e in field.errors %}
+                <p class="help-block">{{ e }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+{%- endmacro %}
 
 
 {% macro render_checkbox_field(field, label=None) -%}
@@ -34,6 +47,8 @@
         </div>
     {% endfor %}
 {%- endmacro %}
+
+
 
 {% macro render_submit_field(field, label=None, tabindex=None) -%}
     {% if not label %}{% set label=field.label.text %}{% endif %}

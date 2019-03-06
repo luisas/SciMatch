@@ -11,6 +11,13 @@
     {{ render_field(form.salary, tabindex=10) }}
     {{ render_field(form.description, tabindex=10) }}
     {{ render_field(form.field, tabindex=10) }}
+    <br>
+    <h3>Requirements</h3>
+    {{ test }}
+    {{ render_field(form.bachelor, tabindex=10) }}
+    {{ render_field(form.master, tabindex=10) }}
+    {{ render_field(form.phd, tabindex=10) }}
+    {{ render_field(form.postdoc, tabindex=10) }}
     {{ render_submit_field(form.submit, tabindex=90) }}
 </form>
 
