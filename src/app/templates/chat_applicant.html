@@ -1,9 +1,17 @@
 {% extends "flask_user_layout.html" %}
+{% from "flask_user/_macros.html" import render_field, render_submit_field %}
 {% block content %}
   <center>
     <h2>CHAT</h2>
     <a href="{{ url_for('home_page') }}" class="btn btn-primary" tabindex='190'>
         {%trans%}Back{%endtrans%}</a>
+          <center>
+    <br>
+      {{ form.hidden_tag() }}
+    <form action="" method="POST" novalidate formnovalidate class="form" role="form">
+    {{ render_field(form.message, tabindex=30) }}
+    </form>
+
   </center>
 
 {% endblock %}

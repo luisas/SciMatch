@@ -13,8 +13,6 @@ import uuid
 import pandas
 
 
-
-
 # Class-based application configuration
 class ConfigClass(object):
     """ Flask application config """
@@ -24,7 +22,9 @@ class ConfigClass(object):
 
     # Flask-SQLAlchemy settings
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/llll?charset=utf8'    # File-based SQL database'    # File-based SQL database
+
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/qqq?charset=utf8'    # File-based SQL database'    # File-based SQL database
+
 
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
@@ -111,7 +111,6 @@ def create_app():
         city_id= db.Column(db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'))
         field_id= db.Column(db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'))
 
-
     class Field(db.Model):
         __tablename__= 'field'
         id = db.Column(db.Integer(), primary_key=True)
@@ -126,36 +125,20 @@ def create_app():
         salary = db.Column(db.Integer(), nullable=False)
         description = db.Column(db.String(100), nullable = False)
         field_id= db.Column(db.Integer, db.ForeignKey('field.id', ondelete='CASCADE'))
-        #requirement_id= db.Column(db.Integer, db.ForeignKey('requirement.id', ondelete='CASCADE'))
         group_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-
-    # class Education(db.Model):
-    #     __tablename__ = 'education'
-    #     id = db.Column(db.Integer, primary_key=True)
-    #
-    #     user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-    #     description= db.Column(db.String(1000), nullable=True, server_default='Write a short description of your education.')
-    #     #degree = db.Column(db.String(10))
-    #     #name = db.Column(db.String(100))
-    #     #graduation_date = db.Column(db.Date)
-
-    # class Experience(db.Model):
-    #     __tablename__ = 'experience'
-    #     id = db.Column(db.Integer, primary_key=True)
-    #     user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-    #     description= db.Column(db.String(1000), nullable=True, server_default='Write a short description of your experience.')
 
     class Experience(db.Model):
         __tablename__ = 'experience'
         id = db.Column(db.Integer, primary_key=True)
-        type = db.Column(db.String(40))
-        name = db.Column(db.String(100))
+        user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+        description= db.Column(db.String(1000), nullable=True, server_default='Write a short description of your experience.')
 
     class Education(db.Model):
         __tablename__ = 'education'
         id = db.Column(db.Integer, primary_key=True)
-        type = db.Column(db.String(40))
-        name = db.Column(db.String(100))
+        degree = db.Column(db.Integer, db.ForeignKey('degree.id', ondelete='CASCADE'))
+        degree_field = db.Column(db.Integer, db.ForeignKey('degreefield.id', ondelete='CASCADE'))
+        user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
 
     class UserHasEducation(db.Model):
         __tablename__ = 'user_has_education'
@@ -193,17 +176,41 @@ def create_app():
     class Requirement(db.Model):
         __tablename__="requirement"
         id = db.Column(db.Integer(), primary_key=True)
-        education_type = db.Column(db.String(40))
-        experience_type = db.Column(db.String(40))
+        degree = db.Column(db.Integer(), db.ForeignKey('degree.id', ondelete='CASCADE'))
+        degree_field = db.Column(db.Integer(), db.ForeignKey('degreefield.id', ondelete='CASCADE'))
+        position_id = db.Column(db.Integer(), db.ForeignKey('position.id', ondelete='CASCADE'))
+
+    class Message(db.Model):
+        __tablename__='message'
+        id = db.Column(db.Integer(), primary_key=True)
+        message = db.Column(db.String(500), nullable=False)
+        user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+        group_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+
+    class Degree(db.Model):
+        __tablename__="degree"
+        id = db.Column(db.Integer(), primary_key=True)
+        name = db.Column(db.String(100), nullable=False )
 
 
-    # Setup Flask-User and specify the User data-model
+    class DegreeField(db.Model):
+        __tablename__="degreefield"
+        id = db.Column(db.Integer(), primary_key=True)
+        name = db.Column(db.String(100), nullable=False )
 
-    user_manager = UserManager(app, db, User, RoleClass=Role,UserRolesClass=UserRoles, PositionClass=Position, UserHasEducationClass = UserHasEducation, PIClass = PI, InstitutionClass = Institution, InstitutionHasGroupClass = InstitutionHasGroup ,EducationClass = Education, ExperienceClass= Experience,  CityClass=City, CountryClass= Country, RequestsClass=Requests, FieldClass = Field, PreferenceClass = Preference)
 
 
+    user_manager = UserManager(app, db, User, RoleClass=Role,UserRolesClass=UserRoles,
+                                PositionClass=Position, UserHasEducationClass = UserHasEducation,
+                                PIClass = PI, InstitutionClass = Institution,
+                                InstitutionHasGroupClass = InstitutionHasGroup ,
+                                EducationClass = Education, ExperienceClass= Experience,
+                                CityClass=City, CountryClass= Country, RequestsClass=Requests,
+                                FieldClass = Field, PreferenceClass = Preference,
+                                DegreeClass = Degree,
+                                DegreeFieldClass = DegreeField,
+                                RequirementClass = Requirement)
 
-    # Create all database tables
     db.create_all()
 
     # if not Position.query.filter(Position.name == 'Bioinformatics Technician').first():
@@ -211,17 +218,46 @@ def create_app():
     #    db.session.add(pos1)
     #    db.session.commit()
 
+    if not DegreeField.query.filter(DegreeField.name == 'Bioinformatics').first():
+        degree = DegreeField(name = "None")
+        degree1 = DegreeField(name = "Bioinformatics")
+        degree2 = DegreeField(name = "Biology")
+        degree3 = DegreeField(name = "Computer Science")
+        db.session.add(degree)
+        db.session.add(degree1)
+        db.session.add(degree2)
+        db.session.add(degree3)
+        db.session.commit()
+
+    if not Degree.query.filter(Degree.name == 'Bachelor').first():
+        none_degree = Degree(name = "None")
+        bachelor = Degree(name = "Bachelor")
+        master = Degree(name = "Master")
+        phd = Degree(name = "PhD")
+        postdoc = Degree(name = "PostDoc")
+        db.session.add(none_degree)
+        db.session.add(bachelor)
+        db.session.add(master)
+        db.session.add(phd)
+        db.session.add(postdoc)
+        db.session.commit()
+
+
+
+
     if not Field.query.filter(Field.name == 'Structural Bioinformatics').first():
        field = Field(name = "Structural Bioinformatics")
        field2= Field(name= "Comparative Bioinformatics")
        field3= Field(name= "System Biology")
        field4= Field(name= "Cancer Genomics")
        field5= Field(name= "Evolutionary Genomics")
+       field6= Field(name= "Other")
        db.session.add(field)
        db.session.add(field2)
        db.session.add(field3)
        db.session.add(field4)
        db.session.add(field5)
+       db.session.add(field6)
        db.session.commit()
 
     if not City.query.filter(City.name == 'Barcelona').first():
@@ -295,9 +331,9 @@ def create_app():
         return render_template("/profile_applicant.html")
     app.add_url_rule('/profile_applicant', 'profile_applicant', profile_applicant)
 
-    def chat_applicant():
-        return render_template("/chat_applicant.html")
-    app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
+    # def chat_applicant():
+    #     return render_template("/chat_applicant.html")
+    # app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
 
     return app
 

@@ -188,6 +188,7 @@ class UserManager__Settings(object):
     USER_CHANGE_PASSWORD_URL = '/user/change-password' #:
     USER_CHANGE_USERNAME_URL = '/user/change-username' #:
     USER_CONFIRM_EMAIL_URL = '/user/confirm-email/<token>' #:
+    CHAT_APPLICANT_URL = '/chat_applicant'
     USER_EDIT_USER_PROFILE_URL = '/user/edit_user_profile' #:
     USER_EDIT_GROUP_PROFILE_URL = '/user/edit_group_profile' #:
     USER_EMAIL_ACTION_URL = '/user/email/<id>/<action>' #:
@@ -209,6 +210,7 @@ class UserManager__Settings(object):
     USER_REGISTER_GROUP_TEMPLATE='flask_user/register_group.html'
     CHANGE_PREF_TEMPLATE='/change_pref.html'
     HOME_PAGE_APPLICANT_TEMPLATE = '/home_page_applicant.html' #:
+    CHAT_APPLICANT_TEMPLATE = '/chat_applicant.html' #:
     HOME_PAGE_GROUP_TEMPLATE = '/home_page_group.html' #:
     USER_SELECT_REGISTER_TYPE_TEMPLATE = 'flask_user/select_register_type.html' #:
     USER_ADD_POSITION_TEMPLATE = 'flask_user/add_position.html' #:

@@ -1,22 +1,27 @@
 {% extends 'flask_user/_authorized_base.html' %}
 
 {% block content %}
-{% from "flask_user/_macros.html" import render_field, render_checkbox_field, render_submit_field, render_radio_field %}
+{% from "flask_user/_macros.html" import render_field, render_checkbox_field, render_submit_field, render_radio_field, render_text_field, render_field_no_label %}
 <h1>{%trans%}User profile{%endtrans%}</h1>
-
 <form action="" method="POST" class="form" role="form">
     {{ form.hidden_tag() }}
-    {% for field in form %}
-        {% if not field.flags.hidden %}
-            {% if field.type=='SubmitField' %}
-                {{ render_submit_field(field, tabindex=loop.index*10) }}
-            {% else %}
-                {{ render_field(field, tabindex=loop.index*10) }}
-            {% endif %}
-        {% endif %}
-    {% endfor %}
+    {{ render_field(form.first_name, tabindex=10) }}
+    {{ render_field(form.last_name, tabindex=10) }}
+    {{ render_field(form.birthday, tabindex=10) }}
+    <br>
+    <h3>Education</h3>
+    {{ render_field(form.bachelor, tabindex=10)}}
+    {{ render_field(form.master, tabindex=10) }}
+    {{ render_field(form.phd, tabindex=10) }}
+    {{ render_field(form.postdoc, tabindex=10)}}
+    <br>
+    <h3>Experience</h3>
+    <p style="color: grey;"> Please insert here a description of your previous working experience!
+    Adding it will increase the probability you will get contacted by an employer ;)</p>
+    <br>
+    {{ render_field_no_label(form.experience, tabindex=10) }}
 
-
+    {{ render_submit_field(form.submit, tabindex=90) }}
 </form>
 <br/>
 

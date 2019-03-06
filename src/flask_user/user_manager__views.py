@@ -17,8 +17,6 @@ from .decorators import login_required
 from . import signals
 from .translation_utils import gettext as _    # map _() to gettext()
 
-
-
 # This class mixes into the UserManager class.
 # Mixins allow for maintaining code and docs across several files.
 class UserManager__Views(object):
@@ -201,33 +199,92 @@ class UserManager__Views(object):
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
         role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
-        educations_labels = [{"name": "First Education"},
-              {"name": "Second Education"}]
-        form = self.EditUserProfileFormClass(request.form, obj=current_user, educations_labels=educations_labels )
 
-        educations = self.db_manager.UserHasEducationClass.query.filter_by( user_id = current_user.id).all()
 
-        education_description = request.values.get('education')
+        available_degree_fields=self.db_manager.DegreeFieldClass.query.all()
+        degree_fields=[(i.id, i.name) for i in available_degree_fields]
 
-        experience_description = request.values.get('experience')
+        none_degree_type_id = self.db_manager.DegreeFieldClass.query.filter_by(name="None").first().id
+        bachelor = request.values.get('bachelor')
+        master = request.values.get('master')
+        phd = request.values.get('phd')
+        postdoc = request.values.get('postdoc')
 
-        education_found =  self.db_manager.EducationClass.query.filter_by(user_id= current_user.id).first()
+        bachelor_id = self.db_manager.DegreeClass.query.filter_by(name="Bachelor").first().id
+        master_id = self.db_manager.DegreeClass.query.filter_by(name="Master").first().id
+        phd_id = self.db_manager.DegreeClass.query.filter_by(name="PhD").first().id
+        postdoc_id = self.db_manager.DegreeClass.query.filter_by(name="PostDoc").first().id
+
+
+        education_bachelor_found =  self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = bachelor_id).first()
+        if education_bachelor_found is None:
+            education_bachelor_found_id = none_degree_type_id
+        else:
+            education_bachelor_found_id = education_bachelor_found.degree_field
+
+        education_master_found =  self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = master_id).first()
+        if education_master_found is None:
+            education_master_found_id = none_degree_type_id
+        else:
+            education_master_found_id = education_master_found.degree_field
+
+        education_phd_found =  self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = phd_id).first()
+        if education_phd_found is None:
+            education_phd_found_id = none_degree_type_id
+        else:
+            education_phd_found_id = education_phd_found.degree_field
+
+        education_postdoc_found =  self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = postdoc_id).first()
+        if education_postdoc_found is None:
+            education_postdoc_found_id = none_degree_type_id
+        else:
+            education_postdoc_found_id = education_postdoc_found.degree_field
 
         experience_found = self.db_manager.ExperienceClass.query.filter_by(user_id= current_user.id).first()
 
+        experience_description = request.values.get('experience')
+
+        if experience_found is None:
+            experience_found_text = None
+        else:
+            experience_found_text = experience_found.description
+
+
+
+        edit_form = self.EditUserProfileFormClass(request.form, obj=current_user, bachelor = education_bachelor_found_id,
+                                                master = education_master_found_id,
+                                                phd = education_phd_found_id,
+                                                postdoc = education_postdoc_found_id,
+                                                experience = experience_found_text
+                                                )
+        edit_form.bachelor.choices= degree_fields;
+        edit_form.master.choices= degree_fields;
+        edit_form.phd.choices= degree_fields;
+        edit_form.postdoc.choices= degree_fields;
+
         # Process valid POST
-        if request.method == 'POST' and form.validate():
+        if request.method == 'POST' and edit_form.validate():
             # Update fields
             self.db_manager.save_object(current_user)
-            if education_found is not None:
-                self.db_manager.delete_education(education_found.id)
+            if education_bachelor_found is not None:
+                self.db_manager.delete_education(education_bachelor_found.id)
+            if education_master_found is not None:
+                self.db_manager.delete_education(education_master_found.id)
+            if education_phd_found is not None:
+                self.db_manager.delete_education(education_phd_found.id)
+            if education_postdoc_found is not None:
+                self.db_manager.delete_education(education_postdoc_found.id)
+
             if experience_found is not None:
               self.db_manager.delete_experience(experience_found.id)
-            education = self.db_manager.add_education(description= education_description, user_id= current_user.id)
+
+
+            education_bachelor = self.db_manager.add_education(degree=bachelor_id, degree_field = bachelor, user_id= current_user.id)
+            education_master = self.db_manager.add_education(degree=master_id, degree_field = master, user_id= current_user.id)
+            education_phd = self.db_manager.add_education(degree=phd_id, degree_field = phd, user_id= current_user.id)
+            education_postdoc = self.db_manager.add_education(degree=postdoc_id, degree_field = postdoc, user_id= current_user.id)
             experience = self.db_manager.add_experience(description= experience_description, user_id= current_user.id)
-            form.populate_obj(current_user)
-            form.populate_obj(education_found)
-            form.populate_obj(experience)
+            edit_form.populate_obj(current_user)
 
             # Save object
             self.db_manager.commit()
@@ -237,7 +294,33 @@ class UserManager__Views(object):
         # Render form
         self.prepare_domain_translations()
 
-        return render_template(self.USER_EDIT_USER_PROFILE_TEMPLATE, form=form, educations_labels=educations_labels, role=role)
+        return render_template(self.USER_EDIT_USER_PROFILE_TEMPLATE, form=edit_form, role=role, test = experience_found_text)
+
+    @login_required
+    def chat_applicant_view(self):
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+
+        """ Display addition of a position"""
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+
+        # Initialize form
+        add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
+
+        message = request.values.get('message')
+        
+        self.db_manager.commit()
+            # Flash a system message
+        flash(_("The message has been send succesfully."), 'success')
+
+            # Auto-login after reset password or redirect to login page
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+
+        #self.prepare_domain_translations()
+        return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form, role = role)
+
+
 
     @login_required
     def edit_group_profile_view(self):
@@ -534,9 +617,6 @@ class UserManager__Views(object):
                       login_form=login_form,
                       register_form=register_form)
 
-
-
-
     @login_required
     def add_position_view(self):
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
@@ -548,9 +628,28 @@ class UserManager__Views(object):
 
         available_fields=self.db_manager.FieldClass.query.all()
         fields=[(i.id, i.name) for i in available_fields]
-        # Initialize form
+
+        available_degree_fields=self.db_manager.DegreeFieldClass.query.all()
+        degree_fields=[(i.id, i.name) for i in available_degree_fields]
+
+        none_degree_type_id = self.db_manager.DegreeFieldClass.query.filter_by(name="None").first().id
+        bachelor = request.values.get('bachelor')
+        master = request.values.get('master')
+        phd = request.values.get('phd')
+        postdoc = request.values.get('postdoc')
+
+
+        bachelor_id = self.db_manager.DegreeClass.query.filter_by(name="Bachelor").first().id
+        master_id = self.db_manager.DegreeClass.query.filter_by(name="Master").first().id
+        phd_id = self.db_manager.DegreeClass.query.filter_by(name="PhD").first().id
+        postdoc_id = self.db_manager.DegreeClass.query.filter_by(name="PostDoc").first().id
+
         add_position_form = self.AddPositionFormClass(request.form)  # for login_or_register.html
         add_position_form.field.choices = fields;
+        add_position_form.bachelor.choices= degree_fields;
+        add_position_form.master.choices= degree_fields;
+        add_position_form.phd.choices= degree_fields;
+        add_position_form.postdoc.choices= degree_fields;
 
         name = request.values.get('name')
         salary = request.values.get('salary')
@@ -560,18 +659,29 @@ class UserManager__Views(object):
 
         if request.method == 'POST':
             position = self.db_manager.add_position(name = name, salary = salary, start_date = start_date, description = description, group_id = current_user.id, field_id = int(field) )
+            self.db_manager.commit()
+
+            position_id = position.id
+            if bachelor != none_degree_type_id :
+                bachelor_req = self.db_manager.add_requirement(degree=bachelor_id, degree_field= bachelor, position_id=position_id)
+            if master != none_degree_type_id :
+                master_req = self.db_manager.add_requirement(degree=master_id, degree_field=master, position_id=position_id)
+            if phd != none_degree_type_id :
+                phd_req = self.db_manager.add_requirement(degree=phd_id, degree_field=phd, position_id=position_id)
+            if postdoc != none_degree_type_id :
+                postdoc_req = self.db_manager.add_requirement(degree=postdoc_id, degree_field=postdoc, position_id=position_id)
+
+
             add_position_form.populate_obj(position)
             self.db_manager.commit()
             # Flash a system message
             flash(_("The Position has been added succesfully."), 'success')
-
             # Auto-login after reset password or redirect to login page
             safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
-
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
 
         #self.prepare_domain_translations()
-        return render_template(self.USER_ADD_POSITION_TEMPLATE, form=add_position_form, role = role)
+        return render_template(self.USER_ADD_POSITION_TEMPLATE, form=add_position_form, role = role, test = none_degree_type_id)
 
 
 
@@ -605,7 +715,6 @@ class UserManager__Views(object):
                                     'position_name': position_name,
                                     'status': request_status,
                                     'request_id': request_id})
-
 
         #requests = self.db_manager.RequestsClass.query.filter_by(group_id=)
         form = self.RespondRequestFormClass(request.form)
@@ -655,13 +764,31 @@ class UserManager__Views(object):
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
         role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
-        # Initialize form
-         # for login_or_register.html
-        matches = self.db_manager.PositionClass.query.all()
+
+        #Preferences applicant
+        preference_applicant = self.db_manager.PreferenceClass.query.filter_by( user_id = current_user.id).first()
+        if preference_applicant is not None:
+            preference_applicant_field = preference_applicant.field_id
+            preference_applicant_city = preference_applicant.city_id
+            matches = self.db_manager.PositionClass.query.filter_by(field_id = preference_applicant_field).all()
+        else:
+            matches = self.db_manager.PositionClass.query.all()
+
+        if len(matches) != 0:
+            ids_matches = set()
+            for match in matches:
+                ids_matches.add(match.id)
+
+
         requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id).all()
         requested =[]
         for element in requested_objects:
                 requested.append(element.position_id)
+                #delete from matches
+                ids_matches.remove(element.position_id)
+
+
+
 
         form = self.SendRequestFormClass(request.form)
 

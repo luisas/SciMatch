@@ -7,6 +7,7 @@
 
 
 import string
+import wtf
 from flask import current_app
 from flask_login import current_user
 
@@ -16,13 +17,15 @@ try:
 except ImportError:
     from flask_wtf import Form as FlaskForm     # Fallback to Flask-WTF v0.12 or older
 
-from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField, FieldList, FormField, SelectField, IntegerField
+from wtforms import BooleanField, HiddenField, PasswordField, SubmitField, StringField, DateField, RadioField, FieldList, FormField, SelectField, IntegerField, TextAreaField
 from wtforms import validators, ValidationError
 from wtforms.fields.html5 import DateField
 from .translation_utils import lazy_gettext as _    # map _() to lazy_gettext()
 # ****************
 # ** Validators **
 # ****************
+
+
 
 def password_validator(form, field):
     current_app.user_manager.password_validator(form, field)
@@ -156,10 +159,11 @@ class EditUserProfileForm(FlaskForm):
     first_name = StringField(_('First name'), validators=[validators.DataRequired()])
     last_name = StringField(_('Last name'), validators=[validators.DataRequired()])
     birthday = DateField(_('Birthday'), validators=[validators.DataRequired()])
-    education= StringField(_('Education'), validators=[validators.DataRequired()])
-    experience= StringField(_('Experience'), validators=[validators.DataRequired()])
-
-
+    bachelor = SelectField(_('Bachelor'), coerce=int, validators=[validators.DataRequired()]  )
+    master = SelectField(_('Master'),  coerce=int, validators=[validators.DataRequired()])
+    phd =SelectField(_('PhD'), coerce=int, validators=[validators.DataRequired()])
+    postdoc = SelectField(_('Postdoc'), coerce=int, validators=[validators.DataRequired()])
+    experience= TextAreaField(_('Experience'))
     submit = SubmitField(_('Update'))
 
 class EditGroupProfileForm(FlaskForm):
@@ -174,6 +178,14 @@ class EditGroupProfileForm(FlaskForm):
 
 
     submit = SubmitField(_('Update'))
+
+class AddMessageForm(FlaskForm):
+    """Add position form."""
+    password_validator_added = False
+
+    message = StringField(_('Message'))
+    next = HiddenField()
+    submit = SubmitField(_('AddMessage'))
 
 class LoginForm(FlaskForm):
     """Login form."""
@@ -267,8 +279,6 @@ class LoginForm(FlaskForm):
 class AddPositionForm(FlaskForm):
     """Add position form."""
     password_validator_added = False
-
-
     name = StringField(_('Name'), validators=[
         validators.DataRequired(_('Name is required'))])
     start_date = DateField(_('Starting Date'), validators=[
@@ -277,6 +287,12 @@ class AddPositionForm(FlaskForm):
         validators.DataRequired(_('Salary is required'))])
     description = StringField(_('Description'), validators=[validators.DataRequired(_('Name is required'))])
     field = SelectField(_('Field'), coerce=int)
+
+    bachelor = SelectField(_('Bachelor'), coerce=int, validators=[validators.DataRequired()]  )
+    master = SelectField(_('Master'),  coerce=int, validators=[validators.DataRequired()])
+    phd =SelectField(_('PhD'), coerce=int, validators=[validators.DataRequired()])
+    postdoc = SelectField(_('Postdoc'), coerce=int, validators=[validators.DataRequired()])
+
     next = HiddenField()
     submit = SubmitField(_('AddPosition'))
 
