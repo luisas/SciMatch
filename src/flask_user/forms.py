@@ -174,8 +174,7 @@ class EditGroupProfileForm(FlaskForm):
     pi_surname = StringField(_('Surname'), validators=[validators.DataRequired()])
     institution_name = StringField(_('Institution name'))
     institution_link = StringField(_('Link'))
-    institution_city = SelectField(_('City'), coerce=int, validators=[validators.DataRequired()])
-
+    institution_city = SelectField(_('City'), coerce=int, validators=[validators.DataRequired()]  )
 
     submit = SubmitField(_('Update'))
 

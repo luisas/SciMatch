@@ -331,16 +331,18 @@ class UserManager__Views(object):
         educations_labels = [{"name": "First Education"},
               {"name": "Second Education"}]
 
-        form = self.EditGroupProfileFormClass(request.form, obj=current_user, educations_labels=educations_labels )
+
+
+        pi_found = self.db_manager.PIClass.query.filter_by(group_id= current_user.id).first()
+        institution_found = self.db_manager.InstitutionClass.query.filter_by(id =current_user.id).first()
+
+        form = self.EditGroupProfileFormClass(request.form, obj=current_user, pi_name = pi_found.name, pi_surname=pi_found.surname,institution_name=institution_found.name,institution_city=institution_found.city, institution_link = insititution_found.link )
 
         pi_name = request.values.get('pi_name')
         pi_surname = request.values.get('pi_surname')
         institution_name = request.values.get('institution_name')
         institution_link = request.values.get('institution_link')
         institution_city = request.values.get('institution_city')
-        pi_found = self.db_manager.PIClass.query.filter_by(group_id= current_user.id).first()
-        institution_found = self.db_manager.InstitutionClass.query.filter_by(id =current_user.id).first()
-
         # Process valid POST
         if request.method == 'POST' and form.validate():
             # Update fields
