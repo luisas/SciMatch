@@ -3,10 +3,46 @@
 
  <head>
  	<title>SciMatch!</title>
+  <script>
+  AOS.init();
+</script>
+  <style media="screen">
+        #container_id {
+          position: relative;
+
+        }
+
+        /* Make the image responsive */
+
+
+        /* Style the button and place it in the middle of the container/image */
+        .container .btn {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          background-color: #555;
+          color: white;
+          font-size: 16px;
+          padding: 12px 24px;
+          border: none;
+          cursor: pointer;
+          border-radius: 5px;
+        }
+
+        .container .btn:hover {
+          background-color: black;
+        }
+
+  </style>
  </head>
  <body class="bg-light">
   <center>
-    <h2>Welcome to SciMatch!!</h2>
+    <div class="w3-container w3-center w3-animate-opacity" style="margin-bottom:100px; margin-top:70px; " id="container_id">
+      <h1 style="color: #565656; ">Find your job, anywhere.</h1>
+    </div>
+
       <div class="row">
        <div class="col-sm-12">
         <div class="text-center">
@@ -16,22 +52,55 @@
           </div>
 </div>
  <div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <a href="{{ url_for('who') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/iconopersonas.png')}}" alt="Card image cap" width="140" height="110"></a>
-      <div class="card-body">
-        <h5 class="card-title">Who are we?</h5>
-        <p class="card-text">Three enthusiastic students of Bioinformatics.</p>
+  <div class="row" style="margin-bottom:150px;">
+    <div class="container col-md-6 w3-container w3-center w3-animate-opacity" id="container_id" >
+      <a href="{{ url_for('user.register_applicant') }}"">
+        <img class="card-img-top" src="{{ url_for('static', filename='images/CRG.jpg')}}" alt="Card image cap" height="300px;">
+        <button class="btn" style="background-color: #b3d8d2; color: WHITE; font-weight: bold; border: dotted 1px white;">Start looking for a job!</button></a>
+
+    </div>
+    <div class="col-md-6 w3-container w3-center w3-animate-opacity" ">
+      <a href="{{ url_for('user.register_group') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/applicant-home.jpg')}}" alt="Card image cap"  height="300px;">
+      <button class="btn" href= "{{ url_for('user.register_group') }}"style="background-color: #b3d8d2; color: WHITE; font-weight: bold; border: dotted 1px white;">Find the right candidate.</button></a>
+    </div>
+    </div>
+
+    <div ></div>
+
+    <div class="row">
+      <div class="container" data-aos="zoom-in" >
+        <div class="row">
+           <div class="col-md-2"> </div>
+            <div class="col-md-6" style=" height: 220px;  margin-bottom: 10px; background-color: white; border: 2px dotted #grey; border-radius:10px;" align="center" >
+            <h2 style="color: #565656;">Why SciMatch?</h2>
+           <h4 style="color: #565656;"> If you are bored of looking at thousands of websites to find interesting research groups or if you are tired of sending emails without receiving any answer... </h4>
+           <h4 style="color: #565656;">The faster and more efficient way to put in contact people wanting to work and research groups looking for new incorporations.</h4>
+           </div>
+           <div class="col-md-4"> <img src="{{url_for('static', filename='images/question.png')}}" height="200"></div>
+        </div>
+     </div>
+     <div class="row" style="background-color:#f2f2f2; height:40px; ">
+
+     </div>
+
+    </div>
+
+
+    <div class="row" style="margin-top: 50px; margin-bottom:70px; ">
+      <div class="col-md-3">
+      </div>
+
+      <div class="col-md-6" style="border: dashed 2px #d6d6d6; border-radius: 4px;  ">
+        <a href="{{ url_for('who') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/iconopersonas.png')}}" alt="Card image cap" width="140" height="110"></a>
+        <div class="card-body">
+          <h4 style="color: #565656;">Find out more about the founders</h4>
+
+        </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <a href="{{ url_for('why') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/why.png')}}" alt="Card image cap" width="170" height="110"></a>
-      <div class="card-body">
-        <h5 class="card-title" href="{{ url_for('why') }}"> Why SciMatch?</h5>
-        <p class="card-text">To make your life easier.</p>
-      </div>
-    </div>
-    </div>
+
+
+
   </div>
 </div>
 </center>

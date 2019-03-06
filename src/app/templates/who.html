@@ -1,24 +1,33 @@
 {% extends "flask_user_layout.html" %}
 {% block content %}
+<head>
+ <title>SciMatch!</title>
+ <script>
+ AOS.init();
+</script>
+</head>
 <center>
-<h2>Who are we?</h2>
-<h4 class="text-dark"> We are three excellent students that have many differences between us but a common bond: biology and informatics.</h4>  
+<h1 style="color: #565656; margin: 40px;">Who are we?</h1>
+<h4 style="color: #565656; margin: 30px;"> Three enthusiatic students with many differences but a common bond: biology and informatics.</h4>
  <div class="container">
   <div class="row">
-   <div class="col-md-4" style=" height: 505px;  margin-bottom: 10px; background-color: white; border: 2px solid #76E6B6; border-radius:10px; " >
+   <div class="col-md-4"  data-aos="fade-right" style=" height: 505px;  margin-bottom: 10px; background-color: white; border: dashed 1px #d6d6d6; border-radius: 4px; " >
    <img class="card-img-top" src="{{ url_for('static', filename='images/aina.png')}}" alt="Card image cap" width="360" height="460" style="boder: solid 1px grey; margin: 5px 5px 5px 5px; ">
    <h4>Aina Rill</h4>
    <a href="mailto:ainarill11@gmail.com"><img src="{{ url_for('static', filename='images/mail.png')}}" width="20" height="20"/></a>
   </div>
-   <div class="col-md-4" style=" height: 505px;  margin-bottom: 10px; background-color: white; border: 2px solid #76E6B6; border-radius:10px; " >
+   <div class="col-md-4" data-aos="flip-left" style=" height: 505px;  margin-bottom: 10px; background-color: white; border: dashed 1px #d6d6d6; border-radius: 4px; " >
    <img class="card-img-top" src="{{ url_for('static', filename='images/luisa.png')}}" alt="Card image cap" width="360" height="460" style="boder: solid 1px grey; margin: 5px 5px 5px 5px; ">
    <h4>Luisa Santus</h4>
    <a href="mailto:luisa.santus95@gmail.com"><img src="{{ url_for('static', filename='images/mail.png')}}" width="20" height="20"/></a>
    </div>
-    <div class="col-md-4" style=" height: 505px;  margin-bottom: 10px; background-color: white; border: 2px solid #76E6B6; border-radius:10px; " >
+    <div class="col-md-4" data-aos="fade-left"  style=" height: 505px;  margin-bottom: 10px; background-color: white; border: dashed 1px #d6d6d6; border-radius: 4px; " >
     <img class="card-img-top" src="{{ url_for('static', filename='images/gab.png')}}" alt="Card image cap" width="360" height="460" style="boder: solid 1px grey; margin: 5px 5px 5px 5px; ">
     <h4>Gabriel Carbonell</h4>
     <a href="mailto:gabicarbonell@gmail.com"><img src="{{ url_for('static', filename='images/mail.png')}}" width="20" height="20"/></a>
     </div>
     </div>
+</div>
+    <br><br>
+  
 {% endblock %}

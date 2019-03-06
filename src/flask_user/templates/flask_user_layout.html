@@ -10,7 +10,13 @@
     <title>{{ user_manager.USER_APP_NAME }}</title>
 
     <!-- Bootstrap -->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+  AOS.init();
+</script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="jquery-3.3.1.min.js"></script>
     <!-- In-lining styles to avoid needing a separate .css file -->
@@ -76,7 +82,7 @@
                         {%trans%}Chat{%endtrans%}</a>
                         <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
-            </div> 
+            </div>
         </div>
             {% else %}
                 <a class="btn" style="border-color: #76E6B6;"  href="{{ url_for('user.login') }}">
