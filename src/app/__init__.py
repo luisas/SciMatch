@@ -16,6 +16,8 @@ import pandas
 # Class-based application configuration
 class ConfigClass(object):
     """ Flask application config """
+    APPLICATION_ROOT= '/scimatch'
+
 
     # Flask settings
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
