@@ -23,7 +23,7 @@ class ConfigClass(object):
     # Flask-SQLAlchemy settings
 
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/qqq?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/qqq?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
 
 
@@ -209,7 +209,7 @@ def create_app():
                                 FieldClass = Field, PreferenceClass = Preference,
                                 DegreeClass = Degree,
                                 DegreeFieldClass = DegreeField,
-                                RequirementClass = Requirement)
+                                RequirementClass = Requirement, MessageClass = Message)
 
     db.create_all()
 

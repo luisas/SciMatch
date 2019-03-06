@@ -73,6 +73,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         CountryClass = None,
         PreferenceClass =None,
         FieldClass = None,
+        MessageClass = None,
         DegreeClass = None,
         DegreeFieldClass = None,
         RequirementClass = None# Only used for testing
@@ -200,7 +201,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.ResetPasswordFormClass = forms.ResetPasswordForm
         self.ChangePrefFormClass = forms.ChangePrefForm
 
-        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass, PreferenceClass, FieldClass, DegreeClass, DegreeFieldClass, RequirementClass)
+        self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass, PreferenceClass, FieldClass, MessageClass, DegreeClass, DegreeFieldClass, RequirementClass)
 
         # Setup PasswordManager
         self.password_manager = PasswordManager(app)
