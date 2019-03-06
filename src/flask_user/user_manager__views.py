@@ -346,12 +346,17 @@ class UserManager__Views(object):
                     requests.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
                                     'applicant_last_name':applicant_last_name, 'position_id':position.id,
                                     'position_name': position_name, 'group_id':group_id}) 
+        add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
+        message = request.values.get('message')
+        if request.method == 'POST':
+            added_message = self.db_manager.add_message(message=message, group_id=current_user.id, user_id=applicant_id)
+            self.db_manager.commit()
 
             # Auto-login after reset password or redirect to login page
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
 
         #self.prepare_domain_translations()
-        return render_template(self.CHAT_GROUP_TEMPLATE, role = role, positions = positions, requests = requests)
+        return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, role = role, positions = positions, requests = requests)
 
 
     @login_required
