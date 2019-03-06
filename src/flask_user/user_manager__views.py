@@ -308,7 +308,7 @@ class UserManager__Views(object):
         add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
         message = request.values.get('message')
         if request.method == 'POST':
-            added_message = self.db_manager.add_message(message=message, user_id=current_user.id)
+            added_message = self.db_manager.add_message(message=message, user_id=current_user.id )
             self.db_manager.commit()
             # Flash a system message
         #flash(_("The message has been send succesfully."), 'success')
@@ -319,6 +319,42 @@ class UserManager__Views(object):
         #self.prepare_domain_translations()
         return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form, role = role)
 
+    @login_required
+    def chat_group_view(self):
+        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+
+        """ Display addition of a position"""
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
+
+        positions = self.db_manager.PositionClass.query.filter_by(group_id=current_user.id).all()
+
+        requests = []
+        for position in positions:
+            request_set = self.db_manager.RequestsClass.query.filter_by(position_id = position.id).all()
+            for request_element in request_set:
+                if request_element.status == "accepted":
+                    applicant_id = request_element.applicant_id  
+                    applicant_first_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().first_name
+                    applicant_last_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().last_name
+                    position_id = position.id
+                    position_name = position.name
+                    group_id = current_user.id
+                    requests.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
+                                    'applicant_last_name':applicant_last_name, 'position_id':position.id,
+                                    'position_name': position_name, 'group_id':group_id}) 
+        add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
+        message = request.values.get('message')
+        if request.method == 'POST':
+            added_message = self.db_manager.add_message(message=message, group_id=current_user.id, user_id=applicant_id)
+            self.db_manager.commit()
+
+            # Auto-login after reset password or redirect to login page
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+
+        #self.prepare_domain_translations()
+        return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, role = role, positions = positions, requests = requests)
 
 
     @login_required
@@ -719,11 +755,20 @@ class UserManager__Views(object):
                     position_name = position.name
                     request_id = request_element.id
                     request_status = request_element.status
+                    bachelor_id = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 2).first().degree_field
+                    master_id = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 3).first().degree_field
+                    phd_id = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 4).first().degree_field
+                    postdoc_id = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 5).first().degree_field
+                    bachelor = self.db_manager.DegreeFieldClass.query.filter_by(id= bachelor_id).first().name
+                    master = self.db_manager.DegreeFieldClass.query.filter_by(id=master_id).first().name
+                    phd = self.db_manager.DegreeFieldClass.query.filter_by(id=phd_id).first().name
+                    postdoc = self.db_manager.DegreeFieldClass.query.filter_by(id=postdoc_id).first().name
+                    experience = self.db_manager.ExperienceClass.query.filter_by(user_id=applicant_id).first().description
                     requests.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
                                     'applicant_last_name':applicant_last_name, 'position_id':position_id,
                                     'position_name': position_name,
-                                    'status': request_status,
-                                    'request_id': request_id})
+                                    'status': request_status,'experience':experience,
+                                    'request_id': request_id, 'bachelor': bachelor, 'master':master, 'phd':phd, 'postdoc':postdoc } )
 
         form = self.RespondRequestFormClass(request.form)
 
@@ -760,7 +805,7 @@ class UserManager__Views(object):
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
 
         #self.prepare_domain_translations()
-        return render_template(self.HOME_PAGE_GROUP_TEMPLATE, form=form,role = role, positions = positions, requests = requests )
+        return render_template(self.HOME_PAGE_GROUP_TEMPLATE, form=form,role = role, positions = positions, requests = requests)
 
     def home_page_applicant_view(self):
         """ Display addition of a position"""

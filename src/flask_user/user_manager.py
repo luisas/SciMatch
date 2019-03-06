@@ -415,6 +415,9 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         def chat_applicant_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.chat_applicant_view()
+        def chat_group_stub():
+            if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
+            return self.chat_group_view()
         def home_page_applicant_stub():
             if not self.USER_ENABLE_CHANGE_PASSWORD: abort(404)
             return self.home_page_applicant_view()
@@ -514,7 +517,6 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_REGISTER_GROUP_URL, 'user.register_group', register_group_stub,
                          methods=['GET', 'POST'])
-
         app.add_url_rule(self.USER_CHANGE_PASSWORD_URL, 'user.change_password', change_password_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_CHANGE_USERNAME_URL, 'user.change_username', change_username_stub,
@@ -525,6 +527,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         app.add_url_rule(self.USER_EDIT_GROUP_PROFILE_URL, 'user.edit_group_profile', edit_group_profile_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.CHAT_APPLICANT_URL, 'chat_applicant', chat_applicant_stub,
+                         methods=['GET', 'POST'])
+        app.add_url_rule(self.CHAT_GROUP_URL, 'chat_group', chat_group_stub,
                          methods=['GET', 'POST'])
         app.add_url_rule(self.USER_EMAIL_ACTION_URL, 'user.email_action', email_action_stub)
         app.add_url_rule(self.USER_FORGOT_PASSWORD_URL, 'user.forgot_password', forgot_password_stub,
