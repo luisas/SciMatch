@@ -46,11 +46,11 @@ class DBManager(object):
         self.PositionClass = PositionClass
         self.PreferenceClass = PreferenceClass
         self.FieldClass = FieldClass
+        self.MessageClass = MessageClass
         self.RequestsClass = RequestsClass
         self.UserHasEducationClass = UserHasEducationClass
         self.CityClass = CityClass
         self.CountryClass = CountryClass
-        self.MessageClass = MessageClass
         self.DegreeFieldClass = DegreeFieldClass
         self.DegreeClass = DegreeClass
         self.user_manager = app.user_manager
@@ -228,19 +228,19 @@ class DBManager(object):
         field = self.FieldClass(**kwargs)
         self.db_adapter.add_object(field)
         return field
-
+        
+    def add_message(self, **kwargs):
+        """Add a Position object, with properties specified in ``**kwargs``."""
+        message = self.MessageClass(**kwargs)
+        self.db_adapter.add_object(message)
+        return message
+    
     def add_position(self, **kwargs):
         """Add a Position object, with properties specified in ``**kwargs``."""
         position = self.PositionClass(**kwargs)
         self.db_adapter.add_object(position)
         return position
 
-
-    def add_message(self, **kwargs):
-        """Add a Position object, with properties specified in ``**kwargs``."""
-        message = self.MessageClass(**kwargs)
-        self.db_adapter.add_object(message)
-        return message
 
     def add_requirement(self, **kwargs):
         """Add a Position object, with properties specified in ``**kwargs``."""
