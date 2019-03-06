@@ -11,8 +11,13 @@ class DBManager(object):
     """Manage DB objects."""
 
 
+    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None,
+                 RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, 
+                 PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None, 
+                 EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, 
+                 RequestsClass= None, PreferenceClass = None, FieldClass= None, MessageClass= None,
+                 DegreeClass = None ,DegreeFieldClass= None, RequirementClass=None):
 
-    def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None, RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None, EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, RequestsClass= None, PreferenceClass = None, FieldClass= None, DegreeClass = None ,DegreeFieldClass= None, RequirementClass=None):
 
 
         """Initialize the appropriate DbAdapter, based on the ``db`` parameter type.
@@ -45,6 +50,7 @@ class DBManager(object):
         self.UserHasEducationClass = UserHasEducationClass
         self.CityClass = CityClass
         self.CountryClass = CountryClass
+        self.MessageClass = MessageClass
         self.DegreeFieldClass = DegreeFieldClass
         self.DegreeClass = DegreeClass
         self.user_manager = app.user_manager
@@ -229,11 +235,19 @@ class DBManager(object):
         self.db_adapter.add_object(position)
         return position
 
+
+    def add_message(self, **kwargs):
+        """Add a Position object, with properties specified in ``**kwargs``."""
+        message = self.MessageClass(**kwargs)
+        self.db_adapter.add_object(message)
+        return message
+
     def add_requirement(self, **kwargs):
         """Add a Position object, with properties specified in ``**kwargs``."""
         req = self.RequirementClass(**kwargs)
         self.db_adapter.add_object(req)
         return req
+
 
     def add_user_email(self, user, **kwargs):
         """Add a UserEmail object, with properties specified in ``**kwargs``."""

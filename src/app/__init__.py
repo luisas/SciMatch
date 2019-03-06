@@ -22,7 +22,9 @@ class ConfigClass(object):
 
     # Flask-SQLAlchemy settings
 
+
     SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/qqq?charset=utf8'    # File-based SQL database'    # File-based SQL database
+
 
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
@@ -178,10 +180,18 @@ def create_app():
         degree_field = db.Column(db.Integer(), db.ForeignKey('degreefield.id', ondelete='CASCADE'))
         position_id = db.Column(db.Integer(), db.ForeignKey('position.id', ondelete='CASCADE'))
 
+    class Message(db.Model):
+        __tablename__='message'
+        id = db.Column(db.Integer(), primary_key=True)
+        message = db.Column(db.String(500), nullable=False)
+        user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+        group_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+
     class Degree(db.Model):
         __tablename__="degree"
         id = db.Column(db.Integer(), primary_key=True)
         name = db.Column(db.String(100), nullable=False )
+
 
     class DegreeField(db.Model):
         __tablename__="degreefield"
@@ -321,9 +331,9 @@ def create_app():
         return render_template("/profile_applicant.html")
     app.add_url_rule('/profile_applicant', 'profile_applicant', profile_applicant)
 
-    def chat_applicant():
-        return render_template("/chat_applicant.html")
-    app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
+    # def chat_applicant():
+    #     return render_template("/chat_applicant.html")
+    # app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
 
     return app
 
