@@ -199,8 +199,6 @@ class UserManager__Views(object):
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
         role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
-
-
         available_degree_fields=self.db_manager.DegreeFieldClass.query.all()
         degree_fields=[(i.id, i.name) for i in available_degree_fields]
 
@@ -306,7 +304,7 @@ class UserManager__Views(object):
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
 
         # Initialize form
-        
+
         add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
         message = request.values.get('message')
         if request.method == 'POST':
@@ -328,16 +326,23 @@ class UserManager__Views(object):
         # Initialize form
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
         role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
-        educations_labels = [{"name": "First Education"},
-              {"name": "Second Education"}]
-
-
 
         pi_found = self.db_manager.PIClass.query.filter_by(group_id= current_user.id).first()
-        institution_found = self.db_manager.InstitutionClass.query.filter_by(id =current_user.id).first()
+        #BUG
+        institution_has_group_found = self.db_manager.InstitutionHasGroupClass.query.filter_by(user_id = current_user.id ).first()
+        institution_found = self.db_manager.InstitutionClass.query.filter_by(id =institution_has_group_found.institution_id).first()
 
-        form = self.EditGroupProfileFormClass(request.form, obj=current_user, pi_name = pi_found.name, pi_surname=pi_found.surname,institution_name=institution_found.name,institution_city=institution_found.city, institution_link = insititution_found.link )
+        available_cities=self.db_manager.CityClass.query.all()
+        cities=[(i.id, i.name) for i in available_cities]
 
+        form = self.EditGroupProfileFormClass(request.form, obj=current_user,
+                                                pi_name = pi_found.name,
+                                                pi_surname=pi_found.surname,
+                                                institution_name=institution_found.name,
+                                                institution_city=institution_found.city,
+                                                institution_link = institution_found.link )
+
+        form.institution_city.choices = cities;
         pi_name = request.values.get('pi_name')
         pi_surname = request.values.get('pi_surname')
         institution_name = request.values.get('institution_name')
@@ -351,10 +356,13 @@ class UserManager__Views(object):
                 self.db_manager.delete_pi(pi_found.id)
             if institution_found is not None:
                 self.db_manager.delete_institution(institution_found.id)
+            if institution_has_group_found is not None:
+                self.db_manager.delete_institution_has_group(institution_has_group_found.id)
             form.populate_obj(current_user)
             pi = self.db_manager.add_pi(name=pi_name, surname = pi_surname, group_id = current_user.id)
             institution = self.db_manager.add_institution(name=institution_name, link= institution_link, city = institution_city)
-
+            self.db_manager.commit()
+            institution_has_group_found = self.db_manager.add_institution_has_group(user_id= current_user.id, institution_id= institution.id)
             # Save object
             self.db_manager.commit()
 
@@ -362,7 +370,7 @@ class UserManager__Views(object):
 
         # Render form
         self.prepare_domain_translations()
-        return render_template(self.USER_EDIT_GROUP_PROFILE_TEMPLATE, form=form, educations_labels=educations_labels, role=role)
+        return render_template(self.USER_EDIT_GROUP_PROFILE_TEMPLATE, form=form, role=role)
 
 
     @login_required
@@ -697,8 +705,6 @@ class UserManager__Views(object):
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
         role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
-        # Initialize form
-         # for login_or_register.html
         positions = self.db_manager.PositionClass.query.filter_by(group_id=current_user.id).all()
 
         requests = []
@@ -719,13 +725,9 @@ class UserManager__Views(object):
                                     'status': request_status,
                                     'request_id': request_id})
 
-        #requests = self.db_manager.RequestsClass.query.filter_by(group_id=)
         form = self.RespondRequestFormClass(request.form)
 
         if request.method == 'POST' :
-
-            #position_id = request.values.get("position_id")
-            #position_id = 1
             if request.values.get('status') == 'delete_position':
                 position_id = int(request.values.get('position_id'))
                 self.db_manager.delete_position(position_id)
@@ -745,7 +747,7 @@ class UserManager__Views(object):
                         status = "rejected"
 
                 request_deleted = self.db_manager.delete_request(request_id= request_id )
-                request_updated = self.db_manager.add_request(id = request_id, applicant_id = current_user.id, position_id=position_id, status = status )
+                request_updated = self.db_manager.add_request(id = request_id, applicant_id = applicant_id, position_id=position_id, status = status )
 
                 self.db_manager.commit()
                 # Flash a system message
@@ -768,51 +770,84 @@ class UserManager__Views(object):
         role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
 
+        requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status = "pending").all()
+        requested =[]
+        accepted = []
+        for element in requested_objects:
+                requested.append(element.position_id)
+        accepted_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status = "accepted").all()
+        for element in accepted_objects:
+                accepted.append(element.position_id)
+
+
         #Preferences applicant
         preference_applicant = self.db_manager.PreferenceClass.query.filter_by( user_id = current_user.id).first()
         if preference_applicant is not None:
-            preference_applicant_field = preference_applicant.field_id
-            preference_applicant_city = preference_applicant.city_id
-            matches = self.db_manager.PositionClass.query.filter_by(field_id = preference_applicant_field).all()
+            preference_applicant_field_id = preference_applicant.field_id
+            preference_applicant_city_id = preference_applicant.city_id
+            matches = self.db_manager.PositionClass.query.filter_by(field_id = preference_applicant_field_id).all()
         else:
             matches = self.db_manager.PositionClass.query.all()
 
-        if len(matches) != 0:
-            ids_matches = set()
-            for match in matches:
-                ids_matches.add(match.id)
+        ids_positions_to_be_removed = []
+
+        # TODO : Not working when preferences are not set
+        test = ""
+        matches_filtered = []
+        for pos in matches:
+            position_institution_id = self.db_manager.InstitutionHasGroupClass.query.filter_by(user_id = pos.group_id).first().institution_id
+            position_city_id = self.db_manager.InstitutionClass.query.filter_by(id= position_institution_id).first().city
+
+            #Match Over the Requirement
+            bachelor_req_degree_field_id = self.db_manager.RequirementClass.query.filter_by(position_id=pos.id, degree = 2 ).first().degree_field
+            master_req_degree_field_id = self.db_manager.RequirementClass.query.filter_by(position_id=pos.id, degree = 3 ).first().degree_field
+            phd_req_degree_field_id= self.db_manager.RequirementClass.query.filter_by(position_id=pos.id, degree = 4 ).first().degree_field
+            postdoc_req_degree_field_id = self.db_manager.RequirementClass.query.filter_by(position_id=pos.id, degree = 5 ).first().degree_field
 
 
-        requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id).all()
-        requested =[]
-        for element in requested_objects:
-                requested.append(element.position_id)
-                #delete from matches
-               # ids_matches.remove(element.position_id)
+            #these cannot be None, but they can be 1 that points to "None" ;)
+            applicant_bachelor = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first().degree_field
+            applicant_master = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 3).first().degree_field
+            applicant_phd = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 4).first().degree_field
+            applicant_postdoc = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 5).first().degree_field
+
+
+            # 1 is None
+            if int(bachelor_req_degree_field_id) is not 1:
+                if int(bachelor_req_degree_field_id) != applicant_bachelor and int(bachelor_req_degree_field_id) != applicant_master and int(bachelor_req_degree_field_id) != applicant_phd and int(bachelor_req_degree_field_id) != applicant_postdoc:
+                    continue
+            if int(master_req_degree_field_id) is not 1:
+                if int(master_req_degree_field_id) != applicant_master and int(master_req_degree_field_id) != applicant_phd and int(master_req_degree_field_id) != applicant_postdoc :
+                    continue
+            if int(phd_req_degree_field_id) is not 1:
+                if int(phd_req_degree_field_id) != applicant_phd and int(phd_req_degree_field_id) != applicant_postdoc :
+                    continue
+            if int(postdoc_req_degree_field_id) is not 1:
+                if int(postdoc_req_degree_field_id) != applicant_postdoc:
+                    continue
+
+            # Match Over the City
+            if preference_applicant_city_id is None:
+                matches_filtered.append(pos)
+                continue
+            if int(position_city_id) == preference_applicant_city_id:
+                matches_filtered.append(pos)
 
 
 
 
         form = self.SendRequestFormClass(request.form)
-
+        # Sending Request
         if request.method == 'POST':
-
-            #position_id = request.values.get("position_id")
-            #position_id = 1
             position_id = int(request.form['position_id'])
             request_sent = self.db_manager.add_request(applicant_id = current_user.id, position_id=position_id, status ="pending" )
-
             self.db_manager.commit()
             # Flash a system message
             flash(_("The Request has been sent succesfully succesfully."), 'success')
-
             # Auto-login after reset password or redirect to login page
             safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
-
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
-
-        #self.prepare_domain_translations()
-        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches, requested = requested )
+        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches_filtered, requested = requested, test = test  )
 
     @login_required
     def change_pref_view(self):
@@ -859,7 +894,7 @@ class UserManager__Views(object):
                 self.db_manager.delete_preference(preference_found.id)
             city_id = request.values.get('city')
             field_id = request.values.get('field')
-            preference= self.db_manager.add_preference(user_id = current_user.id, city_id=city_id, field_id = field_id)
+            preference= self.db_manager.add_preference(user_id = current_user.id, city_id=city_id, field_id = int(field_id))
             self.db_manager.commit()
             # Flash a system message
             flash(_("Your Preferences have been changed succesfully :) "), 'success')
@@ -933,6 +968,7 @@ class UserManager__Views(object):
 
             pi = self.db_manager.add_pi(name=pi_name, surname = pi_surname, group_id = user.id)
             institution = self.db_manager.add_institution(name=institution_name, link= institution_link, city = institution_city)
+            self.db_manager.commit()
             institution_has_group = self.db_manager.add_institution_has_group(user_id= user.id, institution_id= institution.id)
 
             # Email confirmation depends on the USER_ENABLE_CONFIRM_EMAIL setting

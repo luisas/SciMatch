@@ -284,7 +284,7 @@ class AddPositionForm(FlaskForm):
         validators.DataRequired(_('Starting date is required'))])
     salary = IntegerField(_('Salary'), validators=[
         validators.DataRequired(_('Salary is required'))])
-    description = StringField(_('Description'), validators=[validators.DataRequired(_('Name is required'))])
+    description = TextAreaField(_('Description'), validators=[validators.DataRequired(_('Description is required'))])
     field = SelectField(_('Field'), coerce=int)
 
     bachelor = SelectField(_('Bachelor'), coerce=int, validators=[validators.DataRequired()]  )
@@ -366,7 +366,6 @@ class RegisterApplicantForm(FlaskForm):
 class ChangePrefForm(FlaskForm):
     next = HiddenField()        # for login_or_register.html
     reg_next = HiddenField()
-
     city = SelectField(_('City'), coerce=int)
     field= SelectField(_('Field'), coerce=int)
     submit = SubmitField(_('Save'))

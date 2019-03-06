@@ -23,9 +23,7 @@ class ConfigClass(object):
     # Flask-SQLAlchemy settings
 
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/qqq?charset=utf8'    # File-based SQL database'    # File-based SQL database
-
-
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/popo?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
@@ -109,7 +107,7 @@ def create_app():
         id = db.Column(db.Integer(), primary_key=True)
         user_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
         city_id= db.Column(db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'))
-        field_id= db.Column(db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'))
+        field_id= db.Column(db.Integer, db.ForeignKey('field.id', ondelete='CASCADE'))
 
     class Field(db.Model):
         __tablename__= 'field'

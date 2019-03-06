@@ -124,7 +124,7 @@ class UserManager__Settings(object):
     #:     | Make sure that decorated views **never call other views directly**.
     #:         Allways se ``redirect()`` to ensure proper view protection.
 
-    USER_ALLOW_LOGIN_WITHOUT_CONFIRMED_EMAIL = True
+    USER_ALLOW_LOGIN_WITHOUT_CONFIRMED_EMAIL = False
 
     #: | Require users to retype their password.
     #: | Affects registration, change password and reset password forms.

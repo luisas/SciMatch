@@ -12,9 +12,9 @@ class DBManager(object):
 
 
     def __init__(self, app, db, UserClass, UserEmailClass=None, UserInvitationClass=None,
-                 RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None, 
-                 PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None, 
-                 EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None, 
+                 RoleClass=None, UserRolesClass=None, PositionClass=None, UserHasEducationClass=None,
+                 PIClass = None, InstitutionClass = None, InstitutionHasGroupClass = None,
+                 EducationClass = None, ExperienceClass = None,CityClass = None, CountryClass = None,
                  RequestsClass= None, PreferenceClass = None, FieldClass= None, MessageClass= None,
                  DegreeClass = None ,DegreeFieldClass= None, RequirementClass=None):
 
@@ -168,7 +168,11 @@ class DBManager(object):
              if req:
                  self.db_adapter.delete_object(req)
 
-
+    def delete_institution_has_group(self, id):
+         if isinstance(self.db_adapter, SQLDbAdapter):
+             rel = self.db_adapter.find_first_object(self.user_manager.db_manager.InstitutionHasGroupClass, id=id)
+             if rel:
+                 self.db_adapter.delete_object(rel)
 
 
     def delete_education(self, education_id):
@@ -228,13 +232,13 @@ class DBManager(object):
         field = self.FieldClass(**kwargs)
         self.db_adapter.add_object(field)
         return field
-        
+
     def add_message(self, **kwargs):
         """Add a Position object, with properties specified in ``**kwargs``."""
         message = self.MessageClass(**kwargs)
         self.db_adapter.add_object(message)
         return message
-    
+
     def add_position(self, **kwargs):
         """Add a Position object, with properties specified in ``**kwargs``."""
         position = self.PositionClass(**kwargs)

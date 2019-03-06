@@ -14,7 +14,7 @@
         <h3> Your Matches</h3>
         <br>
         <center>
-
+          {{ test }}
           {% for each in matches %}
 
           <div class="col-md-4" >
@@ -58,7 +58,7 @@
                 </div>
                 <div class="collapse" id="{{ each['id'] }}">
               <div class="card card-body">
-              {{ each['description'] }} </div>               
+              {{ each['description'] }} </div>
               </div>
               {% else %}
 
@@ -86,7 +86,7 @@
               <button type="button btn-success" style="background-color:#white; border-radius: 5px; height:35px;" disabled> Request has been sent!</button>
               <div class="collapse" id="{{ each['id'] }}">
               <div class="card card-body">
-              {{ each['description'] }} </div>               
+              {{ each['description'] }} </div>
               </div>
 
 
