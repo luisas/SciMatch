@@ -48,7 +48,7 @@
         <img id="logo" src="{{url_for('static', filename='images/logo.png')}}" /></a>
         </div>
         <div class="pull-left"><a href="/">
-        <a href="/">  <h1 class="no-margins " id="title-logo" >{{ user_manager.USER_APP_NAME }}</h1></a>
+        <a href="/scimatch">  <h1 class="no-margins " id="title-logo" >{{ user_manager.USER_APP_NAME }}</h1></a>
         </div>
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) and role == "Applicant" %}
@@ -76,7 +76,7 @@
                         {%trans%}Chat{%endtrans%}</a>
                         <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
-            </div> 
+            </div>
         </div>
             {% else %}
                 <a class="btn" style="border-color: #76E6B6;"  href="{{ url_for('user.login') }}">

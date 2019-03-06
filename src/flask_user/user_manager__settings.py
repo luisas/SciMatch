@@ -174,73 +174,73 @@ class UserManager__Settings(object):
     #:     URL settings
     USER_PASSLIB_CRYPTCONTEXT_KEYWORDS = dict()
 
-    USER_SELECT_REGISTER_TYPE_URL= '/user/select_register_type'
-    USER_ADD_POSITION_URL= '/user/add_position'
-    HOME_PAGE_APPLICANT_URL= '/user/home_page_applicant'
-    HOME_PAGE_GROUP_URL= '/user/home_page_group'
+    USER_SELECT_REGISTER_TYPE_URL= '/scimatch/user/select_register_type'
+    USER_ADD_POSITION_URL= '/scimatch/user/add_position'
+    HOME_PAGE_APPLICANT_URL= '/scimatch/user/home_page_applicant'
+    HOME_PAGE_GROUP_URL= '/scimatch/user/home_page_group'
 
-    CHANGE_PREF_URL='/change_pref'
+    CHANGE_PREF_URL='/scimatch/change_pref'
 
-    USER_REGISTER_APPLICANT_URL= '/user/register_applicant'
-    USER_REGISTER_GROUP_URL= '/user/register_group'
+    USER_REGISTER_APPLICANT_URL= '/scimatch/user/register_applicant'
+    USER_REGISTER_GROUP_URL= '/scimatch/user/register_group'
 
 
-    USER_CHANGE_PASSWORD_URL = '/user/change-password' #:
-    USER_CHANGE_USERNAME_URL = '/user/change-username' #:
-    USER_CONFIRM_EMAIL_URL = '/user/confirm-email/<token>' #:
-    USER_EDIT_USER_PROFILE_URL = '/user/edit_user_profile' #:
-    USER_EDIT_GROUP_PROFILE_URL = '/user/edit_group_profile' #:
-    USER_EMAIL_ACTION_URL = '/user/email/<id>/<action>' #:
-    USER_FORGOT_PASSWORD_URL = '/user/forgot-password' #:
-    USER_INVITE_USER_URL = '/user/invite' #:
-    USER_LOGIN_URL = '/user/sign-in' #:
-    USER_LOGOUT_URL = '/user/sign-out' #:
-    USER_MANAGE_EMAILS_URL = '/user/manage-emails' #:
-    USER_REGISTER_URL = '/user/register' #:
-    USER_RESEND_EMAIL_CONFIRMATION_URL = '/user/resend-email-confirmation' #:
+    USER_CHANGE_PASSWORD_URL = '/scimatch/user/change-password' #:
+    USER_CHANGE_USERNAME_URL = '/scimatch/user/change-username' #:
+    USER_CONFIRM_EMAIL_URL = '/scimatch/user/confirm-email/<token>' #:
+    USER_EDIT_USER_PROFILE_URL = '/scimatch/user/edit_user_profile' #:
+    USER_EDIT_GROUP_PROFILE_URL = '/scimatch/user/edit_group_profile' #:
+    USER_EMAIL_ACTION_URL = '/scimatch/user/email/<id>/<action>' #:
+    USER_FORGOT_PASSWORD_URL = '/scimatch/user/forgot-password' #:
+    USER_INVITE_USER_URL = '/scimatch/user/invite' #:
+    USER_LOGIN_URL = '/scimatch/user/sign-in' #:
+    USER_LOGOUT_URL = '/scimatch/user/sign-out' #:
+    USER_MANAGE_EMAILS_URL = '/scimatch/user/manage-emails' #:
+    USER_REGISTER_URL = '/scimatch/user/register' #:
+    USER_RESEND_EMAIL_CONFIRMATION_URL = '/scimatch/user/resend-email-confirmation' #:
 
     #: .. This hack shows a header above the _next_ section
     #: .. code-block:: none
     #:
     #:     Template file settings
-    USER_RESET_PASSWORD_URL = '/user/reset-password/<token>'
+    USER_RESET_PASSWORD_URL = '/scimatch/user/reset-password/<token>'
 
-    USER_REGISTER_APPLICANT_TEMPLATE='flask_user/register_applicant.html'
-    USER_REGISTER_GROUP_TEMPLATE='flask_user/register_group.html'
+    USER_REGISTER_APPLICANT_TEMPLATE='/scimatch/flask_user/register_applicant.html'
+    USER_REGISTER_GROUP_TEMPLATE='/scimatch/flask_user/register_group.html'
     CHANGE_PREF_TEMPLATE='/change_pref.html'
-    HOME_PAGE_APPLICANT_TEMPLATE = '/home_page_applicant.html' #:
-    HOME_PAGE_GROUP_TEMPLATE = '/home_page_group.html' #:
-    USER_SELECT_REGISTER_TYPE_TEMPLATE = 'flask_user/select_register_type.html' #:
-    USER_ADD_POSITION_TEMPLATE = 'flask_user/add_position.html' #:
-    USER_CHANGE_PASSWORD_TEMPLATE = 'flask_user/change_password.html' #:
-    USER_CHANGE_USERNAME_TEMPLATE = 'flask_user/change_username.html' #:
-    USER_EDIT_USER_PROFILE_TEMPLATE = 'flask_user/edit_user_profile.html' #:
-    USER_EDIT_GROUP_PROFILE_TEMPLATE = 'flask_user/edit_group_profile.html' #:
-    USER_FORGOT_PASSWORD_TEMPLATE = 'flask_user/forgot_password.html' #:
-    USER_INVITE_USER_TEMPLATE = 'flask_user/invite_user.html' #:
-    USER_LOGIN_TEMPLATE = 'flask_user/login.html' #:
-    USER_LOGIN_AUTH0_TEMPLATE = 'flask_user/login_auth0.html' #:
-    USER_MANAGE_EMAILS_TEMPLATE = 'flask_user/manage_emails.html' #:
-    USER_REGISTER_TEMPLATE = 'flask_user/register.html' #:
-    USER_RESEND_CONFIRM_EMAIL_TEMPLATE = 'flask_user/resend_confirm_email.html' #:
+    HOME_PAGE_APPLICANT_TEMPLATE = '/scimatch/home_page_applicant.html' #:
+    HOME_PAGE_GROUP_TEMPLATE = '/scimatch//home_page_group.html' #:
+    USER_SELECT_REGISTER_TYPE_TEMPLATE = '/scimatch/flask_user/select_register_type.html' #:
+    USER_ADD_POSITION_TEMPLATE = '/scimatch/flask_user/add_position.html' #:
+    USER_CHANGE_PASSWORD_TEMPLATE = '/scimatch/flask_user/change_password.html' #:
+    USER_CHANGE_USERNAME_TEMPLATE = '/scimatch/flask_user/change_username.html' #:
+    USER_EDIT_USER_PROFILE_TEMPLATE = '/scimatch/flask_user/edit_user_profile.html' #:
+    USER_EDIT_GROUP_PROFILE_TEMPLATE = '/scimatch/flask_user/edit_group_profile.html' #:
+    USER_FORGOT_PASSWORD_TEMPLATE = '/scimatch/flask_user/forgot_password.html' #:
+    USER_INVITE_USER_TEMPLATE = '/scimatch/flask_user/invite_user.html' #:
+    USER_LOGIN_TEMPLATE = '/scimatch/flask_user/login.html' #:
+    USER_LOGIN_AUTH0_TEMPLATE = '/scimatch/flask_user/login_auth0.html' #:
+    USER_MANAGE_EMAILS_TEMPLATE = '/scimatch/flask_user/manage_emails.html' #:
+    USER_REGISTER_TEMPLATE = '/scimatch/flask_user/register.html' #:
+    USER_RESEND_CONFIRM_EMAIL_TEMPLATE = '/scimatch/flask_user/resend_confirm_email.html' #:
 
     #: .. This hack shows a header above the _next_ section
     #: .. code-block:: none
     #:
     #:     Email template file settings
-    USER_RESET_PASSWORD_TEMPLATE = 'flask_user/reset_password.html'
+    USER_RESET_PASSWORD_TEMPLATE = '/scimatch/flask_user/reset_password.html'
 
-    USER_CONFIRM_EMAIL_TEMPLATE = 'flask_user/emails/confirm_email' #:
-    USER_INVITE_USER_EMAIL_TEMPLATE = 'flask_user/emails/invite_user' #:
-    USER_PASSWORD_CHANGED_EMAIL_TEMPLATE = 'flask_user/emails/password_changed' #:
-    USER_REGISTERED_EMAIL_TEMPLATE = 'flask_user/emails/registered' #:
-    USER_RESET_PASSWORD_EMAIL_TEMPLATE = 'flask_user/emails/reset_password' #:
+    USER_CONFIRM_EMAIL_TEMPLATE = '/scimatch/flask_user/emails/confirm_email' #:
+    USER_INVITE_USER_EMAIL_TEMPLATE = '/scimatch/flask_user/emails/invite_user' #:
+    USER_PASSWORD_CHANGED_EMAIL_TEMPLATE = '/scimatch/flask_user/emails/password_changed' #:
+    USER_REGISTERED_EMAIL_TEMPLATE = '/scimatch/flask_user/emails/registered' #:
+    USER_RESET_PASSWORD_EMAIL_TEMPLATE = '/scimatch/flask_user/emails/reset_password' #:
 
     #: .. This hack shows a header above the _next_ section
     #: .. code-block:: none
     #:
     #:     FLask endpoint settings
-    USER_USERNAME_CHANGED_EMAIL_TEMPLATE = 'flask_user/emails/username_changed'
+    USER_USERNAME_CHANGED_EMAIL_TEMPLATE = '/scimatch/flask_user/emails/username_changed'
 
     USER_AFTER_CHANGE_PASSWORD_ENDPOINT = '' #:
     USER_AFTER_CHANGE_USERNAME_ENDPOINT = '' #:
