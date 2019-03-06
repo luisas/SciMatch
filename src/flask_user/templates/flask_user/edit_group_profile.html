@@ -6,15 +6,16 @@
 
 <form action="" method="POST" class="form" role="form">
     {{ form.hidden_tag() }}
-    {% for field in form %}
-        {% if not field.flags.hidden %}
-            {% if field.type=='SubmitField' %}
-                {{ render_submit_field(field, tabindex=loop.index*10) }}
-            {% else %}
-                {{ render_field(field, tabindex=loop.index*10) }}
-            {% endif %}
-        {% endif %}
-    {% endfor %}
+
+    <h3>Principal Investigator</h3>
+    {{ render_field(form.pi_name, tabindex=230) }}
+    {{ render_field(form.pi_surname, tabindex=230) }}
+
+    <h3>Institution</h3>
+    {{ render_field(form.institution_name, tabindex=230) }}
+    {{ render_field(form.institution_link, tabindex=230) }}
+    {{ render_field(form.institution_city, tabindex=230) }}
+    {{ render_submit_field(form.submit, tabindex=280) }}
 
 
 </form>
