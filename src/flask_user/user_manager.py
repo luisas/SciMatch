@@ -200,6 +200,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.ResendEmailConfirmationFormClass = forms.ResendEmailConfirmationForm
         self.ResetPasswordFormClass = forms.ResetPasswordForm
         self.ChangePrefFormClass = forms.ChangePrefForm
+        self.ChangeChatFormClass = forms.ChangeChatForm
 
         self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass, PreferenceClass, FieldClass, MessageClass, DegreeClass, DegreeFieldClass, RequirementClass)
 
