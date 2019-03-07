@@ -305,21 +305,32 @@ class UserManager__Views(object):
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
 
-        # Initialize form
-        
+        requests = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status= "accepted").all()
+        positions = []
+        for requesti in requests:
+            request_set = self.db_manager.PositionClass.query.filter_by(id = requesti.position_id).all()
+            for request_element in request_set:
+                    applicant_id = current_user.id 
+                    applicant_first_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().first_name
+                    applicant_last_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().last_name
+                    position_id = request_element.id
+                    position_name = request_element.name
+                    group_id = request_element.group_id
+                    positions.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
+                                    'applicant_last_name':applicant_last_name, 'position_id':position_id,
+                                    'position_name': position_name, 'group_id':group_id}) 
         add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
         message = request.values.get('message')
         if request.method == 'POST':
-            added_message = self.db_manager.add_message(message=message, user_id=current_user.id )
+            added_message = self.db_manager.add_message(message=message, group_id=group_id, user_id=current_user.id)
             self.db_manager.commit()
-            # Flash a system message
-        #flash(_("The message has been send succesfully."), 'success')
 
             # Auto-login after reset password or redirect to login page
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
 
         #self.prepare_domain_translations()
-        return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form, role = role)
+        return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form, role = role, positions = positions, requests = requests)
+
 
     @login_required
     def chat_group_view(self):

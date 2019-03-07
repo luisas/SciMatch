@@ -23,7 +23,7 @@ class ConfigClass(object):
     # Flask-SQLAlchemy settings
 
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/qqq?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/aaa?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
 
 
