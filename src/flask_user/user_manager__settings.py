@@ -174,38 +174,38 @@ class UserManager__Settings(object):
     #:     URL settings
     USER_PASSLIB_CRYPTCONTEXT_KEYWORDS = dict()
 
-    USER_SELECT_REGISTER_TYPE_URL= '/user/select_register_type'
-    USER_ADD_POSITION_URL= '/user/add_position'
-    HOME_PAGE_APPLICANT_URL= '/user/home_page_applicant'
-    HOME_PAGE_GROUP_URL= '/user/home_page_group'
+    USER_SELECT_REGISTER_TYPE_URL= '/scimatch/user/select_register_type'
+    USER_ADD_POSITION_URL= '/scimatch/user/add_position'
+    HOME_PAGE_APPLICANT_URL= '/scimatch/user/home_page_applicant'
+    HOME_PAGE_GROUP_URL= '/scimatch/user/home_page_group'
 
-    CHANGE_PREF_URL='/change_pref'
+    CHANGE_PREF_URL='/scimatch/change_pref'
 
-    USER_REGISTER_APPLICANT_URL= '/user/register_applicant'
-    USER_REGISTER_GROUP_URL= '/user/register_group'
+    USER_REGISTER_APPLICANT_URL= '/scimatch/user/register_applicant'
+    USER_REGISTER_GROUP_URL= '/scimatch/user/register_group'
 
 
-    USER_CHANGE_PASSWORD_URL = '/user/change-password' #:
-    USER_CHANGE_USERNAME_URL = '/user/change-username' #:
-    USER_CONFIRM_EMAIL_URL = '/user/confirm-email/<token>' #:
-    CHAT_APPLICANT_URL = '/chat_applicant'
-    CHAT_GROUP_URL = '/chat_group'
-    USER_EDIT_USER_PROFILE_URL = '/user/edit_user_profile' #:
-    USER_EDIT_GROUP_PROFILE_URL = '/user/edit_group_profile' #:
-    USER_EMAIL_ACTION_URL = '/user/email/<id>/<action>' #:
-    USER_FORGOT_PASSWORD_URL = '/user/forgot-password' #:
-    USER_INVITE_USER_URL = '/user/invite' #:
-    USER_LOGIN_URL = '/user/sign-in' #:
-    USER_LOGOUT_URL = '/user/sign-out' #:
-    USER_MANAGE_EMAILS_URL = '/user/manage-emails' #:
-    USER_REGISTER_URL = '/user/register' #:
-    USER_RESEND_EMAIL_CONFIRMATION_URL = '/user/resend-email-confirmation' #:
+    USER_CHANGE_PASSWORD_URL = '/scimatch/user/change-password' #:
+    USER_CHANGE_USERNAME_URL = '/scimatch/user/change-username' #:
+    USER_CONFIRM_EMAIL_URL = '/scimatch/user/confirm-email/<token>' #:
+    CHAT_APPLICANT_URL = '/scimatch/chat_applicant'
+    CHAT_GROUP_URL = '/scimatch/chat_group'
+    USER_EDIT_USER_PROFILE_URL = '/scimatch/user/edit_user_profile' #:
+    USER_EDIT_GROUP_PROFILE_URL = '/scimatch/user/edit_group_profile' #:
+    USER_EMAIL_ACTION_URL = '/scimatch/user/email/<id>/<action>' #:
+    USER_FORGOT_PASSWORD_URL = '/scimatch/user/forgot-password' #:
+    USER_INVITE_USER_URL = '/scimatch/user/invite' #:
+    USER_LOGIN_URL = '/scimatch/user/sign-in' #:
+    USER_LOGOUT_URL = '/scimatch/user/sign-out' #:
+    USER_MANAGE_EMAILS_URL = '/scimatch/user/manage-emails' #:
+    USER_REGISTER_URL = '/scimatch/user/register' #:
+    USER_RESEND_EMAIL_CONFIRMATION_URL = '/scimatch/user/resend-email-confirmation' #:
 
     #: .. This hack shows a header above the _next_ section
     #: .. code-block:: none
     #:
     #:     Template file settings
-    USER_RESET_PASSWORD_URL = '/user/reset-password/<token>'
+    USER_RESET_PASSWORD_URL = '/scimatch/user/reset-password/<token>'
 
     USER_REGISTER_APPLICANT_TEMPLATE='flask_user/register_applicant.html'
     USER_REGISTER_GROUP_TEMPLATE='flask_user/register_group.html'

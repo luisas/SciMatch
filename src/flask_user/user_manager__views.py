@@ -114,8 +114,9 @@ class UserManager__Views(object):
             flash(_('Your password has been changed successfully.'), 'success')
 
             # Redirect to 'next' URL
-            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_CHANGE_PASSWORD_ENDPOINT)
-            return redirect(safe_next_url)
+            # safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_CHANGE_PASSWORD_ENDPOINT)
+            # return redirect(safe_next_url)
+            return redirect('/scimatch')
 
         # Render form
         self.prepare_domain_translations()
@@ -148,8 +149,9 @@ class UserManager__Views(object):
             flash(_("Your username has been changed to '%(username)s'.", username=new_username), 'success')
 
             # Redirect to 'next' URL
-            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_CHANGE_USERNAME_ENDPOINT)
-            return redirect(safe_next_url)
+            # safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_CHANGE_USERNAME_ENDPOINT)
+            # return redirect(safe_next_url)
+            return redirect('/scimatch')
 
         # Render form
         self.prepare_domain_translations()
@@ -287,7 +289,8 @@ class UserManager__Views(object):
             # Save object
             self.db_manager.commit()
 
-            return redirect(self._endpoint_url(self.USER_AFTER_EDIT_USER_PROFILE_ENDPOINT))
+            # return redirect(self._endpoint_url(self.USER_AFTER_EDIT_USER_PROFILE_ENDPOINT))
+            return redirect('/scimatch')
 
         # Render form
         self.prepare_domain_translations()
@@ -308,7 +311,7 @@ class UserManager__Views(object):
         for requesti in requests:
             request_set = self.db_manager.PositionClass.query.filter_by(id = requesti.position_id).all()
             for request_element in request_set:
-                    applicant_id = current_user.id 
+                    applicant_id = current_user.id
                     applicant_first_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().first_name
                     applicant_last_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().last_name
                     position_id = request_element.id
@@ -316,8 +319,8 @@ class UserManager__Views(object):
                     group_id = request_element.group_id
                     positions.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
                                     'applicant_last_name':applicant_last_name, 'position_id':position_id,
-                                    'position_name': position_name, 'group_id':group_id}) 
-                    
+                                    'position_name': position_name, 'group_id':group_id})
+
         add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
         message = request.values.get('message')
         if request.method == 'POST':
@@ -429,7 +432,8 @@ class UserManager__Views(object):
             # Save object
             self.db_manager.commit()
 
-            return redirect(self._endpoint_url(self.USER_AFTER_EDIT_GROUP_PROFILE_ENDPOINT))
+            # return redirect(self._endpoint_url(self.USER_AFTER_EDIT_GROUP_PROFILE_ENDPOINT))
+            return redirect('/scimatch')
 
         # Render form
         self.prepare_domain_translations()
@@ -504,7 +508,8 @@ class UserManager__Views(object):
                 email=email), 'success')
 
             # Redirect to the login page
-            return redirect(self._endpoint_url(self.USER_AFTER_FORGOT_PASSWORD_ENDPOINT))
+            # return redirect(self._endpoint_url(self.USER_AFTER_FORGOT_PASSWORD_ENDPOINT))
+            return redirect('/scimatch')
 
         # Render form
         self.prepare_domain_translations()
@@ -573,8 +578,9 @@ class UserManager__Views(object):
             flash(_('Invitation has been sent.'), 'success')
 
             # Redirect
-            safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_INVITE_ENDPOINT)
-            return redirect(safe_next_url)
+            # safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_INVITE_ENDPOINT)
+            # return redirect(safe_next_url)
+            return redirect('/scimatch')
 
         self.prepare_domain_translations()
         return render_template(self.USER_INVITE_USER_TEMPLATE, form=invite_user_form)
@@ -1148,7 +1154,8 @@ class UserManager__Views(object):
 
         # Immediately redirect already logged in users
         if self.call_or_get(current_user.is_authenticated) and self.USER_AUTO_LOGIN_AT_LOGIN:
-            return redirect(safe_next_url)
+            # return redirect(safe_next_url)
+            return redirect('/scimatch')
 
         # Initialize form
         login_form = self.LoginFormClass(request.form)  # for login.html
@@ -1176,7 +1183,7 @@ class UserManager__Views(object):
             if user:
                 # Log user in
                 safe_next_url = self.make_safe_url(login_form.next.data)
-                return self._do_login_user(user, safe_next_url, login_form.remember_me.data)
+                return self._do_login_user(user, '/scimatch', login_form.remember_me.data)
 
         # Render form
         self.prepare_domain_translations()
@@ -1200,8 +1207,9 @@ class UserManager__Views(object):
         flash(_('You have signed out successfully.'), 'success')
 
         # Redirect to logout_next endpoint or '/'
-        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGOUT_ENDPOINT)
-        return redirect(safe_next_url)
+        # safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGOUT_ENDPOINT)
+        # return redirect(safe_next_url)
+        return redirect('/scimatch')
 
     def register_view(self):
         """ Display registration form and create new User."""
@@ -1280,8 +1288,9 @@ class UserManager__Views(object):
 
             # Redirect if USER_ENABLE_CONFIRM_EMAIL is set
             if self.USER_ENABLE_CONFIRM_EMAIL and request_email_confirmation:
-                safe_reg_next_url = self.make_safe_url(register_form.reg_next.data)
-                return redirect(safe_reg_next_url)
+                # safe_reg_next_url = self.make_safe_url(register_form.reg_next.data)
+                # return redirect(safe_reg_next_url)
+                return redirect('/scimatch')
 
             # Auto-login after register or redirect to login page
             if 'reg_next' in request.args:
@@ -1319,7 +1328,8 @@ class UserManager__Views(object):
                 self._send_confirm_email_email(user, user_email)
 
             # Redirect to the login page
-            return redirect(self._endpoint_url(self.USER_AFTER_RESEND_EMAIL_CONFIRMATION_ENDPOINT))
+            # return redirect(self._endpoint_url(self.USER_AFTER_RESEND_EMAIL_CONFIRMATION_ENDPOINT))
+            return redirect('/scimatch')
 
         # Render form
         self.prepare_domain_translations()
@@ -1404,7 +1414,8 @@ class UserManager__Views(object):
         flash(_("You do not have permission to access '%(url)s'.", url=url), 'error')
 
         # Redirect to USER_UNAUTHORIZED_ENDPOINT
-        return redirect(self._endpoint_url(self.USER_UNAUTHORIZED_ENDPOINT))
+        # return redirect(self._endpoint_url(self.USER_UNAUTHORIZED_ENDPOINT))
+        return redirect('/scimatch')
 
     # def unconfirmed_email_view(self):
     #     """ Prepare a Flash message and redirect to USER_UNCONFIRMED_ENDPOINT"""
