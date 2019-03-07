@@ -39,26 +39,49 @@
   width: 150px;
   border-radius: 50%;
 }</style>
+
+
   <center>
-  <div class="split left">
-   <div class="centered">
+  <div class="split left" style="overflow:auto; ">
+   <div >
     <h4>Your applicants:</h4>
     {%for request in requests%}
-    <div class="card">
-     <div class="card" style="background: white; border-style: double; border-color: #3abc83; width: 630px; height: 80px; margin-bottom: 5px; ">
-      <img src="{{ url_for('static', filename='images/user_image.png')}}" style=" border-radius:0px; height:70px; width:70px;" align="left">
-      <h5>{{request['applicant_first_name']}} {{request['applicant_last_name']}} </h5>
-      <p>{{request['position_name']}}</p>
-     </div>
-    </div>
+    <form  name  ="chat" action="" method="POST" novalidate formnovalidate class="form" role="form">
+
+        <div class="card" onClick="javascript:this.parentNode.submit();">
+         <div class="card" style="background: white; border-style: double; border-color: #3abc83; width: 630px; height: 100px; margin-bottom: 5px; ">
+          <img src="{{ url_for('static', filename='images/user_image.png')}}" style=" border-radius:0px; height:70px; width:70px;" align="left">
+          <h5>{{request['applicant_first_name']}} {{request['applicant_last_name']}} lala</h5>
+          <!-- <p>{{request['position_name']}}</p> -->
+          <p>position_id : {{request['position_id']}}</p>
+            {{ change_chat_form.applicant_id( value= request['applicant_id'] ) }}
+            {{ change_chat_form.position_id( value= request['position_id'] ) }}
+            {{ change_chat_form.name_form( value= "chat" ) }}
+
+
+         </div>
+        </div>
+    </form>
     {%endfor%}
    </div>
   </div>
 <div class="split right">
-  <div class="centered"> 
-        <form action="" method="POST" novalidate formnovalidate class="form" role="form">
+
+  Applicant ID: {{ chat_applicant_id }}
+  Position ID: {{ chat_position_id }}
+  <div style="height:60%;width:90%;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto; padding-bottom: 10px; ">
+      {% for message in messages %}
+        <div class="">
+            {{ message['sender'] }} sent : {{ message['text'] }}
+        </div>
+      {%endfor%}
+  </div>
+  <br>
+  <div style="margin-left: 10px; margin-right: 10px; ">
+    <form action="" name="add_message" value ="add" method="POST" novalidate formnovalidate class="form" role="form">
     {{ render_field(form.message, tabindex=30) }}
     {{ render_submit_field(form.submit, tabindex=90) }}
+    {{ form.name_form( value= "add_message" ) }}
     </form>
   </div>
 </div>

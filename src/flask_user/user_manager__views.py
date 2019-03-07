@@ -336,6 +336,9 @@ class UserManager__Views(object):
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
         role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
+        chat_applicant_id = None;
+        chat_position_id = None;
+
         """ Display addition of a position"""
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
@@ -356,17 +359,29 @@ class UserManager__Views(object):
                     requests.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
                                     'applicant_last_name':applicant_last_name, 'position_id':position.id,
                                     'position_name': position_name, 'group_id':group_id})
+
+        messages= [{'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'} , {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}]
+
+        #messages =
+        change_chat_form = self.ChangeChatFormClass(request.form)  # for login_or_register.html
+        if request.method == 'POST' and request.form['name_form'] == 'chat':
+            chat_applicant_id = int(request.form['applicant_id'])
+            chat_position_id = int(request.form['position_id'])
+            return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, change_chat_form = change_chat_form,  role = role, positions = positions, requests = requests, messages= messages, chat_position_id = chat_position_id, chat_applicant_id = chat_applicant_id)
+
+
         add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
         message = request.values.get('message')
-        if request.method == 'POST':
+        if request.method == 'POST' :
             added_message = self.db_manager.add_message(message=message, group_id=current_user.id, user_id=applicant_id)
-            self.db_manager.commit()
 
-            # Auto-login after reset password or redirect to login page
+
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
 
-        #self.prepare_domain_translations()
-        return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, role = role, positions = positions, requests = requests)
+
+        test = chat_applicant_id;
+
+        return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, change_chat_form = change_chat_form,  role = role, positions = positions, requests = requests, messages= messages, chat_position_id = chat_position_id, chat_applicant_id = chat_applicant_id)
 
 
     @login_required
@@ -934,9 +949,6 @@ class UserManager__Views(object):
                 continue
             if int(position_city_id) == preference_applicant_city_id:
                 matches_filtered.append(pos)
-
-
-
 
         form = self.SendRequestFormClass(request.form)
         # Sending Request
