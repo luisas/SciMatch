@@ -40,16 +40,23 @@
   border-radius: 50%;
 }</style>
   <center>
-    <div class="split left">
-  <div class="centered">
-    <p>Chat.</p>
+  <div class="split left">
+   <div class="centered">
+    <h4>Your groups:</h4>
+    {%for position in positions%}
+    <div class="card">
+     <div class="card" style="background: white; border-style: double; border-color: #3abc83; width: 630px; height: 80px; margin-bottom: 5px; ">
+      <img src="{{ url_for('static', filename='images/user_image.png')}}" style=" border-radius:0px; height:70px; width:70px;" align="left">
+      <h5>{{position['applicant_first_name']}} {{position['applicant_last_name']}} lolo </h5>
+      <p>{{position['position_name']}} lala</p>
+     </div>
+    </div>
+    {%endfor%}
+   </div>
   </div>
-</div>
 <div class="split right">
-  <div class="centered">
-       <br>
-      {{ form.hidden_tag() }}
-    <form action="" method="POST" novalidate formnovalidate class="form" role="form">
+  <div class="centered"> 
+        <form action="" method="POST" novalidate formnovalidate class="form" role="form">
     {{ render_field(form.message, tabindex=30) }}
     {{ render_submit_field(form.submit, tabindex=90) }}
     </form>
