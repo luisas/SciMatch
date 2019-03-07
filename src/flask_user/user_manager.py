@@ -49,7 +49,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
 
             Customizable UserManager methods
         """
-
+        self.current_applicant_chat = None;
+        self.current_position_chat = None; 
         #see http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code """
         self.app = app
         if app:

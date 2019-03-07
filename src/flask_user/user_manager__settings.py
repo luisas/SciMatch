@@ -214,6 +214,7 @@ class UserManager__Settings(object):
     CHAT_APPLICANT_TEMPLATE = '/chat_applicant.html' #:
     HOME_PAGE_GROUP_TEMPLATE = '/home_page_group.html' #:
     CHAT_GROUP_TEMPLATE = '/chat_group.html'#:
+    CHAT_APPLICANT_TEMPLATE = '/chat_applicant.html'#:
     USER_SELECT_REGISTER_TYPE_TEMPLATE = 'flask_user/select_register_type.html' #:
     USER_ADD_POSITION_TEMPLATE = 'flask_user/add_position.html' #:
     USER_CHANGE_PASSWORD_TEMPLATE = 'flask_user/change_password.html' #:
