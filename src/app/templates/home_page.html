@@ -9,11 +9,15 @@
   <style media="screen">
         #container_id {
           position: relative;
-
         }
 
-        /* Make the image responsive */
-
+        #container_id:hover {
+            -moz-transform: translate(-2px, -2px);
+            -ms-transform: translate(-2px, -2px);
+            -o-transform: translate(-2px, -2px);
+            -webkit-transform: translate(-2px, -2px);
+            transform: translate(-2px, -2px)
+        }
 
         /* Style the button and place it in the middle of the container/image */
         .container .btn {
@@ -39,7 +43,7 @@
  </head>
  <body class="bg-light">
   <center>
-    <div class="w3-container w3-center w3-animate-opacity" style="margin-bottom:100px; margin-top:70px; " id="container_id">
+    <div   class="w3-container w3-center w3-animate-opacity" style="margin-bottom:100px; margin-top:70px; " id="container_id">
       <h1 style="color: #565656; ">Find your job, anywhere.</h1>
     </div>
 
@@ -53,13 +57,13 @@
 </div>
  <div class="container">
   <div class="row" style="margin-bottom:150px;">
-    <div class="container col-md-6 w3-container w3-center w3-animate-opacity" id="container_id" >
+    <div class=" container col-md-6 w3-container w3-center w3-animate-opacity" id="container_id" >
       <a href="{{ url_for('user.register_applicant') }}"">
         <img class="card-img-top" src="{{ url_for('static', filename='images/CRG.jpg')}}" alt="Card image cap" height="300px;">
         <button class="btn" style="background-color: #b3d8d2; color: WHITE; font-weight: bold; border: dotted 1px white;">Start looking for a job!</button></a>
 
     </div>
-    <div class="col-md-6 w3-container w3-center w3-animate-opacity" ">
+    <div id="container_id" class="col-md-6 w3-container w3-center w3-animate-opacity" ">
       <a href="{{ url_for('user.register_group') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/applicant-home.jpg')}}" alt="Card image cap"  height="300px;">
       <button class="btn" href= "{{ url_for('user.register_group') }}"style="background-color: #b3d8d2; color: WHITE; font-weight: bold; border: dotted 1px white;">Find the right candidate.</button></a>
     </div>
@@ -86,11 +90,11 @@
     </div>
 
 
-    <div class="row" style="margin-top: 50px; margin-bottom:70px; ">
+    <div class="row" style="margin-top: 50px; margin-bottom:70px; "data-aos="zoom-in">
       <div class="col-md-3">
       </div>
 
-      <div class="col-md-6" style="border: dashed 2px #d6d6d6; border-radius: 4px;  ">
+      <div  id="container_id"class="col-md-6" style="border: dashed 2px #d6d6d6; border-radius: 4px;  ">
         <a href="{{ url_for('who') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/iconopersonas.png')}}" alt="Card image cap" width="140" height="110"></a>
         <div class="card-body">
           <h4 style="color: #565656;">Find out more about the founders</h4>

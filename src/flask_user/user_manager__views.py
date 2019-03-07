@@ -335,7 +335,7 @@ class UserManager__Views(object):
             request_set = self.db_manager.RequestsClass.query.filter_by(position_id = position.id).all()
             for request_element in request_set:
                 if request_element.status == "accepted":
-                    applicant_id = request_element.applicant_id  
+                    applicant_id = request_element.applicant_id
                     applicant_first_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().first_name
                     applicant_last_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().last_name
                     position_id = position.id
@@ -343,7 +343,7 @@ class UserManager__Views(object):
                     group_id = current_user.id
                     requests.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
                                     'applicant_last_name':applicant_last_name, 'position_id':position.id,
-                                    'position_name': position_name, 'group_id':group_id}) 
+                                    'position_name': position_name, 'group_id':group_id})
         add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
         message = request.values.get('message')
         if request.method == 'POST':
@@ -826,12 +826,14 @@ class UserManager__Views(object):
 
 
         #Preferences applicant
+        preference_applicant_city_id = None
         preference_applicant = self.db_manager.PreferenceClass.query.filter_by( user_id = current_user.id).first()
         if preference_applicant is not None:
             preference_applicant_field_id = preference_applicant.field_id
             preference_applicant_city_id = preference_applicant.city_id
             matches = self.db_manager.PositionClass.query.filter_by(field_id = preference_applicant_field_id).all()
         else:
+
             matches = self.db_manager.PositionClass.query.all()
 
         ids_positions_to_be_removed = []
@@ -851,10 +853,29 @@ class UserManager__Views(object):
 
 
             #these cannot be None, but they can be 1 that points to "None" ;)
-            applicant_bachelor = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first().degree_field
-            applicant_master = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 3).first().degree_field
-            applicant_phd = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 4).first().degree_field
-            applicant_postdoc = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 5).first().degree_field
+            applicant_bachelor = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first()
+            if applicant_bachelor is not None:
+                applicant_bachelor_degree_field = applicant_bachelor.degree_field
+            else:
+                applicant_bachelor_degree_field = 1
+
+            applicant_master = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first()
+            if applicant_master is not None:
+                applicant_master_degree_field = applicant_master.degree_field
+            else:
+                applicant_master_degree_field = 1
+
+            applicant_postdoc = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first()
+            if applicant_postdoc is not None:
+                applicant_postdoc_degree_field = applicant_postdoc.degree_field
+            else:
+                applicant_postdoc_degree_field = 1
+
+            applicant_phd = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first()
+            if applicant_phd is not None:
+                applicant_phd_degree_field = applicant_phd.degree_field
+            else:
+                applicant_phd_degree_field = 1
 
 
             # 1 is None
