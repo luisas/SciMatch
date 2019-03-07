@@ -767,15 +767,39 @@ class UserManager__Views(object):
                     position_name = position.name
                     request_id = request_element.id
                     request_status = request_element.status
-                    bachelor_id = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 2).first().degree_field
-                    master_id = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 3).first().degree_field
-                    phd_id = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 4).first().degree_field
-                    postdoc_id = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 5).first().degree_field
+
+                    bachelor = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 2).first()
+                    if bachelor is not None:
+                        bachelor_id = bachelor.degree_field
+                    else:
+                        bachelor_id = 1
+
+                    master = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 3).first()
+                    if master is not None:
+                        master_id = master.degree_field
+                    else:
+                        master_id = 1
+
+                    phd = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 4).first()
+                    if phd is not None:
+                        phd_id = phd.degree_field
+                    else:
+                        phd_id = 1
+
+                    postdoc = self.db_manager.EducationClass.query.filter_by(user_id=applicant_id, degree= 4).first()
+                    if postdoc is not None:
+                        postdoc_id = postdoc.degree_field
+                    else:
+                        postdoc_id = 1
                     bachelor = self.db_manager.DegreeFieldClass.query.filter_by(id= bachelor_id).first().name
                     master = self.db_manager.DegreeFieldClass.query.filter_by(id=master_id).first().name
                     phd = self.db_manager.DegreeFieldClass.query.filter_by(id=phd_id).first().name
                     postdoc = self.db_manager.DegreeFieldClass.query.filter_by(id=postdoc_id).first().name
-                    experience = self.db_manager.ExperienceClass.query.filter_by(user_id=applicant_id).first().description
+                    experience_element = self.db_manager.ExperienceClass.query.filter_by(user_id=applicant_id).first()
+                    if experience_element is not None:
+                        experience = experience_element.description
+                    else:
+                        experience = ""
                     requests.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
                                     'applicant_last_name':applicant_last_name, 'position_id':position_id,
                                     'position_name': position_name,
