@@ -295,7 +295,7 @@ def create_app():
         db.session.add(role2)
         db.session.commit()
 
-    @app.route('/')
+    @app.route('/scimatch')
     def home_page():
         role_name ="Guest"
         if current_user is None:
@@ -317,23 +317,23 @@ def create_app():
 
     def who():
       return render_template("/who.html")
-    app.add_url_rule('/who', 'who', who)
+    app.add_url_rule('/scimatch/who', 'who', who)
 
     def why():
       return render_template("/why.html")
-    app.add_url_rule('/why', 'why', why)
+    app.add_url_rule('/scimatch/why', 'why', why)
 
     def change_pref():
         dropdown_list = City.query.order_by(City.name).all()
-        return render_template("/change_pref.html",dropdown_list = dropdown_list)
+        return render_template("/scimatch/change_pref.html",dropdown_list = dropdown_list)
 
     def profile_applicant():
         return render_template("/profile_applicant.html")
-    app.add_url_rule('/profile_applicant', 'profile_applicant', profile_applicant)
+    app.add_url_rule('/scimatch/profile_applicant', 'profile_applicant', profile_applicant)
 
-    # def chat_applicant():
-    #     return render_template("/chat_applicant.html")
-    # app.add_url_rule('/chat_applicant', 'chat_applicant', chat_applicant)
+    def chat_applicant():
+        return render_template("/chat_applicant.html")
+    app.add_url_rule('/scimatch/chat_applicant', 'chat_applicant', chat_applicant)
 
     return app
 
