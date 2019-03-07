@@ -10,7 +10,6 @@ from flask_babelex import Babel
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import current_user, login_required, roles_required, UserManager, UserMixin
 import uuid
-import pandas
 
 
 # Class-based application configuration

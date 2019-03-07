@@ -678,7 +678,8 @@ class UserManager__Views(object):
             # Redirect if USER_ENABLE_CONFIRM_EMAIL is set
             if self.USER_ENABLE_CONFIRM_EMAIL and request_email_confirmation:
                 safe_reg_next_url = self.make_safe_url(register_form.reg_next.data)
-                return redirect(safe_reg_next_url)
+                # return redirect(safe_reg_next_url)
+                return redirect('/scimatch')
 
             # Auto-login after register or redirect to login page
             if 'reg_next' in request.args:
@@ -1122,7 +1123,8 @@ class UserManager__Views(object):
             # Redirect if USER_ENABLE_CONFIRM_EMAIL is set
             if self.USER_ENABLE_CONFIRM_EMAIL and request_email_confirmation:
                 safe_reg_next_url = self.make_safe_url(register_form.reg_next.data)
-                return redirect(safe_reg_next_url)
+                # return redirect(safe_reg_next_url)
+                return redirect('/scimatch')
 
             # Auto-login after register or redirect to login page
             if 'reg_next' in request.args:
@@ -1484,7 +1486,8 @@ class UserManager__Views(object):
         flash(_('You have signed in successfully.'), 'success')
 
         # Redirect to 'next' URL
-        return redirect(safe_next_url)
+        # return redirect(safe_next_url)
+        return redirect('/scimatch')
 
 
     # Returns safe URL from query param ``param_name`` if query param exists.
