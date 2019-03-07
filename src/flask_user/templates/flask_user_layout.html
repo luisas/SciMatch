@@ -54,7 +54,7 @@
         <img id="logo" src="{{url_for('static', filename='images/logo.png')}}" /></a>
         </div>
         <div class="pull-left"><a href="/">
-        <a href="/">  <h1 class="no-margins " id="title-logo" >{{ user_manager.USER_APP_NAME }}</h1></a>
+        <a href="/scimatch">  <h1 class="no-margins " id="title-logo" >{{ user_manager.USER_APP_NAME }}</h1></a>
         </div>
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) and role == "Applicant" %}
