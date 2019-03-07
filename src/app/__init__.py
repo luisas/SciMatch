@@ -24,7 +24,7 @@ class ConfigClass(object):
 
 
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/aaa?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:password@localhost/sm4?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
@@ -331,9 +331,9 @@ def create_app():
         return render_template("/profile_applicant.html")
     app.add_url_rule('/scimatch/profile_applicant', 'profile_applicant', profile_applicant)
 
-    def chat_applicant():
-        return render_template("/chat_applicant.html")
-    app.add_url_rule('/scimatch/chat_applicant', 'chat_applicant', chat_applicant)
+    # def chat_applicant():
+    #     return render_template("/chat_applicant.html")
+    # app.add_url_rule('/scimatch/chat_applicant', 'chat_applicant', chat_applicant)
 
     return app
 

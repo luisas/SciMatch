@@ -188,6 +188,8 @@ class UserManager__Settings(object):
     USER_CHANGE_PASSWORD_URL = '/scimatch/user/change-password' #:
     USER_CHANGE_USERNAME_URL = '/scimatch/user/change-username' #:
     USER_CONFIRM_EMAIL_URL = '/scimatch/user/confirm-email/<token>' #:
+    CHAT_APPLICANT_URL = '/scimatch/chat_applicant'
+    CHAT_GROUP_URL = '/scimatch/chat_group'
     USER_EDIT_USER_PROFILE_URL = '/scimatch/user/edit_user_profile' #:
     USER_EDIT_GROUP_PROFILE_URL = '/scimatch/user/edit_group_profile' #:
     USER_EMAIL_ACTION_URL = '/scimatch/user/email/<id>/<action>' #:
