@@ -299,18 +299,18 @@ class UserManager__Views(object):
 
     @login_required
     def chat_applicant_view(self):
-        role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
-        role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+       role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
+       role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
+       safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
+       safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
 
-        """ Display addition of a position"""
-        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
-        safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
-
-        requests = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status= "accepted").all()
-        positions = []
-        for requesti in requests:
-            request_set = self.db_manager.PositionClass.query.filter_by(id = requesti.position_id).all()
-            for request_element in request_set:
+       chat_position_id= None
+       chat_applicant_id = None
+       requests = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status= "accepted").all()
+       positions = []
+       for requesti in requests:
+           request_set = self.db_manager.PositionClass.query.filter_by(id = requesti.position_id).all()
+           for request_element in request_set:
                     applicant_id = current_user.id
                     applicant_first_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().first_name
                     applicant_last_name = self.db_manager.UserClass.query.filter_by(id=applicant_id).first().last_name
@@ -321,27 +321,45 @@ class UserManager__Views(object):
                                     'applicant_last_name':applicant_last_name, 'position_id':position_id,
                                     'position_name': position_name, 'group_id':group_id})
 
-        add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
-        message = request.values.get('message')
-        if request.method == 'POST':
-            added_message = self.db_manager.add_message(message=message, group_id=group_id, user_id=current_user.id)
+       message = request.values.get('message')
+       if request.method == 'POST' and request.form['name_form'] == 'chat':
+            chat_applicant_id = int(request.form['applicant_id'])
+            chat_position_id = int(request.form['position_id'])
+            self.current_applicant_chat = chat_applicant_id;
+            self.current_position_chat = chat_position_id;
+
+       if request.method == 'POST' and request.form['name_form'] == 'add_message':
+            chat_applicant_id = self.current_applicant_chat
+            chat_position_id = self.current_position_chat
+            added_message = self.db_manager.add_message(message=message, sender_id = chat_applicant_id, group_id=chat_position_id, user_id=chat_applicant_id)
             self.db_manager.commit()
+       messages_elements = self.db_manager.MessageClass.query.filter_by(user_id=self.current_applicant_chat, group_id =self.current_position_chat).all()
+       messages = []
+       if len(messages_elements) > 0 :
+            for message_element in messages_elements:
+                #Applicant
+                if message_element.user_id  == message_element.sender_id:
+                    sender_first_name = "You"
+                    status='sent'
+                else:
+                    sender_first_name="Group"
+                    status='recieved'
 
-            # Auto-login after reset password or redirect to login page
-        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
+                messages.append({'sender_id': message_element.id , 'sender_first_name': sender_first_name,
+                                'text': message_element.message, 'status':status})
+       safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
 
-        #self.prepare_domain_translations()
-        return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form, role = role, positions = positions, requests = requests)
-
+       add_message_form = self.AddMessageFormClass(request.form)
+       change_chat_form = self.ChangeChatFormClass(request.form)
+       return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form, change_chat_form = change_chat_form,  role = role, positions = positions, requests = requests, messages= messages, chat_position_id = chat_position_id, chat_applicant_id = chat_applicant_id )
 
     @login_required
     def chat_group_view(self):
         role_id = self.db_manager.UserRolesClass.query.filter_by( user_id = current_user.id).first().role_id
         role = self.db_manager.RoleClass.query.filter_by( id = role_id).first().name
 
-        chat_applicant_id = None;
-        chat_position_id = None;
-
+        chat_applicant_id  = None
+        chat_position_id = None
         """ Display addition of a position"""
         safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_LOGIN_ENDPOINT)
         safe_reg_next_url = self._get_safe_next_url('reg_next', self.USER_AFTER_REGISTER_ENDPOINT)
@@ -360,31 +378,51 @@ class UserManager__Views(object):
                     position_name = position.name
                     group_id = current_user.id
                     requests.append({'applicant_id': applicant_id, 'applicant_first_name': applicant_first_name,
-                                    'applicant_last_name':applicant_last_name, 'position_id':position.id,
+                                    'applicant_last_name':applicant_last_name, 'position_id':position.id ,
                                     'position_name': position_name, 'group_id':group_id})
 
-        messages= [{'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'} , {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}, {'sender': 'Luisa', 'text':'slkdgaskdjhgasldjhg'}]
+        messages= []
+        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
 
-        #messages =
-        change_chat_form = self.ChangeChatFormClass(request.form)  # for login_or_register.html
+        message = request.values.get('message')
+
         if request.method == 'POST' and request.form['name_form'] == 'chat':
             chat_applicant_id = int(request.form['applicant_id'])
             chat_position_id = int(request.form['position_id'])
-            return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, change_chat_form = change_chat_form,  role = role, positions = positions, requests = requests, messages= messages, chat_position_id = chat_position_id, chat_applicant_id = chat_applicant_id)
+            self.current_applicant_chat = chat_applicant_id;
+            self.current_position_chat = chat_position_id;
 
+        if request.method == 'POST' and request.form['name_form'] == 'add_message':
+            chat_applicant_id = self.current_applicant_chat
+            chat_position_id = self.current_position_chat
+            added_message = self.db_manager.add_message(message=message, sender_id = chat_position_id, group_id=chat_position_id, user_id=chat_applicant_id)
+            self.db_manager.commit()
 
-        add_message_form = self.AddMessageFormClass(request.form)  # for login_or_register.html
-        message = request.values.get('message')
-        if request.method == 'POST' :
-            added_message = self.db_manager.add_message(message=message, group_id=current_user.id, user_id=applicant_id)
+        messages_elements = self.db_manager.MessageClass.query.filter_by(user_id=self.current_applicant_chat, group_id =self.current_position_chat).all()
+        messages = []
+        status = "sent"
+        if len(messages_elements) > 0 :
+            for message_element in messages_elements:
+                if message_element.sender_id  == message_element.group_id:
+                    sender_first_name = "You"
+                    status="sent"
+                else:
+                    status='recieved'
+                    sender_first_name="Applicant"
+                    sender_id = message_element.user_id
+                    sender = self.db_manager.UserClass.query.filter_by( id = sender_id ).first()
+                    if sender is not None:
+                        sender_first_name  = sender.first_name
+                        sender_last_name = sender.last_name
+                    else:
+                        sender_first_name  = "Applicant"
+                messages.append({'sender_id': message_element.id , 'sender_first_name': sender_first_name,
+                                'sender_last_name': sender_last_name,
+                                'text': message_element.message ,'status': status})
 
-
-        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
-
-
-        test = chat_applicant_id;
-
-        return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, change_chat_form = change_chat_form,  role = role, positions = positions, requests = requests, messages= messages, chat_position_id = chat_position_id, chat_applicant_id = chat_applicant_id)
+        add_message_form = self.AddMessageFormClass(request.form)
+        change_chat_form = self.ChangeChatFormClass(request.form)
+        return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, change_chat_form = change_chat_form,  role = role, positions = positions, requests = requests, messages= messages, chat_position_id = chat_position_id, chat_applicant_id = chat_applicant_id )
 
 
     @login_required
@@ -897,7 +935,6 @@ class UserManager__Views(object):
         ids_positions_to_be_removed = []
 
         # TODO : Not working when preferences are not set
-        test = ""
         matches_filtered = []
         for pos in matches:
             position_institution_id = self.db_manager.InstitutionHasGroupClass.query.filter_by(user_id = pos.group_id).first().institution_id
@@ -968,7 +1005,7 @@ class UserManager__Views(object):
             # Auto-login after reset password or redirect to login page
             safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
-        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches_filtered, requested = requested, test = test  )
+        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches_filtered, requested = requested )
 
     @login_required
     def change_pref_view(self):

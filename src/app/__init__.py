@@ -23,7 +23,7 @@ class ConfigClass(object):
 
 
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:password@localhost/sm4?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:password@localhost/scimatchdef?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
@@ -184,7 +184,9 @@ def create_app():
         id = db.Column(db.Integer(), primary_key=True)
         message = db.Column(db.String(500), nullable=False)
         user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-        group_id= db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+        group_id= db.Column(db.Integer, db.ForeignKey('position.id', ondelete='CASCADE'))
+        sender_id = db.Column(db.Integer)
+
 
     class Degree(db.Model):
         __tablename__="degree"

@@ -59,7 +59,7 @@
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) and role == "Applicant" %}
                 <div class="dropdown">
-                <button class="btn dropdown-toggle" style="border-color: #76E6B6;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>{{current_user.first_name}} {{current_user.last_name}}</h5> </button>
+                <button class="btn dropdown-toggle" style="background:#ffffff; border: 3px solid #76E6B6; border-radius:1000px; padding:8px 20px; color:#000000; display:inline-block; font:normal normal 23px/1 Calibri, sans-serif; text-align: center;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>{{current_user.first_name}} {{current_user.last_name}}</h5> </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="{{ url_for('user.edit_user_profile') }}">Edit profile</a>
                     <div class="dropdown-divider"></div>
@@ -74,7 +74,7 @@
                 </div>
             {% elif call_or_get(current_user.is_authenticated) and role == "Group" %}
             <div class="dropdown">
-                <button class="btn dropdown-toggle" style="border-color: #76E6B6;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>Menu</h5> </button>
+                <button class="btn dropdown-toggle" style="background:#ffffff; border: 3px solid #f9cb9c; border-radius:1000px; padding:8px 20px; color:#000000; display:inline-block; font:normal normal 23px/1 Calibri, sans-serif; text-align: center; type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>Menu</h5> </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{{ url_for('user.edit_group_profile') }}">Edit profile</a>
                 <div class="dropdown-divider"></div>
@@ -85,9 +85,9 @@
             </div>
         </div>
             {% else %}
-                <a class="btn" style="border-color: #76E6B6;"  href="{{ url_for('user.login') }}">
+                <a class="btn" style="border-color: #76E6B6; border: 2px solid #76E6B6; border-radius:1000px;"  href="{{ url_for('user.login') }}">
                 <h5 style="color:black"> {%trans%}Sign in{%endtrans%} </h5></a>
-                <a class="btn" style="border-color: #76E6B6;" href="{{ url_for('user.select_register_type') }}">
+                <a class="btn" style=" border: 2px solid #f9cb9c; border-radius:1000px;" href="{{ url_for('user.select_register_type') }}">
                 <h5 style="color:black">{%trans%}Register{%endtrans%} </h5></a>
             {% endif %}
         </div>
@@ -110,7 +110,9 @@
                     {% if category=='error' %}
                         {% set category='danger' %}
                     {% endif %}
-                    <div class="alert alert-{{category}}">{{ message|safe }}</div>
+                    <div class="alert alert-{{category}}" style=" border-color:#6e776b; background-image: url({{ url_for('static', filename='images/fondo2.png')}}"""> 
+                    <p style="color:black">{{ message|safe }}</p>
+                    </div>
                 {% endfor %}
             {% endif %}
         {%- endwith %}
