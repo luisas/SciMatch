@@ -16,7 +16,7 @@
 {% macro render_field_no_label(field, label=None, label_visible=true, right_url=None, right_label=None, placeholder=None) -%}
     <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
         {% if field.type != 'HiddenField' and label_visible %}
-            {% if not label %}{% set label=field.label.text %}{% endif %}      
+            {% if not label %}{% set label=field.label.text %}{% endif %}
         {% endif %}
         {{ field(class_='form-control', **kwargs) }}
         {% if field.errors %}
@@ -48,6 +48,12 @@
     {% endfor %}
 {%- endmacro %}
 
+{% macro render_send_message(field, label=None, tabindex=None) -%}
+  {% if not label %}{% set label=field.label.text %}{% endif %}
+    <input type="submit" style=" border: 3px solid #76E6B6; border-radius:1000px; background-color:white; border: 3px dotted; border-color:#fac793; margin-bottom:5px border-radius:1000px;" class="btn" value="{{label}}"
+           {% if tabindex %}tabindex="{{ tabindex }}"{% endif %}
+           >
+{%- endmacro %}
 
 {% macro render_submit_field(field, label=None, tabindex=None) -%}
     {% if not label %}{% set label=field.label.text %}{% endif %}

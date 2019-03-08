@@ -306,6 +306,10 @@ class UserManager__Views(object):
 
        chat_position_id= None
        chat_applicant_id = None
+       chat_applicant_name = None
+       chat_position_name = None
+
+
        requests = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status= "accepted").all()
        positions = []
        for requesti in requests:
@@ -349,9 +353,23 @@ class UserManager__Views(object):
                                 'text': message_element.message, 'status':status})
        safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
 
+
        add_message_form = self.AddMessageFormClass(request.form)
-       change_chat_form = self.ChangeChatFormClass(request.form)
-       return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form, change_chat_form = change_chat_form,  role = role, positions = positions, requests = requests, messages= messages, chat_position_id = chat_position_id, chat_applicant_id = chat_applicant_id )
+       change_chat_form = self.ChangeChatFormClass(request.form, )
+
+       chat_applicant_name = ""
+       chat_position_name = ""
+       chat_applicant = self.db_manager.UserClass.query.filter_by(id = chat_applicant_id).first()
+       if chat_applicant is not None:
+           chat_applicant_name = chat_applicant.first_name
+       chat_position = self.db_manager.PositionClass.query.filter_by(id =chat_position_id).first()
+       if chat_position is not None:
+           chat_position_name = chat_position.name
+       return render_template(self.CHAT_APPLICANT_TEMPLATE, form=add_message_form,
+                                change_chat_form = change_chat_form,  role = role, positions = positions,
+                                requests = requests, messages= messages, chat_position_id = chat_position_id,
+                                chat_applicant_id = chat_applicant_id, chat_applicant_name = chat_applicant_name,
+                                chat_position_name = chat_position_name )
 
     @login_required
     def chat_group_view(self):
@@ -424,7 +442,22 @@ class UserManager__Views(object):
 
         add_message_form = self.AddMessageFormClass(request.form)
         change_chat_form = self.ChangeChatFormClass(request.form)
-        return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form, change_chat_form = change_chat_form,  role = role, positions = positions, requests = requests, messages= messages, chat_position_id = chat_position_id, chat_applicant_id = chat_applicant_id )
+        chat_applicant_name = ""
+        chat_position_name = ""
+        chat_applicant = self.db_manager.UserClass.query.filter_by(id = chat_applicant_id).first()
+        if chat_applicant is not None:
+            chat_applicant_name = chat_applicant.first_name
+        chat_position = self.db_manager.PositionClass.query.filter_by(id =chat_position_id).first()
+        if chat_position is not None:
+            chat_position_name = chat_position.name
+
+
+        return render_template(self.CHAT_GROUP_TEMPLATE, form=add_message_form,
+                                change_chat_form = change_chat_form,  role = role,
+                                positions = positions, requests = requests,
+                                messages= messages, chat_position_id = chat_position_id,
+                                chat_applicant_id = chat_applicant_id , chat_applicant_name = chat_applicant_name,
+                                chat_position_name = chat_position_name )
 
 
     @login_required
@@ -1047,13 +1080,9 @@ class UserManager__Views(object):
             current_city_id = 1
             current_field_id = 1
 
-
         form = self.ChangePrefFormClass(request.form, city = current_city_id, field = current_field_id)
         form.city.choices = cities;
         form.field.choices = fields;
-
-
-
 
         if request.method == 'POST':
 

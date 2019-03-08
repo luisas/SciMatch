@@ -1,5 +1,5 @@
 {% extends "flask_user_layout.html" %}
-{% from "flask_user/_macros.html" import render_field, render_submit_field %}
+{% from "flask_user/_macros.html" import render_field, render_submit_field, render_send_message %}
 {% block content %}
 
 <style >/* Split the screen in half */
@@ -208,10 +208,14 @@
 
     <!-- <p style="size:20px;">Currently chatting with Position: {{ chat_position_id }}</p> -->
 
+    {% if  chat_position_name == None %}
 
+    {% elif  positions|length  < 1 %}
+     <h4 style="color: grey;margin-left:30px; margin-top: 30px; margin-bottom:40px;">You no chats :( </h4>
+    {%else%}
+    <h4 style="color:grey;"> {{ chat_position_name }} </h4>
 
     <div style="height:60%;width:90%;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto; padding-bottom: 10px; font-family: courier-new; ">
-
          {% for message in messages %}
               {% if message['status'] == 'sent'%}
                     <div class="outgoing_msg" style ="margin-right:20px;">
@@ -232,11 +236,14 @@
     <div style="margin-left: 10px; margin-right: 10px; ">
       <form action="" name="add_message" value ="add" method="POST" novalidate formnovalidate class="form" role="form">
       {{ render_field(form.message, tabindex=30) }}
-      {{ render_submit_field(form.submit, tabindex=90) }}
+      {{ render_send_message(form.submit, tabindex=90) }}
       {{ form.name_form( value= "add_message" ) }}
       </form>
     </div>
+    {% endif %}
+
     </div>
+
 </center>
 
 

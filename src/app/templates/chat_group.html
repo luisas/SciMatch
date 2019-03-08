@@ -215,6 +215,13 @@
   Applicant ID: {{ chat_applicant_id }}
   For:
   Position ID: {{ chat_position_id }} -->
+  {% if  chat_position_name == "" %}
+
+  {% elif  requests|length  < 1 %}
+        <h4>You have No chats :( )</h4>
+  {% else %}
+
+  <h4 style="color:grey; "> {{ chat_applicant_name }} for {{ chat_position_name }}</h4>
   <div style="height:60%;width:90%;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto; padding-bottom: 10px; ">
     {% for message in messages %}
          {% if message['status'] == 'sent'%}
@@ -240,6 +247,7 @@
     {{ form.name_form( value= "add_message" ) }}
     </form>
   </div>
+  {%endif%}
 </div>
 </center>
 
