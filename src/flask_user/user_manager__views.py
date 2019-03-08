@@ -415,7 +415,8 @@ class UserManager__Views(object):
                         sender_first_name  = sender.first_name
                         sender_last_name = sender.last_name
                     else:
-                        sender_first_name  = "Applicant"
+                        sender_first_name = "Applicant"
+                        sender_last_name = ''
                 messages.append({'sender_id': message_element.id , 'sender_first_name': sender_first_name,
                                 'sender_last_name': sender_last_name,
                                 'text': message_element.message ,'status': status})
