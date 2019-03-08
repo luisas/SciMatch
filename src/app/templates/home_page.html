@@ -63,27 +63,33 @@
 </div>
  <div class="container">
   <div class="row" style="margin-bottom:150px;">
+
     <div class=" container col-md-6 w3-container w3-center w3-animate-opacity" id="container_id" >
-        <a href="{{ url_for('user.register_applicant') }}"">
+      <a href="{{ url_for('user.register_applicant') }}">
         <img class="card-img-top" src="{{ url_for('static', filename='images/CRG.jpg')}}" alt="Card image cap" height="300px;">
         <button class="btn" style="background-color: #9befcb; color: #3a3a3a; font-weight: bold; border: dotted 1px #3a3a3a;">Start looking for a job!</button>
       </a>
-
     </div>
+
+
     <div id="container_id" class="col-md-6 w3-container w3-center w3-animate-opacity" ">
-      <a href="{{ url_for('user.register_group') }}"><img class="card-img-top" src="{{ url_for('static', filename='images/applicant-home.jpg')}}" alt="Card image cap"  height="300px;">
-      <button class="btn" href= "{{ url_for('user.register_group') }}"style="background-color: #f9cb9c; color: #3a3a3a; font-weight: bold; border: dotted 1px #3a3a3a;">Find the right candidate.</button></a>
-    </div>
+      <a href="{{ url_for('user.register_group') }}">
+        <img class="card-img-top" src="{{ url_for('static', filename='images/applicant-home.jpg')}}" alt="Card image cap"  height="300px;">
+        <button class="btn" href= "{{ url_for('user.register_group') }}"style="background-color: #f9cb9c; color: #3a3a3a; font-weight: bold; border: dotted 1px #3a3a3a;">Find the right candidate.</button>
+      </a>
     </div>
 
-   </body>
+  </div>
+</div>
+
+
 
     <div class="row" style="width: 1050px; border-radius: 4px; border: 3px  dotted; border-color:#9befcb; padding-left:50px; padding-right:50px; padding-bottom: 20px; background-image: url({{ url_for('static', filename='images/fondo.png')}}">
       <div class="container" data-aos="zoom-in" >
         <h1 style="color: black;" align="left">Why SciMatch??</h1>
            <h4 style="color: #3a3a3a;" align="left"> If you are bored of looking at thousands of websites to find interesting research groups or if you are tired of </h4>
             <h4 style="color: #3a3a3a; " align="left"> sending emails without receiving any answer... </h4>
-           <h4 style="color: #3a3a3a;" align="left">SciMatch is the faster and more efficient way to put in contact people wanting to work and research groups</h4> 
+           <h4 style="color: #3a3a3a;" align="left">SciMatch is the faster and more efficient way to put in contact people wanting to work and research groups</h4>
            <h4 style="color: #3a3a3a;" align="left"> looking for new incorporations.</h4>
            </div>
         </div>
@@ -104,7 +110,7 @@
               font-size: 50px;
               }
           </style>
-           <span style="color:black" class="glyphicon glyphicon-user"></span> <span style="color:black" class="glyphicon glyphicon-user"></span> <span style="color:black" class="glyphicon glyphicon-user"></span> 
+           <span style="color:black" class="glyphicon glyphicon-user"></span> <span style="color:black" class="glyphicon glyphicon-user"></span> <span style="color:black" class="glyphicon glyphicon-user"></span>
           <h4 style="color: black; href">Find out more about the founders</h4>
         </div>
       </div>
