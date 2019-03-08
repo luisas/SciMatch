@@ -1014,7 +1014,7 @@ class UserManager__Views(object):
             # Auto-login after reset password or redirect to login page
             safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
-        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches_filtered, requested = requested, test = test  )
+        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches_filtered, requested = requested )
 
     @login_required
     def change_pref_view(self):

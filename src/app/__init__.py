@@ -23,7 +23,7 @@ class ConfigClass(object):
 
 
 
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://luisasantus:password@localhost/scimatchdef?charset=utf8'    # File-based SQL database'    # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:Aina100995@@localhost/scimatchdef?charset=utf8'    # File-based SQL database'    # File-based SQL database
 
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
