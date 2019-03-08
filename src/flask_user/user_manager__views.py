@@ -402,6 +402,7 @@ class UserManager__Views(object):
             for message_element in messages_elements:
                 if message_element.sender_id  == message_element.group_id:
                     sender_first_name = "You"
+                    sender_last_name = ""
                     status="sent"
                 else:
                     status='recieved'
@@ -947,19 +948,19 @@ class UserManager__Views(object):
             else:
                 applicant_bachelor_degree_field = 1
 
-            applicant_master = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first()
+            applicant_master = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 3).first()
             if applicant_master is not None:
                 applicant_master_degree_field = applicant_master.degree_field
             else:
                 applicant_master_degree_field = 1
 
-            applicant_postdoc = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first()
+            applicant_postdoc = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 4).first()
             if applicant_postdoc is not None:
                 applicant_postdoc_degree_field = applicant_postdoc.degree_field
             else:
                 applicant_postdoc_degree_field = 1
 
-            applicant_phd = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 2).first()
+            applicant_phd = self.db_manager.EducationClass.query.filter_by(user_id= current_user.id, degree = 5).first()
             if applicant_phd is not None:
                 applicant_phd_degree_field = applicant_phd.degree_field
             else:
@@ -967,16 +968,16 @@ class UserManager__Views(object):
 
 
             # 1 is None
-            if int(bachelor_req_degree_field_id) is not 1:
-                if int(bachelor_req_degree_field_id) != applicant_bachelor and int(bachelor_req_degree_field_id) != applicant_master and int(bachelor_req_degree_field_id) != applicant_phd and int(bachelor_req_degree_field_id) != applicant_postdoc:
+            if int(bachelor_req_degree_field_id) != 1:
+                if int(bachelor_req_degree_field_id) != applicant_bachelor_degree_field and int(bachelor_req_degree_field_id) != applicant_master_degree_field and int(bachelor_req_degree_field_id) != applicant_phd_degree_field and int(bachelor_req_degree_field_id) != applicant_postdoc_degree_field:
                     continue
-            if int(master_req_degree_field_id) is not 1:
-                if int(master_req_degree_field_id) != applicant_master and int(master_req_degree_field_id) != applicant_phd and int(master_req_degree_field_id) != applicant_postdoc :
+            if int(master_req_degree_field_id) != 1:
+                if int(master_req_degree_field_id) != applicant_master_degree_field and int(master_req_degree_field_id) != applicant_phd_degree_field and int(master_req_degree_field_id) != applicant_postdoc_degree_field:
                     continue
-            if int(phd_req_degree_field_id) is not 1:
-                if int(phd_req_degree_field_id) != applicant_phd and int(phd_req_degree_field_id) != applicant_postdoc :
+            if int(phd_req_degree_field_id) != 1:
+                if int(phd_req_degree_field_id) != applicant_phd_degree_field and int(phd_req_degree_field_id) != applicant_postdoc_degree_field :
                     continue
-            if int(postdoc_req_degree_field_id) is not 1:
+            if int(postdoc_req_degree_field_id) != 1:
                 if int(postdoc_req_degree_field_id) != applicant_postdoc:
                     continue
 
