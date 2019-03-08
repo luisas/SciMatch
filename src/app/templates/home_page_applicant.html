@@ -18,16 +18,18 @@
           {% for each in matches %}
 
           <div class="col-md-4" >
-            <div class="box_position" style="background-color:white; margin-bottom: 70px;border-radius: 10px; border: 5px solid #76E6B6; " >
-              <h4 style="background-color: #76E6B6; margin-top: 0px; padding-top: 10px; padding-bottom:10px; border-radius-top: 15px;   ">{{ each['name'] }}</h4>
+          <div class="box" style="height: 200px; margin-bottom:30px;  padding-right:20px; padding-left:20px; padding-top:10px;margin-bottom: 30px; margin-top:20px;border-radius: 15px; background-image:url({{ url_for('static', filename='images/fons2.png')}}""">
+            <div align="left"> 
+              <h4 align="center" style=" background-color:white; width:200px; ">{{ each['name'] }}</h4>
               <br>
               <h5>Salary: {{ each['salary'] }} &euro;</h5>
               <h5>Start Date: {{ each['start_date'] }}</h5>
               <br>
+               </div>
               {% if each['id'] not in requested %}
               <div class="row">
                 <div class="col-md-4" >
-                <button type="button btn-success" data-toggle="modal" href="#{{ each['id'] }}" role="button" data-target="#{{ each['id'] }}" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> i</button>
+                <button type="button" data-toggle="modal" href="#{{ each['id'] }}" role="button" data-target="#{{ each['id'] }}" style="background-color:#fac793; border-radius: 50%; font: bold; color:grey;"> i</button>
                 </div>
                 <div class="modal fade" id="{{ each['id'] }}" tabindex="-1" role="dialog" aria-labelledby="{{ each['id'] }}" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -42,7 +44,7 @@
                  {{ each['description'] }}
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" style="background-color: #76E6B6;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" style="background-color:#fac793;" data-dismiss="modal">Close</button>
                 </div>
                 </div>
                 </div>
@@ -62,7 +64,7 @@
               </div>
               {% else %}
 
-              <button type="button btn-success" data-toggle="modal" href="#{{ each['id'] }}" role="button" data-target="#{{ each['id'] }}" style="background-color:white; border-radius: 50%; font: bold; color:grey;"> i</button>
+              <button type="button" data-toggle="modal" href="#{{ each['id'] }}" role="button" data-target="#{{ each['id'] }}" style="background-color:#fac793;; border-radius: 50%; font: bold; color:grey;"> i</button>
                 <div class="modal fade" id="{{ each['id'] }}" tabindex="-1" role="dialog" aria-labelledby="{{ each['id'] }}" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                  <div class="modal-content">
