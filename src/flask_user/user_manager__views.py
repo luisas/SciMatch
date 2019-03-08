@@ -950,13 +950,18 @@ class UserManager__Views(object):
         requested =[]
         accepted = []
         rejected = []
+        accepted_positions = []
         for element in requested_objects:
                 requested.append(element.position_id)
+
 
         accepted_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status = "accepted").all()
         for element in accepted_objects:
                 accepted.append(element.position_id)
-
+                position_accepted = self.db_manager.PositionClass.query.filter_by(id = element.position_id).first()
+                if position_accepted is not None:
+                    accepted_positions.append({'position_name': position_accepted.name})
+                    
         rejected_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status = "rejected").all()
         for element in rejected_objects:
                 rejected.append(element.position_id)
@@ -1047,7 +1052,7 @@ class UserManager__Views(object):
             # Auto-login after reset password or redirect to login page
             safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
-        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches_filtered, requested = requested )
+        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, notifications = accepted_positions, form=form,role=role, matches = matches_filtered, requested = requested )
 
     @login_required
     def change_pref_view(self):
