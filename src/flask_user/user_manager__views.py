@@ -960,8 +960,10 @@ class UserManager__Views(object):
                 accepted.append(element.position_id)
                 position_accepted = self.db_manager.PositionClass.query.filter_by(id = element.position_id).first()
                 if position_accepted is not None:
-                    accepted_positions.append({'position_name': position_accepted.name})
-                    
+                    message_between_user_and_position_exits = self.db_manager.MessageClass.query.filter_by(user_id =current_user.id, sender_id = current_user.id , group_id = position_accepted.id).all()
+                    if len(message_between_user_and_position_exits) == 0 :
+                        accepted_positions.append({'position_name': position_accepted.name})
+
         rejected_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status = "rejected").all()
         for element in rejected_objects:
                 rejected.append(element.position_id)
