@@ -914,12 +914,17 @@ class UserManager__Views(object):
         requested_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status = "pending").all()
         requested =[]
         accepted = []
+        rejected = []
         for element in requested_objects:
                 requested.append(element.position_id)
+
         accepted_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status = "accepted").all()
         for element in accepted_objects:
                 accepted.append(element.position_id)
 
+        rejected_objects = self.db_manager.RequestsClass.query.filter_by(applicant_id=current_user.id, status = "rejected").all()
+        for element in rejected_objects:
+                rejected.append(element.position_id)
 
         #Preferences applicant
         preference_applicant_city_id = None
@@ -933,8 +938,6 @@ class UserManager__Views(object):
             matches = self.db_manager.PositionClass.query.all()
 
         ids_positions_to_be_removed = []
-
-        # TODO : Not working when preferences are not set
         matches_filtered = []
         for pos in matches:
             position_institution_id = self.db_manager.InstitutionHasGroupClass.query.filter_by(user_id = pos.group_id).first().institution_id
@@ -974,19 +977,23 @@ class UserManager__Views(object):
 
 
             # 1 is None
+            test = applicant_bachelor
             if int(bachelor_req_degree_field_id) is not 1:
-                if int(bachelor_req_degree_field_id) != applicant_bachelor and int(bachelor_req_degree_field_id) != applicant_master and int(bachelor_req_degree_field_id) != applicant_phd and int(bachelor_req_degree_field_id) != applicant_postdoc:
+                if int(bachelor_req_degree_field_id) != applicant_bachelor_degree_field and int(bachelor_req_degree_field_id) != applicant_master_degree_field and int(bachelor_req_degree_field_id) != applicant_phd_degree_field and int(bachelor_req_degree_field_id) != applicant_postdoc_degree_field:
                     continue
             if int(master_req_degree_field_id) is not 1:
-                if int(master_req_degree_field_id) != applicant_master and int(master_req_degree_field_id) != applicant_phd and int(master_req_degree_field_id) != applicant_postdoc :
+                if int(master_req_degree_field_id) != applicant_master_degree_field and int(master_req_degree_field_id) != applicant_phd_degree_field and int(master_req_degree_field_id) != applicant_postdoc_degree_field :
                     continue
             if int(phd_req_degree_field_id) is not 1:
-                if int(phd_req_degree_field_id) != applicant_phd and int(phd_req_degree_field_id) != applicant_postdoc :
+                if int(phd_req_degree_field_id) != applicant_phd_degree_field and int(phd_req_degree_field_id) != applicant_postdoc_degree_field :
                     continue
             if int(postdoc_req_degree_field_id) is not 1:
-                if int(postdoc_req_degree_field_id) != applicant_postdoc:
+                if int(postdoc_req_degree_field_id) != applicant_postdoc_degree_field:
                     continue
 
+            # Do not show the requested
+            if pos.id in accepted or pos.id in rejected:
+                continue
             # Match Over the City
             if preference_applicant_city_id is None:
                 matches_filtered.append(pos)
@@ -1005,7 +1012,7 @@ class UserManager__Views(object):
             # Auto-login after reset password or redirect to login page
             safe_next_url = self._get_safe_next_url('next', self.USER_AFTER_RESET_PASSWORD_ENDPOINT)
             return redirect(url_for('home_page') + '?next=' + quote(safe_next_url))  # redire
-        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches_filtered, requested = requested )
+        return render_template(self.HOME_PAGE_APPLICANT_TEMPLATE, form=form,role=role, matches = matches_filtered, requested = requested, test = test  )
 
     @login_required
     def change_pref_view(self):

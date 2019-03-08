@@ -13,13 +13,18 @@
         <div class="container">
         <h3> Your Matches</h3>
         <br>
-        <center>
-          {{ test }}
+
+
+
+          {% if  matches|length  < 1 %}
+           <h4 style="color: grey;margin-left:30px; margin-top: 30px; margin-bottom:40px;">You have no matches :(</h4><h4 style="color: grey;margin-left:30px; margin-top: 30px; margin-bottom:40px;">Update your profile and add education and experience to make chances higher to get contacted! :)  </h4>
+          {% endif %}
+          <center>
           {% for each in matches %}
 
           <div class="col-md-4" >
           <div class="box" style="height: 200px; margin-bottom:30px;  padding-right:20px; padding-left:20px; padding-top:10px;margin-bottom: 30px; margin-top:20px;border-radius: 15px; background-image:url({{ url_for('static', filename='images/fons2.png')}}""">
-            <div align="left"> 
+            <div align="left">
               <h4 align="center" style=" background-color:white; width:200px; ">{{ each['name'] }}</h4>
               <br>
               <h5>Salary: {{ each['salary'] }} &euro;</h5>
