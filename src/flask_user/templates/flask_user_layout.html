@@ -59,8 +59,8 @@
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) and role == "Applicant" %}
                 <div class="dropdown">
-                <button class="btn dropdown-toggle" style="background:#ffffff; border-radius:10px;border: 3px solid #76E6B6; padding:8px 20px; color:#000000; display:inline-block; font:normal normal 23px/1 Calibri, sans-serif; text-align: center;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>{{current_user.first_name}} {{current_user.last_name}}</h5> </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="background-color: #bbedda; border: 3px solid #76E6B6; border-radius:10px;">
+                <button class="btn dropdown-toggle" style=" min-width:159px; background:#ffffff; border-radius:10px;border: 3px solid #76E6B6; padding:8px 20px; color:#000000; display:inline-block; font:normal normal 23px/1 Calibri, sans-serif; text-align: center;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>{{current_user.first_name}} {{current_user.last_name}}</h5> </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style=" min-width:159px;background-color: #bbedda; border: 3px solid #76E6B6; border-radius:10px;">
                         <center>
                     <a class="dropdown-item" style="color:black" href="{{ url_for('user.edit_user_profile') }}">Edit profile</a>
                     <div class="dropdown-divider"></div>
@@ -77,7 +77,7 @@
             {% elif call_or_get(current_user.is_authenticated) and role == "Group" %}
             <div class="dropdown">
                 <button class="btn dropdown-toggle" style="width:159px;background:#ffffff; border-radius:10px;border: 3px solid #f9cb9c; padding:8px 20px; color:#000000; display:inline-block; font:normal normal 23px/1 Calibri, sans-serif; text-align: center;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h5>Menu</h5> </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" align="center" style="background-color:#ffe4c1; border: 3px solid #f9cb9c; border-radius:10px;">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" align="center" style="width:159px; background-color:#ffe4c1; border: 3px solid #f9cb9c; border-radius:10px;">
                     <center>
                 <a class="dropdown-item" style="color:black" href="{{ url_for('user.edit_group_profile') }}">Edit profile</a>
                 <div class="dropdown-divider"></div>
