@@ -52,6 +52,13 @@ def unique_email_validator(form, field):
 # ***********
 # ** Forms **
 # ***********
+class ChangeChatForm(FlaskForm):
+    applicant_id= HiddenField()
+    position_id = HiddenField()
+    name_form= HiddenField(default="chat")
+    sent = StringField(_('Sent'))
+    change = SubmitField(_('Change'))
+
 
 class AddEmailForm(FlaskForm):
     """Add an email address form."""
@@ -184,8 +191,11 @@ class AddMessageForm(FlaskForm):
     #password_validator_added = False
 
     message = StringField(_('Message'))
+    applicant_id = HiddenField()
+    position_id = HiddenField()
+    name_form= HiddenField(default = 'add_message')
     next = HiddenField()
-    submit = SubmitField(_('AddMessage'))
+    submit = SubmitField(_('Send'))
 
 class LoginForm(FlaskForm):
     """Login form."""

@@ -49,7 +49,8 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
 
             Customizable UserManager methods
         """
-
+        self.current_applicant_chat = None;
+        self.current_position_chat = None; 
         #see http://flask.pocoo.org/docs/0.12/extensiondev/#the-extension-code """
         self.app = app
         if app:
@@ -200,6 +201,7 @@ class UserManager(UserManager__Settings, UserManager__Utils, UserManager__Views)
         self.ResendEmailConfirmationFormClass = forms.ResendEmailConfirmationForm
         self.ResetPasswordFormClass = forms.ResetPasswordForm
         self.ChangePrefFormClass = forms.ChangePrefForm
+        self.ChangeChatFormClass = forms.ChangeChatForm
 
         self.db_manager = DBManager(app, db, UserClass, UserEmailClass, UserInvitationClass, RoleClass,UserRolesClass, PositionClass, UserHasEducationClass, PIClass, InstitutionClass, InstitutionHasGroupClass, EducationClass, ExperienceClass, CityClass, CountryClass, RequestsClass, PreferenceClass, FieldClass, MessageClass, DegreeClass, DegreeFieldClass, RequirementClass)
 
