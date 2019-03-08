@@ -7,8 +7,14 @@
 
         <h2>Hi {{ current_user.first_name }} !</h2>
         <h4>Remember to change your preferences if you haven't yet ;) </h4>
+        {% for each in notifications %}
+          <div style="border: dotted; 1px grey; max-width: 800px; margin: 10px;" >
+          <h4><img src="{{ url_for('static', filename='images/notification.png')}}" alt="Card image cap" width="40" height="40" style="boder: solid 1px grey; margin: 5px 5px 5px 5px; "> Hey you got contacted for {{ each['position_name'] }} </h4>
+          </div>
+        {%endfor%}
 
         </center>
+
         {% set counter = 0 %}
         <div class="container">
         <h3> Your Matches</h3>
