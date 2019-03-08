@@ -146,14 +146,17 @@
 
         <center>
         <div class="col-md-3" >
-          <div class="box" style="height: 200px; margin-bottom:30px;  padding-right:20px; padding-left:20px; padding-top:10px;margin-bottom: 30px; margin-top:20px;border-radius: 15px; background-image:url({{ url_for('static', filename='images/fons2.png')}}"""> <input align="right" type ="image" src="{{ url_for('static', filename='images/remove-button.png')}}" name="delete_positon" value="delete_positon"  style="height: 20px; ">
+          <div class="box" style="height: 200px; margin-bottom:30px;  padding-right:20px; padding-left:20px; padding-top:10px;margin-bottom: 30px; margin-top:20px;border-radius: 15px; background-image:url({{ url_for('static', filename='images/fons2.png')}}""">
+            <form id="package_form" action="" method="post" value="delete_position" style="padding-bottom: 10px; padding-top: 5px;  ">
+
+            <input align="right" type ="image" src="{{ url_for('static', filename='images/remove-button.png')}}" name="delete_positon" value="delete_positon"  style="height: 20px; ">
+
             <div style="height:20px"></div>
-            <div align="left"> 
-            <h4 align="center" style=" background-color:white; width:200px; ">{{ each['name'] }}</h4> 
+            <div align="left">
+            <h4 align="center" style=" background-color:white; width:200px; ">{{ each['name'] }}</h4>
             <h5 style="margin-top: 20px; ">Salary: {{ each['salary'] }} &euro;</h5>
             <h5>Start Date: {{ each['start_date'] }}</h5>
             </div>
-            <form id="package_form" action="" method="post" value="delete_position" style="padding-bottom: 10px; padding-top: 5px;  ">
                     {{ form.position_id( value= each['id'] ) }}
                     {{ form.status( value= "delete_position") }}
             </form>
