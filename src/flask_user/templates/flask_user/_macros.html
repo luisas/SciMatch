@@ -49,11 +49,10 @@
 {%- endmacro %}
 
 
-
 {% macro render_submit_field(field, label=None, tabindex=None) -%}
     {% if not label %}{% set label=field.label.text %}{% endif %}
-    {#<button type="submit" class="form-control btn" style="background-color: #76E6B6;">{{label}}</button>#}
-    <input type="submit" style="background-color: #76E6B6; margin-bottom:5px " class="btn" value="{{label}}"
+    {#<button type="submit" class="form-control btn" style=" border: 3px solid #76E6B6; border-radius:1000px; background-color: white; border-color:#fac793; border-radius:1000px;">{{label}}</button>#}
+    <input type="submit" style=" border: 3px solid #76E6B6; border-radius:1000px; background-color:white; border: 3px dotted; border-color:#fac793; margin-bottom:5px border-radius:1000px;" class="btn" value="{{label}}"
            {% if tabindex %}tabindex="{{ tabindex }}"{% endif %}
            >
 {%- endmacro %}

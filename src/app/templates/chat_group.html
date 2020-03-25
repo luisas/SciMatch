@@ -195,7 +195,7 @@
     <form  name  ="chat" action="" method="POST" novalidate formnovalidate class="form" role="form">
         <div id="container_id" class="card" onClick="javascript:this.parentNode.submit();">
          <div  style="background: white; border: dotted 1px grey; border-color: #3abc83; border-radius: 10px;  width: 630px; height: 70px; margin-bottom: 5px; ">
-          <img src="https://ptetutorials.com/images/user-profile.png" style=" border-radius:0px; height:40px; width:40px; margin: 15px; " align="left">
+          <img src="{{ url_for('static', filename='images/woman.png')}}"style=" border-radius:0px; height:45px; width:45px; margin: 15px; " align="left">
             <h4>{{request['applicant_first_name']}} {{request['applicant_last_name']}} </h4>
           <!-- <p>{{request['position_name']}}</p> -->
           <!-- <p>position_id : {{request['position_id']}}</p> -->
